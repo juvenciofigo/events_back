@@ -1,5 +1,6 @@
 package com.providences.events.user.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthUserController {
 
-    private final AuthUserService authUserService;
+    @Autowired
+    private AuthUserService authUserService;
 
     @PostMapping("login")
     public ResponseEntity<ApiResponse<AuthUserDTO.Response>> login(@Valid @RequestBody AuthUserDTO.Request request) {

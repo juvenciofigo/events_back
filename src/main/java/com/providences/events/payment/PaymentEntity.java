@@ -116,7 +116,7 @@ public class PaymentEntity {
         if (payer_supplier != null) {
             return "Fornecedor: " + payer_supplier.getCompany_name();
         } else if (payer_organizer != null) {
-            return "Organizador: " + payer_organizer.getNome();
+            return "Organizador: " + payer_organizer.getName();
         } else if (payer_guest != null) {
             return "Convidado: " + payer_guest.getName();
         }

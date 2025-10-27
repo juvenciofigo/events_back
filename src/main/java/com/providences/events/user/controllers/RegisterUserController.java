@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.shared.dto.ApiResponse;
 import com.providences.events.user.dto.AuthUserDTO;
+import com.providences.events.user.dto.RegisterUserDTO;
 import com.providences.events.user.services.CreateUserService;
 
 import jakarta.validation.Valid;
@@ -17,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping(value = "/users")
-public class CreateUserController {
+public class RegisterUserController {
     @Autowired
     private CreateUserService createUserService;
 
     @PostMapping(value = "/signup")
-    public ResponseEntity<ApiResponse<AuthUserDTO.Response>> execute(@Valid @RequestBody AuthUserDTO.Request dto) {
+    public ResponseEntity<ApiResponse<AuthUserDTO.Response>> signup(@Valid @RequestBody RegisterUserDTO.Request dto) {
         AuthUserDTO.Response data = this.createUserService.execute(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<AuthUserDTO.Response>(true, data));

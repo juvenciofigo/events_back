@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.supplier_service.SupplierServicesEntity;
 
@@ -26,17 +27,18 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(length = 40)
     private String id;
-    
-    @Column(length = 100)
+
+    @Column(length = 100, nullable = false)
     private String name;
-    
+
     @Column(nullable = false, unique = true)
     private String email;
-    
-    @Column(length = 20)
+
+    @Column(length = 20, nullable = false)
     private String phone;
-    
-    @Column(length = 70,nullable = false)
+
+    @JsonIgnore
+    @Column(length = 70, nullable = false)
     private String passwordHash;
 
     private String profilePicture;
@@ -84,6 +86,7 @@ public class UserEntity implements UserDetails {
         }
     }
 
+    @JsonIgnore
     @Override
     public String getPassword() {
         return passwordHash;

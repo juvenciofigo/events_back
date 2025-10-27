@@ -22,6 +22,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,6 +31,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class OrganizerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -39,16 +41,17 @@ public class OrganizerEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @Column(nullable = false)
-    private String nome;
+    @Column(nullable = false, length = 100)
+    private String name;
 
-    private String profile_picture;
+    @Column(name = "profile_picture")
+    private String profilePicture;
 
     @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(nullable = false, name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "payer_organizer")
     private List<PaymentEntity> payments;
@@ -64,7 +67,8 @@ public class OrganizerEntity {
     private List<supplier_reviewsEntity> reviews;
 
     // relacionameto com participacoes em conversas
-    // @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    // @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval =
+    // true, fetch = FetchType.LAZY)
     // private List<ParticipantChatEntity> participantChat;
 
     // ///////////

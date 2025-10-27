@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<ValidationErrorDTO>> methodArgumentNotValidation(
             MethodArgumentNotValidException e,
             HttpServletRequest request) {
-        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         ValidationErrorDTO err = new ValidationErrorDTO(
                 Instant.now(),
                 status.value(),

@@ -59,12 +59,15 @@ public class SupplierServicesEntity {
     @Column(nullable = false, name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    // Relecionamento no caso de fazer pagamento
     @OneToMany(mappedBy = "payer_supplier")
     private List<PaymentEntity> payments;
-
+    
+    // Relecionamento no caso de receber pagamento
     @OneToMany(mappedBy = "receiver_supplier")
     private List<PaymentEntity> receivers;
-
+    
+    // Relecionamento com serviços
     @OneToMany(mappedBy = "serviceSupplier", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ServiceEntity> services;
 

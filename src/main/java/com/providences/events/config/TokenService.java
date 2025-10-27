@@ -40,10 +40,11 @@ public class TokenService {
                     .verify(token);
 
             List<String> roles = decoded.getClaim("roles").asList(String.class);
-            JWTUserData userData = new JWTUserData(
-                    decoded.getClaim("userId").asString(),
-                    decoded.getSubject(),
-                    roles);
+
+            // decoded.getClaim("userId").asString(),
+            // decoded.getSubject(),
+            // roles
+            JWTUserData userData = new JWTUserData(decoded.getClaim("userId").asString(), decoded.getSubject(), roles);
 
             return Optional.of(userData);
 

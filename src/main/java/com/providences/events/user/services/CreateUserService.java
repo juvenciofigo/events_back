@@ -9,6 +9,7 @@ import com.providences.events.config.TokenService;
 import com.providences.events.user.UserEntity;
 import com.providences.events.user.UserRepository;
 import com.providences.events.user.dto.AuthUserDTO;
+import com.providences.events.user.dto.RegisterUserDTO;
 
 @Service
 public class CreateUserService {
@@ -22,10 +23,13 @@ public class CreateUserService {
     private TokenService tokenService;
 
     @Transactional
-    public AuthUserDTO.Response execute(AuthUserDTO.Request dto) {
+    public AuthUserDTO.Response execute(RegisterUserDTO.Request dto) {
+        
         UserEntity user = UserEntity.builder()
                 .email(dto.getEmail())
                 .passwordHash(passwordEncoder.encode(dto.getPassword()))
+                .phone(dto.getPhone())
+                .name(dto.getName())
                 .role(UserEntity.ROLE.ROLE_CLIENT)
                 .build();
 

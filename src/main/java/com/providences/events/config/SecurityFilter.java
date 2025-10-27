@@ -41,7 +41,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             if (optUser.isPresent()) {
                 JWTUserData userData = optUser.get();
 
-                List<SimpleGrantedAuthority> authorities = userData.roles().stream()
+                List<SimpleGrantedAuthority> authorities = userData.getRoles().stream()
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                         .toList();
 

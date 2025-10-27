@@ -2,5 +2,15 @@ package com.providences.events.config;
 
 import java.util.List;
 
-public record JWTUserData(String userId, String email, List<String> roles) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+public class JWTUserData {
+    String userId;
+    String email;
+    List<String> roles;
+
 }
