@@ -1,6 +1,7 @@
 package com.providences.events.services.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.providences.events.services.ServiceEntity;
 import com.providences.events.services.ServiceRepository;
@@ -8,8 +9,6 @@ import com.providences.events.services.dto.RegisterServiceDTO;
 import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
 import com.providences.events.supplier.SupplierEntity;
 import com.providences.events.supplier.SupplierRepository;
-
-import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
