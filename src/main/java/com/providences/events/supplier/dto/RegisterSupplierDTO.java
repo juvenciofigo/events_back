@@ -1,38 +1,43 @@
-package com.providences.events.organizer.dto;
+package com.providences.events.supplier.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class RegisterOrganizerDTO {
+public class RegisterSupplierDTO {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
-        @NotNull(message = "O campo nome é obrigatário!")
-        @NotBlank(message = "Preencha o campo nome")
-        @Size(max = 100, min = 3, message = "O nome deve ter de 3 à 100 caracteres!")
-        private String name;
+        @NotNull(message = "O campo nome da empresa é obrigatário!")
+        @NotBlank(message = "Preencha o campo nome da empresa")
+        private String companyName;
 
         private String profilePicture = "";
 
-        private String phone = "";
+        private String logo = "";
+
+        private String description = "";
 
     }
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class Response {
         private String id;
-        private String name;
+
+        private String companyName;
+
         private String profilePicture;
+
+        private String logo;
+
+        private String description;
+
         private UserDTO user;
 
     }
@@ -40,7 +45,6 @@ public class RegisterOrganizerDTO {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class UserDTO {
         private String id;
         private String name;

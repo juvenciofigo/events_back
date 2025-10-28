@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class JWTUserData {
     String userId;
     String email;

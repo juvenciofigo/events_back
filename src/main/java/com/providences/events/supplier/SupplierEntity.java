@@ -1,4 +1,4 @@
-package com.providences.events.supplier_service;
+package com.providences.events.supplier;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,25 +23,32 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "suppliers_services")
-public class SupplierServicesEntity {
+@Table(name = "suppliers")
+@Builder
+public class SupplierEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
     private UserEntity user;
 
-    private String profile_picture;
+    @Column(name = "profile_picture")
+    private String profilePicture;
     private String logo;
 
     @OneToOne
@@ -50,33 +57,33 @@ public class SupplierServicesEntity {
 
     private String description;
 
-    @Column(nullable = false, unique = true)
-    private String company_name;
+    @Column(nullable = false, unique = true, name = "company_name")
+    private String companyName;
 
     @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(nullable = false, name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     // Relecionamento no caso de fazer pagamento
     @OneToMany(mappedBy = "payer_supplier")
     private List<PaymentEntity> payments;
-    
+
     // Relecionamento no caso de receber pagamento
     @OneToMany(mappedBy = "receiver_supplier")
     private List<PaymentEntity> receivers;
-    
+
     // Relecionamento com serviços
-    @OneToMany(mappedBy = "serviceSupplier", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ServiceEntity> services;
 
     // Relacionamento com comentarios
-    @OneToMany(mappedBy = "supplierService", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<supplier_reviewsEntity> reviews;
 
     // relacionameto com participacoes em conversas
-    @OneToMany(mappedBy = "supplierServices", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ParticipantChatEntity> participantChat;
 
     // ///////////

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.services.ServiceEntity;
-import com.providences.events.supplier_service.SupplierServicesEntity;
+import com.providences.events.supplier.SupplierEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,8 +36,8 @@ public class supplier_reviewsEntity {
     private Double rating;
 
     @ManyToOne
-    @JoinColumn(name = "service_supplier_id", nullable = false)
-    private SupplierServicesEntity supplierService;
+    @JoinColumn(name = "supplier_id", nullable = false)
+    private SupplierEntity supplier;
 
     @ManyToOne
     @JoinColumn(name = "organizer_id", nullable = false)

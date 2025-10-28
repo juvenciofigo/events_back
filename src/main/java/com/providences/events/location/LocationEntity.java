@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.providences.events.event.entities.EventEntity;
-import com.providences.events.supplier_service.SupplierServicesEntity;
+import com.providences.events.supplier.SupplierEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -55,7 +55,7 @@ public class LocationEntity {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     @OneToOne(mappedBy = "location")
-    private SupplierServicesEntity supplier;
+    private SupplierEntity supplier;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventEntity> events;

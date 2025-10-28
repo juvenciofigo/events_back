@@ -44,6 +44,10 @@ public class OrganizerEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
+
+    @Column(length = 15, nullable = false)
+    private String phone;
+
     @Column(name = "profile_picture")
     private String profilePicture;
 

@@ -7,7 +7,7 @@ import com.providences.events.guest.GuestEntity;
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.plans.entities.SubscriptionEntity;
 import com.providences.events.services.ServiceEntity;
-import com.providences.events.supplier_service.SupplierServicesEntity;
+import com.providences.events.supplier.SupplierEntity;
 import com.providences.events.ticket.TicketEntity;
 
 import jakarta.persistence.Column;
@@ -68,7 +68,7 @@ public class PaymentEntity {
 
     @ManyToOne
     @JoinColumn(name = "payer_supplier_id")
-    private SupplierServicesEntity payer_supplier;
+    private SupplierEntity payer_supplier;
 
     @ManyToOne
     @JoinColumn(name = "payer_organizer_id")
@@ -86,7 +86,7 @@ public class PaymentEntity {
 
     @ManyToOne
     @JoinColumn(name = "receiver_supplier_id")
-    private SupplierServicesEntity receiver_supplier;
+    private SupplierEntity receiver_supplier;
 
     @ManyToOne
     @JoinColumn(name = "receiver_organizer_id")
@@ -114,7 +114,7 @@ public class PaymentEntity {
     // Método para identificar quem fez o pagamento
     public String getPayer() {
         if (payer_supplier != null) {
-            return "Fornecedor: " + payer_supplier.getCompany_name();
+            return "Fornecedor: " + payer_supplier.getCompanyName();
         } else if (payer_organizer != null) {
             return "Organizador: " + payer_organizer.getName();
         } else if (payer_guest != null) {
@@ -134,7 +134,7 @@ public class PaymentEntity {
         if (payer_organizer != null)
             payerCount++;
         if (payer_guest != null)
-        payerCount++;
+            payerCount++;
         if (payerCount > 1)
             throw new IllegalStateException("Um pagamento não pode ter mais de um pagador definido");
         if (payerCount == 0)

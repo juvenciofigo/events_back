@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.providences.events.organizer.OrganizerEntity;
-import com.providences.events.supplier_service.SupplierServicesEntity;
+import com.providences.events.supplier.SupplierEntity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,7 +34,7 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 15, nullable = false)
     private String phone;
 
     @JsonIgnore
@@ -42,6 +42,9 @@ public class UserEntity implements UserDetails {
     private String passwordHash;
 
     private String profilePicture;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
     @Column(nullable = false, updatable = false, name = "created_at")
     private LocalDateTime createdAt;
@@ -55,7 +58,7 @@ public class UserEntity implements UserDetails {
     private ROLE role = ROLE.ROLE_CLIENT;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private SupplierServicesEntity supplier;
+    private SupplierEntity supplier;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private OrganizerEntity organizer;
@@ -63,6 +66,7 @@ public class UserEntity implements UserDetails {
     // //////////////////
     @PrePersist
     protected void onCreate() {
+        isDeleted = false;
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }

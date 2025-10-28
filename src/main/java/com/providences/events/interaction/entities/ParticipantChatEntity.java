@@ -2,7 +2,7 @@ package com.providences.events.interaction.entities;
 
 import java.time.LocalDateTime;
 import com.providences.events.guest.GuestEntity;
-import com.providences.events.supplier_service.SupplierServicesEntity;
+import com.providences.events.supplier.SupplierEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,12 +48,12 @@ public class ParticipantChatEntity {
 
     // relacionameto com fornecedor de servicos
     @ManyToOne
-    @JoinColumn(name = "supplier_services_id",referencedColumnName = "id")
-    private SupplierServicesEntity supplierServices;
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id")
+    private SupplierEntity supplier;
 
     // relacionameto com fornecedor de servicos
     @ManyToOne
-    @JoinColumn(name = "guest_id",referencedColumnName = "id")
+    @JoinColumn(name = "guest_id", referencedColumnName = "id")
     private GuestEntity guests;
 
     // ///////////

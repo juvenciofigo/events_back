@@ -7,8 +7,8 @@ import java.util.List;
 import com.providences.events.event.entities.ServicesHasEventEntity;
 import com.providences.events.payment.PaymentEntity;
 import com.providences.events.service_album.Albums_serviceEntity;
+import com.providences.events.supplier.SupplierEntity;
 import com.providences.events.supplier_reviews.supplier_reviewsEntity;
-import com.providences.events.supplier_service.SupplierServicesEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -37,14 +37,12 @@ public class ServiceEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false)
-    private String type;
-
     // relacionamento com o fornecedor desse serviço
-    @ManyToOne
-    @JoinColumn(name = "service_supplier_id", nullable = false)
-    private SupplierServicesEntity serviceSupplier;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "supplier_id", nullable = false)
+    private SupplierEntity supplier;
 
+    @JoinColumn(nullable = false)
     private String category;
 
     private String description;

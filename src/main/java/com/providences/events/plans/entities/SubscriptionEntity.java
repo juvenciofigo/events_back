@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.payment.PaymentEntity;
-import com.providences.events.supplier_service.SupplierServicesEntity;
+import com.providences.events.supplier.SupplierEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -48,7 +48,7 @@ public class SubscriptionEntity {
 
     private Boolean auto_renew = false;
     // Relacionamento como pagamentos
-    @OneToOne(mappedBy = "subscription", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "subscription", cascade = CascadeType.ALL)
     private PaymentEntity payment;
 
     // relacionamentos com potencias planos
@@ -57,17 +57,17 @@ public class SubscriptionEntity {
     private PlanType planType;
 
     // relacionamento com os planos de fornecedores de serviços
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "supplier_plan_id")
     private SupplierPlanEntity supplierPlan;
 
     // relacionamento como Addons
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addon_plan_id")
     private AddonPlanEntity addonPlan;
 
     // relacionamento com os planos de organizadores
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "organizer_plan_id")
     private OrganizerPlanEntity organizerPlan;
 
@@ -78,8 +78,8 @@ public class SubscriptionEntity {
 
     // `relacionamento como provedor de serviços,
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_supplier_id")
-    private SupplierServicesEntity supplierServices;
+    @JoinColumn(name = "supplier_id")
+    private SupplierEntity supplier;
 
     // ralacionamento com organizador
     @ManyToOne(fetch = FetchType.LAZY)

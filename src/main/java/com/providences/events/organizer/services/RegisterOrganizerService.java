@@ -13,36 +13,38 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegisterOrganizerService {
 
-    @Autowired
-    private OrganizerRepository organizerRepository;
+        @Autowired
+        private OrganizerRepository organizerRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+        @Autowired
+        private UserRepository userRepository;
 
-    public RegisterOrganizerDTO.Response execute(RegisterOrganizerDTO.Request data, String userId) {
+        public RegisterOrganizerDTO.Response execute(RegisterOrganizerDTO.Request data, String userId) {
 
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
+                UserEntity user = userRepository.findById(userId)
+                                .orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
 
-        OrganizerEntity organizer = new OrganizerEntity();
-        organizer.setName(data.getName());
-        organizer.setProfilePicture(data.getProfilePicture());
-        organizer.setUser(user);
+                OrganizerEntity organizer = OrganizerEntity.builder()
+                                .name(data.getName())
+                                .phone(data.getPhone())
+                                .profilePicture(data.getProfilePicture()).build();
 
-        OrganizerEntity savedOrganizer = organizerRepository.save(organizer);
+                organizer.setUser(user);
 
-        RegisterOrganizerDTO.UserDTO userDTO = new RegisterOrganizerDTO.UserDTO(
-                savedOrganizer.getUser().getId(),
-                savedOrganizer.getUser().getName(),
-                savedOrganizer.getUser().getEmail(),
-                savedOrganizer.getUser().getProfilePicture());
+                OrganizerEntity savedOrganizer = organizerRepository.save(organizer);
 
-        RegisterOrganizerDTO.Response responseDTO = new RegisterOrganizerDTO.Response(
-                savedOrganizer.getId(),
-                savedOrganizer.getName(),
-                savedOrganizer.getProfilePicture(),
-                userDTO);
+                RegisterOrganizerDTO.UserDTO userDTO = new RegisterOrganizerDTO.UserDTO(
+                                savedOrganizer.getUser().getId(),
+                                savedOrganizer.getUser().getName(),
+                                savedOrganizer.getUser().getEmail(),
+                                savedOrganizer.getUser().getProfilePicture());
 
-        return responseDTO;
-    }
+                RegisterOrganizerDTO.Response responseDTO = new RegisterOrganizerDTO.Response(
+                                savedOrganizer.getId(),
+                                savedOrganizer.getName(),
+                                savedOrganizer.getProfilePicture(),
+                                userDTO);
+
+                return responseDTO;
+        }
 }
