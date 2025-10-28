@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.providences.events.event.enums.EventStatus;
 import com.providences.events.interaction.entities.ChatEntity;
 import com.providences.events.location.LocationEntity;
 import com.providences.events.organizer.OrganizerEntity;
@@ -54,21 +53,22 @@ public class EventEntity {
     private Boolean isPublic = false;
 
     @Column(nullable = false, length = 150)
-    private String name;
+    private String title;
 
     private String description;
 
     @Column(nullable = false, name = "date_start")
     private LocalDateTime dateStart;
 
-    @Column(nullable = false, name = "date_end")
+    @Column(name = "date_end")
     private LocalDateTime dateEnd;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "event_status")
     private EventStatus eventStatus;
 
-    private String cover_image;
+    @Column(name = "cover_image")
+    private String coverImage;
 
     @Column(name = "estimated_guest")
     private Integer estimatedGuest;
@@ -80,10 +80,10 @@ public class EventEntity {
     private BigDecimal budgetSpent;
 
     @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(nullable = false, name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     // relacionamento como ticket/convite/ingreço
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -108,6 +108,7 @@ public class EventEntity {
     // ///////////
     @PrePersist
     protected void onCreate() {
+        eventStatus = EventStatus.PLANNED;
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
@@ -115,6 +116,13 @@ public class EventEntity {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    public enum EventStatus {
+        PLANNED,
+        ONGOING,
+        COMPLETED,
+        CANCELED
     }
 
 }

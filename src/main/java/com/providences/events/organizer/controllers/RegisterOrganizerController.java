@@ -32,7 +32,7 @@ public class RegisterOrganizerController {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
         String UserIdFromToken = userData.getUserId();
-        System.out.println(UserIdFromToken);
+
         RegisterOrganizerDTO.Response organizer = registerOrganizerService.execute(dto, UserIdFromToken);
 
         return ResponseEntity.status(HttpStatus.CREATED)

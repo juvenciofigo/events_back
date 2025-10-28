@@ -34,7 +34,6 @@ public class RegisterServiceService {
         service.setSupplier(supplier);
 
         ServiceEntity savedService = serviceRepository.save(service);
-System.out.println("gggggggggggggggg"+savedService);
         RegisterServiceDTO.Response responseDTO = new RegisterServiceDTO.Response(
                 savedService.getId(),
                 savedService.getCategory(),
