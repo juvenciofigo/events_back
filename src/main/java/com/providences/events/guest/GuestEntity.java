@@ -20,14 +20,16 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
+@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "guests")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class GuestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -46,10 +48,10 @@ public class GuestEntity {
     private TicketEntity ticket;
 
     @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(nullable = false, name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     // relacionameto com participacoes em conversas
     @OneToMany(mappedBy = "guests", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

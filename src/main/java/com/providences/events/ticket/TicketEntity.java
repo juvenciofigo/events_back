@@ -25,8 +25,10 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
+@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "tickets")
 @Data
 @AllArgsConstructor
@@ -54,9 +56,11 @@ public class TicketEntity {
     private String code;
 
     @Column(name = "total_people", nullable = false)
-    private Integer totalPeople = 1;
+    private Integer totalPeople;
 
     private String notes;
+
+    private String seat;
 
     @PositiveOrZero
     @Column(precision = 10, scale = 2, name = "price_paid")
@@ -79,6 +83,7 @@ public class TicketEntity {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        sentAt = LocalDateTime.now();
 
     }
 
@@ -90,6 +95,7 @@ public class TicketEntity {
     public enum Status {
         PENDING,
         CONFIRMED,
+        VALIDATED,
         DECLINED
     }
 

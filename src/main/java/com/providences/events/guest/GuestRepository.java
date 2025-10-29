@@ -1,5 +1,7 @@
 package com.providences.events.guest;
 
-public interface GuestRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
 
+public interface GuestRepository extends JpaRepository<GuestEntity, String> {
+    
 }

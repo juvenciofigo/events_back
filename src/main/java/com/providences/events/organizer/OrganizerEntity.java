@@ -25,8 +25,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
+@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "organizers")
 @Data
 @AllArgsConstructor

@@ -43,8 +43,8 @@ public class SupplierEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
     @Column(name = "profile_picture")
