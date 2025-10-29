@@ -34,3 +34,48 @@ INSERT INTO events (id,budget_estimated,budget_spent,cover_image,created_at,date
 
 
 
+-- Hibernate: 
+--     select
+--         se1_0.id,
+--         se1_0.company_name,
+--         se1_0.created_at,
+--         se1_0.description,
+--         l1_0.id,
+--         l1_0.address,
+--         l1_0.city,
+--         l1_0.country,
+--         l1_0.created_at,
+--         l1_0.description,
+--         l1_0.latitude,
+--         l1_0.longitude,
+--         l1_0.name,
+--         l1_0.photo,
+--         l1_0.province,
+--         l1_0.update_at,
+--         se1_0.logo,
+--         se1_0.profile_picture,
+--         se1_0.updated_at,
+--         se1_0.user_id
+--     from
+--         suppliers se1_0
+--     left join
+--         locations l1_0
+--             on l1_0.id=se1_0.location_id
+--     where
+--         se1_0.id=?
+-- Hibernate: 
+--     select
+--         se1_0.id,
+--         se1_0.category,
+--         se1_0.created_at,
+--         se1_0.description,
+--         se1_0.price_base,
+--         se1_0.supplier_id,
+--         se1_0.updated_at
+--     from
+--         services se1_0
+--     left join
+--         suppliers s1_0
+--             on s1_0.id=se1_0.supplier_id
+--     where
+--         s1_0.id=?
