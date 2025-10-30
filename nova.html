@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live com Chat Estilo Karavan</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #111;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+    .header {
+        padding: 10px;
+        text-align: center;
+        background: #222;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+    }
+    .controls button {
+        margin-left: 10px;
+        padding: 5px 10px;
+        background: #ff0000;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .container {
+        flex: 1;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+    }
+    .video {
+        flex: 1;
+        transition: flex 0.3s ease;
+    }
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+    .chat-toggle {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #ff0000;
+        border: none;
+        padding: 10px 15px;
+        color: #fff;
+        cursor: pointer;
+        z-index: 10;
+        border-radius: 5px;
+    }
+    .chat {
+        width: 400px;
+        max-width: 100%;
+        height: 100%;
+        position: absolute;
+        right: -400px;
+        top: 0;
+        transition: right 0.3s ease;
+        background: #000;
+        box-shadow: -4px 0 10px rgba(0,0,0,0.5);
+        z-index: 5;
+    }
+    .chat.show {
+        right: 0;
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+        }
+        .video {
+            height: 50vh;
+        }
+        .chat {
+            width: 100%;
+            height: 50vh;
+            right: -100%;
+        }
+        .chat.show {
+            right: 0;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Live do YouTube</h1>
+    <div class="controls">
+        <button id="chatToggleBtn">Mostrar Chat</button>
+        <button id="smallBtn">Pequeno</button>
+        <button id="mediumBtn">Médio</button>
+        <button id="largeBtn">Grande</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="video" id="videoContainer">
+        <iframe id="liveVideo" src="https://www.youtube.com/embed/3qX4WR-nxXQ?autoplay=1" 
+                title="YouTube Live" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="chat" id="chatFrame">
+        <iframe src="https://www.youtube.com/live_chat?v=3qX4WR-nxXQ&embed_domain=karavan.live" 
+                title="YouTube Live Chat" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
+        </iframe>
+    </div>
+</div>
+
+<script>
+    const chatToggleBtn = document.getElementById('chatToggleBtn');
+    const chat = document.getElementById('chatFrame');
+    const videoContainer = document.getElementById('videoContainer');
+
+    chatToggleBtn.addEventListener('click', () => {
+        chat.classList.toggle('show');
+        chatToggleBtn.textContent = chat.classList.contains('show') ? 'Ocultar Chat' : 'Mostrar Chat';
+    });
+
+    const smallBtn = document.getElementById('smallBtn');
+    const mediumBtn = document.getElementById('mediumBtn');
+    const largeBtn = document.getElementById('largeBtn');
+
+    smallBtn.addEventListener('click', () => videoContainer.style.flex = "1");
+    mediumBtn.addEventListener('click', () => videoContainer.style.flex = "2");
+    largeBtn.addEventListener('click', () => videoContainer.style.flex = "3");
+</script>
+
+</body>
+</html>

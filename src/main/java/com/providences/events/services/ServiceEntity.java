@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.providences.events.album.entities.AlbumEntity;
 import com.providences.events.event.entities.ServicesHasEventEntity;
 import com.providences.events.payment.PaymentEntity;
-import com.providences.events.service_album.Albums_serviceEntity;
 import com.providences.events.supplier.SupplierEntity;
 import com.providences.events.supplier_reviews.supplier_reviewsEntity;
 
@@ -69,7 +69,7 @@ public class ServiceEntity {
 
     // relacionamento com algum de midia
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Albums_serviceEntity> albums;
+    private List<AlbumEntity> albums;
 
     // relacionamento como servicos do evento
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -92,4 +92,3 @@ public class ServiceEntity {
     }
 
 }
-

@@ -24,6 +24,9 @@ INSERT INTO tickets (code, created_at, event_id, notes, price_paid, responded_at
 -- Gests
 INSERT INTO guests (created_at, email, name, phone, ticket_id, updated_at, id) VALUES ('2025-10-29 23:20:22.159661', 'juvenciofigo@gmail.com', 'juvenciofigo@gmail.com', 'juvenciofigo@gmail.com', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', '2025-10-29 23:20:22.159661', '2025-10-29 23:20:22.159661')
 
+-- Album
+ INSERT INTO albums (created_at, description, service_id, title, updated_at, id) VALUES ('2025-10-30 02:35:51.156768', 'Descricao do algum', 'ce6f991a-2343-49b3-aa06-a27c9f9183dc', 'Título do album', '2025-10-30 02:35:51.156768', '341c9554-9dd5-478b-a11e-36c6a92887d9')
+
 -- ServiceEntity(id=, supplier=SupplierEntity(), category=hfgh, description=null, priceBase=10.0, unavailability=null, createdAt=2025-10-28T02:09:44.399494900, updatedAt=2025-10-28T02:09:44.399494900, payments=null, albums=null, servicesHasEvent=null, reviews=null)
 
 -- -- service_unavailability

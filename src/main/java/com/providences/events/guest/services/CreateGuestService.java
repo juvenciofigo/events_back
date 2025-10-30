@@ -27,13 +27,13 @@ public class CreateGuestService {
                 this.eventRepository = eventRepository;
         }
 
-        public CreateGuestDTO.Response execute(CreateGuestDTO.Request data, String UserId) {
+        public CreateGuestDTO.Response execute(CreateGuestDTO.Request data, String userId) {
 
                 EventEntity event = eventRepository.getEventById(data.getEventID());
 
                 if (event != null) {
 
-                        if (!event.getOrganizer().getUser().getId().equals(UserId)) {
+                        if (!event.getOrganizer().getUser().getId().equals(userId)) {
                                 throw new ForbiddenException("Sem permissão!");
                         }
                         System.out.println("segindo");

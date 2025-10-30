@@ -18,4 +18,14 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, String> 
                   """)
       List<ServiceEntity> findBySupplier_Id(@Param("id") String id);
 
+      @Query("""
+                  SELECT ser
+                  FROM ServiceEntity ser
+                  JOIN FETCH ser.supplier sup
+                  JOIN FETCH sup.user usr
+                  LEFT JOIN FETCH usr.organizer org
+                  WHERE ser.id = :serviceID
+                  """)
+      ServiceEntity getService(@Param("serviceID") String serviceID);
+
 }
