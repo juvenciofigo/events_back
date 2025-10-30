@@ -31,7 +31,7 @@ public class CreateGuestDTO {
 
         @NotBlank(message = "Informe o evento")
         @NotNull(message = "Informe o evento")
-        private String eventID;
+        private String eventId;
 
         @Positive(message = "O número de pessoas deve ser maior que zero")
         @NotNull(message = "Informe o numero de pessoas para esse ticket")

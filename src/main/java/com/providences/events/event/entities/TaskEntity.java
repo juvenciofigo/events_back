@@ -36,7 +36,7 @@ public class TaskEntity {
     private EventEntity event;
 
     @Column(name = "responsible_name")
-    private String responsible_name;
+    private String responsibleName;
 
     @Column(name = "responsible_phone")
     private String responsiblePhone;
@@ -46,15 +46,16 @@ public class TaskEntity {
     @Column(nullable = false)
     private String description;
 
-    private LocalDateTime due_date;
+    @Column(name = "due_date")
+    private LocalDateTime dueDate;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Priority priority = Priority.MEDIUM;
+    private Priority priority;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status = Status.PENDING;
+    private Status status;
 
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")
@@ -67,6 +68,8 @@ public class TaskEntity {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        priority = Priority.MEDIUM;
+        status = Status.PENDING;
     }
 
     @PreUpdate
@@ -74,13 +77,13 @@ public class TaskEntity {
         updatedAt = LocalDateTime.now();
     }
 
-    enum Priority {
+    public enum Priority {
         LOW,
         MEDIUM,
         HIGH
     }
 
-    enum Status {
+    public enum Status {
         PENDING,
         IN_PROGRESS,
         DONE

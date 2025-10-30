@@ -29,7 +29,7 @@ public class CreateGuestService {
 
         public CreateGuestDTO.Response execute(CreateGuestDTO.Request data, String userId) {
 
-                EventEntity event = eventRepository.getEventById(data.getEventID());
+                EventEntity event = eventRepository.getEventById(data.getEventId());
 
                 if (event != null) {
 

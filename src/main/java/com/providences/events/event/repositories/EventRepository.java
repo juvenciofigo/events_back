@@ -24,9 +24,9 @@ public interface EventRepository extends JpaRepository<EventEntity, String> {
                 JOIN FETCH obj.organizer org
                 JOIN FETCH org.user usr
                 LEFT JOIN FETCH usr.supplier supp
-                WHERE obj.id = :eventID
+                WHERE obj.id = :eventId
             """)
-    EventEntity getEventById(@Param("eventID") String eventID);
+    EventEntity getEventById(@Param("eventId") String eventId);
 
     // @EntityGraph(attributePaths = {
     // "organizer",
@@ -35,6 +35,6 @@ public interface EventRepository extends JpaRepository<EventEntity, String> {
     // "services.supplier",
     // "suppliers"
     // })
-    // @Query("SELECT obj FROM EventEntity obj WHERE obj.id = :eventID")
-    // EventEntity getEvent(@Param("eventID") String eventID);
+    // @Query("SELECT obj FROM EventEntity obj WHERE obj.id = :eventId")
+    // EventEntity getEvent(@Param("eventId") String eventId);
 }
