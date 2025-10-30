@@ -7,11 +7,10 @@ import com.providences.events.services.dto.RegisterServiceDTO;
 import com.providences.events.services.services.RegisterServiceService;
 import com.providences.events.shared.dto.ApiResponse;
 
-import jakarta.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -27,7 +26,7 @@ public class RegisterServiceController {
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<RegisterServiceDTO.Response>> execute(
-            @Valid @RequestBody RegisterServiceDTO.Request dto) {
+            @Validated @RequestBody RegisterServiceDTO.Request dto) {
 
         RegisterServiceDTO.Response service = registerServiceService.execute(dto);
         return ResponseEntity.status(HttpStatus.CREATED)

@@ -1,4 +1,4 @@
-package com.providences.events.supplier_reviews;
+package com.providences.events.reviews;
 
 import java.time.LocalDateTime;
 
@@ -23,11 +23,11 @@ import lombok.ToString;
 
 @Entity
 @ToString(onlyExplicitlyIncluded = true)
-@Table(name = "supplier_reviews")
+@Table(name = "reviews")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class supplier_reviewsEntity {
+public class ReviewsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

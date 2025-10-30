@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.payment.PaymentEntity;
-import com.providences.events.supplier_reviews.supplier_reviewsEntity;
+import com.providences.events.reviews.ReviewsEntity;
 import com.providences.events.user.UserEntity;
 
 import jakarta.persistence.CascadeType;
@@ -70,7 +70,7 @@ public class OrganizerEntity {
 
     // relacionameto com comentarios
     @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<supplier_reviewsEntity> reviews;
+    private List<ReviewsEntity> reviews;
 
     // relacionameto com participacoes em conversas
     // @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval =

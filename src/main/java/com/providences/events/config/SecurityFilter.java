@@ -42,7 +42,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 JWTUserData userData = optUser.get();
 
                 List<SimpleGrantedAuthority> authorities = userData.getRoles().stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                        .map(role -> new SimpleGrantedAuthority(role))
                         .toList();
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userData,

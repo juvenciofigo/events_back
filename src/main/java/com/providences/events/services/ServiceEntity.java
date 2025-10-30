@@ -7,8 +7,8 @@ import java.util.List;
 import com.providences.events.album.entities.AlbumEntity;
 import com.providences.events.event.entities.ServicesHasEventEntity;
 import com.providences.events.payment.PaymentEntity;
+import com.providences.events.reviews.ReviewsEntity;
 import com.providences.events.supplier.SupplierEntity;
-import com.providences.events.supplier_reviews.supplier_reviewsEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -77,7 +77,7 @@ public class ServiceEntity {
 
     // relacionameto com comentarios
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<supplier_reviewsEntity> reviews;
+    private List<ReviewsEntity> reviews;
 
     // ///////////
     @PrePersist

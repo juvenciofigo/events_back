@@ -24,13 +24,13 @@ public class CreateUserService {
 
     @Transactional
     public AuthUserDTO.Response execute(RegisterUserDTO.Request dto) {
-        
+
         UserEntity user = UserEntity.builder()
                 .email(dto.getEmail())
                 .passwordHash(passwordEncoder.encode(dto.getPassword()))
                 .phone(dto.getPhone())
                 .name(dto.getName())
-                .role(UserEntity.ROLE.ROLE_CLIENT)
+                .role(UserEntity.ROLE.CLIENT)
                 .build();
 
         this.userRepository.save(user);

@@ -57,7 +57,7 @@ public class UserEntity implements UserDetails {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 11)
-    private ROLE role = ROLE.ROLE_CLIENT;
+    private ROLE role = ROLE.CLIENT;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private SupplierEntity supplier;
@@ -79,16 +79,16 @@ public class UserEntity implements UserDetails {
     }
 
     public enum ROLE {
-        ROLE_CLIENT,
-        ROLE_ADMIN
+        CLIENT,
+        ADMIN
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (role == ROLE.ROLE_ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_CLIENT"));
+        if (role == ROLE.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("CLIENT"));
         } else {
-            return List.of(new SimpleGrantedAuthority("ROLE_CLIENT"));
+            return List.of(new SimpleGrantedAuthority("CLIENT"));
         }
     }
 

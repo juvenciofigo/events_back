@@ -29,8 +29,9 @@ public class AddonPlanEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    
     //////
-  @Column(length = 30)
+    @Column(length = 30)
     private String name;
 
     @Column(length = 45)
@@ -50,7 +51,7 @@ public class AddonPlanEntity {
 
     private Integer level;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "addonPlan")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "addonPlan")
     private List<SubscriptionEntity> subscriptions;
 
     // ///////////

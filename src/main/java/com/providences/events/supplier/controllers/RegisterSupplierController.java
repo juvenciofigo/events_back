@@ -8,7 +8,6 @@ import com.providences.events.shared.dto.ApiResponse;
 import com.providences.events.supplier.dto.RegisterSupplierDTO;
 import com.providences.events.supplier.services.RegisterSupplierService;
 
-import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 
 @RestController
 @RequestMapping("/suppliers")
@@ -29,7 +29,7 @@ public class RegisterSupplierController {
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<RegisterSupplierDTO.Response>> postMethodName(
-            @Valid @RequestBody RegisterSupplierDTO.Request data,
+            @Validated @RequestBody RegisterSupplierDTO.Request data,
             Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();

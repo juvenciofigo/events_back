@@ -8,12 +8,12 @@ import com.providences.events.event.dto.CreateEventDTO;
 import com.providences.events.event.services.CreateEventService;
 import com.providences.events.shared.dto.ApiResponse;
 
-import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -29,7 +29,7 @@ public class CreateEventController {
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<CreateEventDTO.Response>> createEvent(
-            @Valid @RequestBody CreateEventDTO.Request data, Authentication authentication) {
+            @Validated @RequestBody CreateEventDTO.Request data, Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
         String UserIdFromToken = userData.getUserId();

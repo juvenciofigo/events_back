@@ -1,5 +1,9 @@
 package com.providences.events.plans.repositories;
-public interface AddonPlanRepository  {
 
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.providences.events.plans.entities.AddonPlanEntity;
+
+public interface AddonPlanRepository extends JpaRepository<AddonPlanEntity, String> {
+
 }

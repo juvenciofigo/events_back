@@ -6,13 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 
 import com.providences.events.config.JWTUserData;
 import com.providences.events.event.dto.CreateTaskDTO;
 import com.providences.events.event.services.CreateTaskService;
 import com.providences.events.shared.dto.ApiResponse;
-
-import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +28,7 @@ public class CreateTaskController {
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<CreateTaskDTO.Response>> postMethodName(
-            @Valid @RequestBody CreateTaskDTO.Request data, Authentication authentication) {
+            @Validated @RequestBody CreateTaskDTO.Request data, Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
         String UserId = userData.getUserId();
