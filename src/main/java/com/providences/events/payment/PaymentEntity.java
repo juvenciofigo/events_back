@@ -42,15 +42,15 @@ public class PaymentEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "payment_method")
-    private Method payment_method;
+    private PaymentMethod paymentMethod;
 
     @Column(precision = 10, scale = 2)
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Currency currency = Currency.MZN;
-    /* Juvencio figo */
+    private Currency currency;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status = Status.PENDING;
@@ -58,7 +58,7 @@ public class PaymentEntity {
     private String description;
 
     @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = false, name = "update_at")
     private LocalDateTime updatedAt;
@@ -66,43 +66,44 @@ public class PaymentEntity {
     // Payer
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "payer_type")
-    private PayerType payer_type;
+    private PayerType payerType;
 
     @ManyToOne
     @JoinColumn(name = "payer_supplier_id")
-    private SupplierEntity payer_supplier;
+    private SupplierEntity payerSupplier;
 
     @ManyToOne
     @JoinColumn(name = "payer_organizer_id")
-    private OrganizerEntity payer_organizer;
+    private OrganizerEntity payerOrganizer;
 
     @ManyToOne
     @JoinColumn(name = "payer_guest_id")
-    private GuestEntity payer_guest;
+    private GuestEntity payerGuest;
 
     // Receiver
 
     @Column(nullable = false, name = "receiver_type")
     @Enumerated(EnumType.STRING)
-    private ReceiverType receiver_type;
+    private ReceiverType receiverType;
 
     @ManyToOne
     @JoinColumn(name = "receiver_supplier_id")
-    private SupplierEntity receiver_supplier;
+    private SupplierEntity receiverSupplier;
 
     @ManyToOne
     @JoinColumn(name = "receiver_organizer_id")
-    private OrganizerEntity receiver_organizer;
+    private OrganizerEntity receiverOrganizer;
 
     @Column(name = "receiver_platform")
-    private Boolean receiver_platform;
+    private Boolean receiverPlatform;
 
+    // Target
     @Column(nullable = false, name = "payment_target")
     @Enumerated(EnumType.STRING)
     private Target target;
 
     @ManyToOne
-    @JoinColumn(name = "services_id", nullable = false)
+    @JoinColumn(name = "services_id")
     private ServiceEntity service;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -115,12 +116,12 @@ public class PaymentEntity {
 
     // Método para identificar quem fez o pagamento
     public String getPayer() {
-        if (payer_supplier != null) {
-            return "Fornecedor: " + payer_supplier.getCompanyName();
-        } else if (payer_organizer != null) {
-            return "Organizador: " + payer_organizer.getName();
-        } else if (payer_guest != null) {
-            return "Convidado: " + payer_guest.getName();
+        if (payerSupplier != null) {
+            return "Fornecedor: " + payerSupplier.getCompanyName();
+        } else if (payerOrganizer != null) {
+            return "Organizador: " + payerOrganizer.getName();
+        } else if (payerGuest != null) {
+            return "Convidado: " + payerGuest.getName();
         }
         return "Não identificado";
     }
@@ -128,14 +129,15 @@ public class PaymentEntity {
     @PrePersist
     @PreUpdate
     private void validatePayment() {
+        currency = Currency.MZN;
         updatedAt = LocalDateTime.now();
         // Payer
         int payerCount = 0;
-        if (payer_supplier != null)
+        if (payerSupplier != null)
             payerCount++;
-        if (payer_organizer != null)
+        if (payerOrganizer != null)
             payerCount++;
-        if (payer_guest != null)
+        if (payerGuest != null)
             payerCount++;
         if (payerCount > 1)
             throw new IllegalStateException("Um pagamento não pode ter mais de um pagador definido");
@@ -144,11 +146,11 @@ public class PaymentEntity {
 
         // Receiver
         int receiverCount = 0;
-        if (receiver_supplier != null)
+        if (receiverSupplier != null)
             receiverCount++;
-        if (receiver_organizer != null)
+        if (receiverOrganizer != null)
             receiverCount++;
-        if (receiver_platform != null && receiver_platform)
+        if (receiverPlatform != null && receiverPlatform)
             receiverCount++;
         if (receiverCount > 1)
             throw new IllegalStateException("Um pagamento não pode ter mais de um receptor definido");
@@ -158,7 +160,7 @@ public class PaymentEntity {
 
     public enum PayerType {
         ORGANIZER,
-        SUPPLIER_SERVICE,
+        SUPPLIER,
         GUEST
     }
 
@@ -167,7 +169,7 @@ public class PaymentEntity {
 
     }
 
-    public enum Method {
+    public enum PaymentMethod {
         MPESA,
         MKESH,
         EMOLA,
@@ -191,7 +193,7 @@ public class PaymentEntity {
     public enum ReceiverType {
         PLATFORM,
         ORGANIZER,
-        SUPPLIER_SERVICE
+        SUPPLIER
 
     }
 }

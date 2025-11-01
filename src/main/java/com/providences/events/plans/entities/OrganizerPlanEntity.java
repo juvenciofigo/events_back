@@ -1,12 +1,11 @@
 package com.providences.events.plans.entities;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -50,8 +49,8 @@ public class OrganizerPlanEntity {
 
     private Integer level;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "organizerPlan")
-    private List<SubscriptionEntity> subscriptions;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "organizerPlan")
+    private Set<SubscriptionEntity> subscriptions;
 
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")

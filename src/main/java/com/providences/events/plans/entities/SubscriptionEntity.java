@@ -38,17 +38,19 @@ public class SubscriptionEntity {
     private String id;
     //////
 
-    @Column(nullable = false)
-    private LocalDateTime start_date;
+    @Column(nullable = false, name = "start_date")
+    private LocalDateTime startDate;
 
-    @Column(nullable = false)
-    private LocalDateTime end_date;
+    @Column(nullable = false, name = "end_date")
+    private LocalDateTime endDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SubscriptionStatus status;
 
-    private Boolean auto_renew = false;
+    @Column(nullable = false, name = "auto_renew")
+    private Boolean autoRenew = false;
+
     // Relacionamento como pagamentos
     @OneToOne(mappedBy = "subscription", cascade = CascadeType.ALL)
     private PaymentEntity payment;
@@ -90,15 +92,16 @@ public class SubscriptionEntity {
 
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(nullable = false, name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        status= SubscriptionStatus.ACTIVE;
     }
 
     @PreUpdate
@@ -113,13 +116,13 @@ public class SubscriptionEntity {
     }
 
     public enum PlanType {
-        organizer,
-        supplier,
-        addon
+        ORGANIZER,
+        SUPPLIER,
+        ADDON
     }
 
     public enum PayerType {
-        organizer,
-        supplier,
+        ORGANIZER,
+        SUPPLIER,
     }
 }

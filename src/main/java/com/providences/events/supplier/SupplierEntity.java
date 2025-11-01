@@ -67,11 +67,11 @@ public class SupplierEntity {
     private LocalDateTime updatedAt;
 
     // Relecionamento no caso de fazer pagamento
-    @OneToMany(mappedBy = "payer_supplier")
+    @OneToMany(mappedBy = "payerSupplier")
     private List<PaymentEntity> payments;
 
     // Relecionamento no caso de receber pagamento
-    @OneToMany(mappedBy = "receiver_supplier")
+    @OneToMany(mappedBy = "receiverSupplier")
     private List<PaymentEntity> receivers;
 
     // Relecionamento com serviços

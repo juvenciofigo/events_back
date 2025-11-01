@@ -59,10 +59,10 @@ public class OrganizerEntity {
     @Column(nullable = false, name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "payer_organizer")
+    @OneToMany(mappedBy = "payerOrganizer")
     private List<PaymentEntity> payments;
 
-    @OneToMany(mappedBy = "receiver_organizer")
+    @OneToMany(mappedBy = "receiverOrganizer")
     private List<PaymentEntity> receivers;
 
     @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true)

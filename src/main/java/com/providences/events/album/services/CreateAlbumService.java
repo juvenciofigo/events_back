@@ -14,21 +14,17 @@ import com.providences.events.shared.exception.exceptions.ResourceNotFoundExcept
 @Service
 @Transactional
 public class CreateAlbumService {
-    public AlbumRepository albumRepository;
-    public ServiceRepository serviceRepository;
+        public AlbumRepository albumRepository;
+        public ServiceRepository serviceRepository;
 
-    public CreateAlbumService(AlbumRepository albumRepository, ServiceRepository serviceRepository) {
-        this.albumRepository = albumRepository;
-        this.serviceRepository = serviceRepository;
-    }
+        public CreateAlbumService(AlbumRepository albumRepository, ServiceRepository serviceRepository) {
+                this.albumRepository = albumRepository;
+                this.serviceRepository = serviceRepository;
+        }
 
-    public CreateAlbumDTO.Response execute(CreateAlbumDTO.Request data, String userId) {
-        // ServiceEntity service = serviceRepository.findById(data.getServiceId())
-        // .orElseThrow(() -> new ResourceNotFoundException("Serviço nao encontrado"));
+        public CreateAlbumDTO.Response execute(CreateAlbumDTO.Request data, String userId) {
+                ServiceEntity service = serviceRepository.getService(data.getServiceId());
 
-        ServiceEntity service = serviceRepository.getService(data.getServiceId());
-
-        
                 if (service != null) {
 
                         if (!userId.equals(service.getSupplier().getUser().getId())) {
@@ -39,22 +35,21 @@ public class CreateAlbumService {
                         throw new ResourceNotFoundException("Serviço não encontrado!");
                 }
 
+                AlbumEntity album = new AlbumEntity();
+                album.setTitle(data.getTitle());
+                album.setDescription(data.getDescription());
+                album.setService(service);
 
-        AlbumEntity album = new AlbumEntity();
-        album.setTitle(data.getTitle());
-        album.setDescription(data.getDescription());
-        album.setService(service);
+                AlbumEntity savedAlbum = albumRepository.save(album);
 
-        AlbumEntity savedAlbum = albumRepository.save(album);
+                CreateAlbumDTO.Response responseDTO = new CreateAlbumDTO.Response(
+                                savedAlbum.getTitle(),
+                                savedAlbum.getDescription(),
+                                service.getId(),
+                                savedAlbum.getCreatedAt(),
+                                savedAlbum.getUpdatedAt());
 
-        CreateAlbumDTO.Response responseDTO = new CreateAlbumDTO.Response(
-                savedAlbum.getTitle(),
-                savedAlbum.getDescription(),
-                service.getId(),
-                savedAlbum.getCreatedAt(),
-                savedAlbum.getUpdatedAt());
-
-        return responseDTO;
-    }
+                return responseDTO;
+        }
 
 }

@@ -8,6 +8,7 @@ import com.providences.events.shared.exception.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -111,6 +112,22 @@ public class GlobalExceptionHandler {
                 Instant.now(),
                 status.value(),
                 "Acesso negado!",
+                request.getRequestURI());
+        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+    }
+
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    public ResponseEntity<ApiResponse<CustomErrorDTO>> error(InvalidDataAccessApiUsageException e,
+            HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        System.err.println("Erro inesperado: " + e);
+        e.printStackTrace();
+
+        CustomErrorDTO err = new CustomErrorDTO(
+                Instant.now(),
+                status.value(),
+                e.getMessage(),
                 request.getRequestURI());
         return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
     }
