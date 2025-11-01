@@ -61,7 +61,7 @@ public class CreateSubscriptionService {
         this.createPaymentService = createPaymentService;
     }
 
-    public SubscriptionEntity execute(CreateSubscriptionDTO.Request data) {
+    public CreateSubscriptionDTO.Response execute(CreateSubscriptionDTO.Request data) {
 
         SubscriptionEntity subscription = new SubscriptionEntity();
         subscription.setStartDate(LocalDateTime.now());
@@ -142,10 +142,18 @@ public class CreateSubscriptionService {
 
         SubscriptionEntity savedSubscription = subscriptionRepository.save(subscription);
 
-        System.out.println(paymentResponse);
-        System.out.println(savedSubscription);
+        CreateSubscriptionDTO.Response responseDTO = new CreateSubscriptionDTO.Response(
+                savedSubscription.getId(),
+                savedSubscription.getStatus().name(),
+                savedSubscription.getPlanType().name(),
+                savedSubscription.getAutoRenew(),
+                savedSubscription.getStartDate(),
+                savedSubscription.getEndDate(),
+                savedSubscription.getPayerType().name(),
+                savedSubscription.getOrganizer().getId(),
+                CreatePaymentDTO.Response.response(paymentResponse));
 
-        return savedSubscription;
+        return responseDTO;
 
     }
 }

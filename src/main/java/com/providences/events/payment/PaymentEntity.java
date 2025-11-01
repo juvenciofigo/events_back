@@ -26,41 +26,51 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "payments")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @ToString.Include
     private String id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "payment_method")
+    @ToString.Include
     private PaymentMethod paymentMethod;
 
     @Column(precision = 10, scale = 2)
+    @ToString.Include
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @ToString.Include
     private Currency currency;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @ToString.Include
     private Status status = Status.PENDING;
 
+    @ToString.Include
     private String description;
 
     @Column(nullable = false, updatable = false, name = "created_at")
+    @ToString.Include
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = false, name = "update_at")
+    @ToString.Include
     private LocalDateTime updatedAt;
 
     // Payer
@@ -84,6 +94,7 @@ public class PaymentEntity {
 
     @Column(nullable = false, name = "receiver_type")
     @Enumerated(EnumType.STRING)
+    @ToString.Include
     private ReceiverType receiverType;
 
     @ManyToOne
@@ -100,6 +111,7 @@ public class PaymentEntity {
     // Target
     @Column(nullable = false, name = "payment_target")
     @Enumerated(EnumType.STRING)
+    @ToString.Include
     private Target target;
 
     @ManyToOne

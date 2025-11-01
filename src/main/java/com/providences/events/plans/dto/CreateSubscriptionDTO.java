@@ -1,5 +1,9 @@
 package com.providences.events.plans.dto;
 
+import java.time.LocalDateTime;
+
+import com.providences.events.payment.dto.CreatePaymentDTO;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,4 +42,21 @@ public class CreateSubscriptionDTO {
         private String organizerId;
 
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class Response {
+        private String id;
+        private String status;
+        private String planType;
+        private Boolean autoRenew;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
+        private String payerType;
+        private String payerId;
+        private CreatePaymentDTO.Response payment;
+
+    }
+
 }

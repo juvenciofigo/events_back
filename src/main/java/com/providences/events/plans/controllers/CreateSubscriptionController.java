@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.plans.dto.CreateSubscriptionDTO;
-import com.providences.events.plans.entities.SubscriptionEntity;
 import com.providences.events.plans.services.CreateSubscriptionService;
 
 @RestController
@@ -22,7 +21,7 @@ public class CreateSubscriptionController {
 
     @PostMapping("/subscription")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public SubscriptionEntity execute(@Validated @RequestBody CreateSubscriptionDTO.Request data) {
+    public CreateSubscriptionDTO.Response execute(@Validated @RequestBody CreateSubscriptionDTO.Request data) {
         return createSubscriptionService.execute(data);
     }
 }

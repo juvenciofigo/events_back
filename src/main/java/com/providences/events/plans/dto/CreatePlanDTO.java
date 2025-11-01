@@ -16,7 +16,7 @@ public class CreatePlanDTO {
 
         @NotBlank(message = "Informe o nome do plano")
         private String name;
-        
+
         private String description;
 
         private String resources;
@@ -27,9 +27,9 @@ public class CreatePlanDTO {
         private Double priceYearly;
 
         private String features;
-        
+
         private Integer level;
-        
+
         @NotBlank(message = "Informe o tipo de plano")
         private String planType;
     }
@@ -48,5 +48,5 @@ public class CreatePlanDTO {
         private String features;
         private Integer level;
     }
-    
+
 }
