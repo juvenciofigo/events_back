@@ -1,23 +1,50 @@
 package com.providences.events.payment.services;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fc.sdk.APIResponse;
+import com.providences.events.config.MpesaService;
 import com.providences.events.payment.PaymentEntity;
 import com.providences.events.payment.PaymentRepository;
 import com.providences.events.payment.PaymentEntity.PaymentMethod;
+import com.providences.events.payment.PaymentReferenceEntity;
 import com.providences.events.payment.dto.CreatePaymentDTO;
+import com.providences.events.shared.exception.exceptions.MpesaPaymentException;
 
 @Service
 @Transactional
 public class CreatePaymentService {
     private final PaymentRepository paymentRepository;
 
-    public CreatePaymentService(PaymentRepository paymentRepository) {
+    // Mpesa
+    private final MpesaService mpesaService;
+
+    //
+    private final PaymentReferenceRepository paymentReferenceRepository;
+
+    public CreatePaymentService(PaymentRepository paymentRepository, MpesaService mpesaService,
+            PaymentReferenceRepository paymentReferenceRepository) {
         this.paymentRepository = paymentRepository;
+        this.mpesaService = mpesaService;
+        this.paymentReferenceRepository = paymentReferenceRepository;
     }
 
-    public PaymentEntity execute(CreatePaymentDTO.Request data) {
+    private static String generateThirdPartyReference() {
+        String uuid = UUID.randomUUID().toString().replaceAll("[^A-Za-z0-9]", "");
+        String ref = "REF" + uuid.substring(0, 8);
+        return ref.toUpperCase();
+    }
+
+    private static String generateTransactionReference() {
+        String uuid = UUID.randomUUID().toString().replaceAll("[^A-Za-z0-9]", "");
+        String ref = "TXN" + uuid.substring(0, 13);
+        return ref.toUpperCase();
+    }
+
+    public CreatePaymentDTO.Response execute(CreatePaymentDTO.Request data) {
 
         PaymentEntity payment = new PaymentEntity();
 
@@ -41,7 +68,36 @@ public class CreatePaymentService {
         payment.setSubscription(data.getSubscription());
         payment.setTicket(data.getTicket());
 
-        return paymentRepository.save(payment);
+        String transactionRef = generateTransactionReference();
+        String thirdPartyRef = generateThirdPartyReference();
 
+        APIResponse responseMpesa = mpesaService.executePayment(transactionRef, thirdPartyRef, data.customerNum);
+
+        if (responseMpesa == null) {
+            throw new MpesaPaymentException(400);
+        }
+
+        if (responseMpesa.getStatusCode() != 200 && responseMpesa.getStatusCode() != 201) {
+            throw new MpesaPaymentException(responseMpesa.getStatusCode());
+
+        }
+
+        PaymentEntity createdPayment = paymentRepository.save(payment);
+
+        // Armazenar referencia do pagamento
+        PaymentReferenceEntity reference = new PaymentReferenceEntity();
+        reference.setTransactionReference(transactionRef);
+        reference.setThirdPartyReference(thirdPartyRef);
+        reference.setGatewayResponse(responseMpesa.getResult());
+        reference.setPayment(payment);
+        paymentReferenceRepository.save(reference);
+
+        return new CreatePaymentDTO.Response(
+                createdPayment.getId(),
+                createdPayment.getStatus().name(),
+                createdPayment.getAmount(),
+                createdPayment.getCurrency().name(),
+                createdPayment.getPaymentMethod().name(),
+                createdPayment.getCreatedAt());
     }
 }

@@ -16,30 +16,32 @@ public class CreateSubscriptionDTO {
     @AllArgsConstructor
     public static class Request {
 
-        private String paymentMethod;
+        public String paymentMethod;
+        @NotBlank(message = "Informe numemero para cobrar o pagamento!")
+        public String customerNum;
 
         // plano a ser pago
         ///////////// Begin which ones plan pay
 
         @NotBlank(message = "Indique o tipo de plano")
-        private String planType;
+        public String planType;
 
-        private String supplierPlanId;
+        public String supplierPlanId;
 
-        private String addonPlanId;
+        public String addonPlanId;
 
-        private String organizerPlanId;
+        public String organizerPlanId;
 
         ////////// End which ones plan pay
 
         @NotBlank(message = "Indique o tipo o pagador")
-        private String payerType;
+        public String payerType;
 
         // `relacionamento como provedor de serviços,
-        private String supplierId;
+        public String supplierId;
 
         // ralacionamento com organizador
-        private String organizerId;
+        public String organizerId;
 
     }
 
@@ -47,15 +49,15 @@ public class CreateSubscriptionDTO {
     @Setter
     @AllArgsConstructor
     public static class Response {
-        private String id;
-        private String status;
-        private String planType;
-        private Boolean autoRenew;
-        private LocalDateTime startDate;
-        private LocalDateTime endDate;
-        private String payerType;
-        private String payerId;
-        private CreatePaymentDTO.Response payment;
+        public String id;
+        public String status;
+        public String planType;
+        public Boolean autoRenew;
+        public LocalDateTime startDate;
+        public LocalDateTime endDate;
+        public String payerType;
+        public String payerId;
+        public CreatePaymentDTO.Response payment;
 
     }
 

@@ -29,46 +29,49 @@ public class CreatePaymentDTO {
     @Setter
     public static class Request {
         @NotBlank(message = "Informe o metodo de pagamento!")
-        private String paymentMethod;
+        public String paymentMethod;
+
+        @NotBlank(message = "Informe numemero para cobrar o pagamento!")
+        public String customerNum;
 
         @NotBlank(message = "Informe o valor de pagamento!")
         @Positive(message = "O valor do pagamento precisa ser maior que zero!")
-        private BigDecimal amount;
+        public BigDecimal amount;
 
-        private String description;
+        public String description;
 
-        private Currency currency;
+        public Currency currency;
 
         // Payer
         @NotBlank(message = "Infome quem faz o pagamento!")
-        private PayerType payerType;
+        public PayerType payerType;
 
-        private SupplierEntity payerSupplier;
+        public SupplierEntity payerSupplier;
 
-        private OrganizerEntity payerOrganizer;
+        public OrganizerEntity payerOrganizer;
 
-        private GuestEntity payerGuest;
+        public GuestEntity payerGuest;
 
         // Receiver
 
         @NotBlank(message = "Infome quem para quem vai o pagamento!")
-        private ReceiverType receiverType;
+        public ReceiverType receiverType;
 
-        private SupplierEntity receiverSupplier;
+        public SupplierEntity receiverSupplier;
 
-        private OrganizerEntity receiverOrganizer;
+        public OrganizerEntity receiverOrganizer;
 
-        private Boolean receiverPlatform;
+        public Boolean receiverPlatform;
 
         // Target
         @NotBlank(message = "Informe quem recebe o pagamento")
-        private Target target;
+        public Target target;
 
-        private ServiceEntity service;
+        public ServiceEntity service;
 
-        private SubscriptionEntity subscription;
+        public SubscriptionEntity subscription;
 
-        private TicketEntity ticket;
+        public TicketEntity ticket;
 
     }
 
@@ -76,22 +79,13 @@ public class CreatePaymentDTO {
     @Setter
     @AllArgsConstructor
     public static class Response {
-        private String id;
-        private String status;
+        public String id;
+        public String status;
 
-        private BigDecimal amount;
-        private String currency;
-        private String paymentMethod;
-        private LocalDateTime createdAt;
+        public BigDecimal amount;
+        public String currency;
+        public String paymentMethod;
+        public LocalDateTime createdAt;
 
-        public static CreatePaymentDTO.Response response(PaymentEntity paymentEntity) {
-            return new CreatePaymentDTO.Response(
-                    paymentEntity.getId(),
-                    paymentEntity.getStatus().name(),
-                    paymentEntity.getAmount(),
-                    paymentEntity.getCurrency().name(),
-                    paymentEntity.getPaymentMethod().name(),
-                    paymentEntity.getCreatedAt());
-        }
     }
 }

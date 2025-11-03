@@ -78,7 +78,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> unauthorized(UsernameNotFoundException e, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<CustomErrorDTO>> unauthorized(UsernameNotFoundException e,
+            HttpServletRequest request) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         CustomErrorDTO err = new CustomErrorDTO(
                 Instant.now(),
@@ -128,6 +129,38 @@ public class GlobalExceptionHandler {
                 Instant.now(),
                 status.value(),
                 e.getMessage(),
+                request.getRequestURI());
+        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+    }
+
+    @ExceptionHandler(MpesaPaymentException.class)
+    public ResponseEntity<ApiResponse<CustomErrorDTO>> mpesa(MpesaPaymentException e,
+            HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        System.err.println("Erro inesperado: " + e);
+        e.printStackTrace();
+
+        String message = "";
+
+        switch (e.getStatusCode()) {
+            case 422:
+                message = "Saldo insuficiemte";
+                break;
+            case 408:
+                message = "Tempo limite da requisição excedido";
+                status = HttpStatus.REQUEST_TIMEOUT;
+                break;
+
+            default:
+                message = "Falha no pagamento via M-Pesa.";
+                break;
+        }
+
+        CustomErrorDTO err = new CustomErrorDTO(
+                Instant.now(),
+                status.value(),
+                message,
                 request.getRequestURI());
         return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
     }

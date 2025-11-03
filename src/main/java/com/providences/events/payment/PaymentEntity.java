@@ -10,6 +10,7 @@ import com.providences.events.services.ServiceEntity;
 import com.providences.events.supplier.SupplierEntity;
 import com.providences.events.ticket.TicketEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,7 +26,6 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -125,6 +125,9 @@ public class PaymentEntity {
     @OneToOne
     @JoinColumn(name = "ticket_id")
     private TicketEntity ticket;
+
+    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
+    private PaymentReferenceEntity reference;
 
     // Método para identificar quem fez o pagamento
     public String getPayer() {
