@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.organizer.OrganizerEntity;
-import com.providences.events.payment.PaymentEntity;
 import com.providences.events.payment.PaymentEntity.Currency;
 import com.providences.events.payment.PaymentEntity.PayerType;
 import com.providences.events.payment.PaymentEntity.ReceiverType;
@@ -13,7 +12,7 @@ import com.providences.events.payment.PaymentEntity.Target;
 import com.providences.events.plans.entities.SubscriptionEntity;
 import com.providences.events.services.ServiceEntity;
 import com.providences.events.supplier.SupplierEntity;
-import com.providences.events.ticket.TicketEntity;
+import com.providences.events.ticket.entities.TicketEntity;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -32,7 +31,7 @@ public class CreatePaymentDTO {
         public String paymentMethod;
 
         @NotBlank(message = "Informe numemero para cobrar o pagamento!")
-        public String customerNum;
+        public String payerNum;
 
         @NotBlank(message = "Informe o valor de pagamento!")
         @Positive(message = "O valor do pagamento precisa ser maior que zero!")

@@ -1,4 +1,4 @@
-package com.providences.events.ticket;
+package com.providences.events.ticket.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

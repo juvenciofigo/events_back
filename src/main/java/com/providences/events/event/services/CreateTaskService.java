@@ -25,16 +25,14 @@ public class CreateTaskService {
     public CreateTaskDTO.Response execute(CreateTaskDTO.Request data, String userId) {
         EventEntity event = eventRepository.getEventById(data.getEventId());
 
-        if (event != null) {
+        if (event == null) {
 
-            if (!event.getOrganizer().getUser().getId().equals(userId)) {
-                throw new ForbiddenException("Sem permissão!");
-            }
-            System.out.println("segindo");
-        } else {
             throw new ResourceNotFoundException("Evento não encontrado!");
         }
 
+        if (!event.getOrganizer().getUser().getId().equals(userId)) {
+            throw new ForbiddenException("Sem permissão!");
+        }
         TaskEntity task = new TaskEntity();
         task.setResponsibleName(data.getResponsibleName());
         task.setResponsiblePhone(data.getResponsiblePhone());

@@ -71,7 +71,7 @@ public class CreatePaymentService {
         String transactionRef = generateTransactionReference();
         String thirdPartyRef = generateThirdPartyReference();
 
-        APIResponse responseMpesa = mpesaService.executePayment(transactionRef, thirdPartyRef, data.customerNum);
+        APIResponse responseMpesa = mpesaService.executePayment(transactionRef, thirdPartyRef, data.payerNum);
 
         if (responseMpesa == null) {
             throw new MpesaPaymentException(400);

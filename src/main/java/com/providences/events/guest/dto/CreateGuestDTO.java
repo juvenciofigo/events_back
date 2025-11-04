@@ -1,8 +1,9 @@
 package com.providences.events.guest.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.providences.events.ticket.TicketEntity;
+import com.providences.events.ticket.entities.TicketEntity;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -40,6 +41,13 @@ public class CreateGuestDTO {
         private String notes;
 
         private String seat;
+
+        // pagamento
+        @NotNull(message = "Informe se o convite é paga ou nao")
+        public Boolean isPayd;
+        public String payerNum;
+        private BigDecimal pricePaid;
+        public String paymentMethod;
 
     }
 

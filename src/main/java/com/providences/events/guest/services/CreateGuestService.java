@@ -10,7 +10,7 @@ import com.providences.events.guest.GuestRepository;
 import com.providences.events.guest.dto.CreateGuestDTO;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
 import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
-import com.providences.events.ticket.TicketEntity;
+import com.providences.events.ticket.entities.TicketEntity;
 import com.providences.events.ticket.services.CreateTicketService;
 
 @Service
@@ -29,26 +29,25 @@ public class CreateGuestService {
 
         public CreateGuestDTO.Response execute(CreateGuestDTO.Request data, String userId) {
 
+                // buscar evento
                 EventEntity event = eventRepository.getEventById(data.getEventId());
 
-                if (event != null) {
-
-                        if (!event.getOrganizer().getUser().getId().equals(userId)) {
-                                throw new ForbiddenException("Sem permissão!");
-                        }
-                        System.out.println("segindo");
-                } else {
+                if (event == null) {
                         throw new ResourceNotFoundException("Evento não encontrado!");
                 }
+                if (!event.getOrganizer().getUser().getId().equals(userId)) {
+                        throw new ForbiddenException("Sem permissão!");
+                }
 
-                TicketEntity ticket = createTicketService.execute(event, data);
+                GuestEntity guest = new GuestEntity();
 
-                GuestEntity guest = GuestEntity.builder()
-                                .name(data.getName())
-                                .email(data.getEmail())
-                                .phone(data.getPhone())
-                                .ticket(ticket)
-                                .build();
+                // Criar convite
+                TicketEntity ticket = createTicketService.execute(event, data, guest);
+
+                guest.setName(data.getName());
+                guest.setEmail(data.getEmail());
+                guest.setPhone(data.getPhone());
+                guest.setTicket(ticket);
 
                 GuestEntity savedGuest = guestRepository.save(guest);
 

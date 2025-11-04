@@ -7,7 +7,7 @@ import java.util.List;
 import com.providences.events.interaction.entities.ChatEntity;
 import com.providences.events.location.LocationEntity;
 import com.providences.events.organizer.OrganizerEntity;
-import com.providences.events.ticket.TicketEntity;
+import com.providences.events.ticket.entities.TicketEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -106,6 +106,10 @@ public class EventEntity {
     // relacionamento como chats
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatEntity> chats;
+
+    // relacionamento como tipos de convites
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SeatsEntity> seats;
 
     // ///////////
     @PrePersist

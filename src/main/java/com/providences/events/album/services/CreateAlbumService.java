@@ -25,14 +25,13 @@ public class CreateAlbumService {
         public CreateAlbumDTO.Response execute(CreateAlbumDTO.Request data, String userId) {
                 ServiceEntity service = serviceRepository.getService(data.getServiceId());
 
-                if (service != null) {
+                if (service == null) {
 
-                        if (!userId.equals(service.getSupplier().getUser().getId())) {
-                                throw new ForbiddenException("Sem permissão!");
-                        }
-                        System.out.println("segindo");
-                } else {
                         throw new ResourceNotFoundException("Serviço não encontrado!");
+                }
+
+                if (!userId.equals(service.getSupplier().getUser().getId())) {
+                        throw new ForbiddenException("Sem permissão!");
                 }
 
                 AlbumEntity album = new AlbumEntity();

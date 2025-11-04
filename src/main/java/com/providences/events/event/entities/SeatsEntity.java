@@ -1,21 +1,14 @@
-package com.providences.events.guest;
+package com.providences.events.event.entities;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import com.providences.events.interaction.entities.ParticipantChatEntity;
-import com.providences.events.ticket.entities.TicketEntity;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -26,11 +19,12 @@ import lombok.ToString;
 
 @Entity
 @ToString(onlyExplicitlyIncluded = true)
-@Table(name = "guests")
+@Table(name = "seats")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GuestEntity {
+public class SeatsEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -38,26 +32,27 @@ public class GuestEntity {
     @Column(nullable = false)
     private String name;
 
-    private String email;
+    private String description;
 
-    @Column(nullable = false)
-    private String phone;
+    @Column(name = "total_seats")
+    private Integer totalSeats;
 
-    @OneToOne
-    @JoinColumn(name = "ticket_id")
-    private TicketEntity ticket;
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false)
+    private EventEntity event;
 
-    @Column(nullable = false, updatable = false, name = "created_at")
+    @Column(name = "layout_position_x")
+    private Double layoutPositionX;
+
+    @Column(name = "layout_position_y")
+    private Double layoutPositionY;
+
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false, name = "updated_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // relacionameto com participacoes em conversas
-    @OneToMany(mappedBy = "guests", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ParticipantChatEntity> participantChat;
-
-    // ///////////
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -68,5 +63,4 @@ public class GuestEntity {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
 }

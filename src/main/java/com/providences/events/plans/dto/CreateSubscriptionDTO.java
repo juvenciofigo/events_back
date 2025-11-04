@@ -17,8 +17,9 @@ public class CreateSubscriptionDTO {
     public static class Request {
 
         public String paymentMethod;
+
         @NotBlank(message = "Informe numemero para cobrar o pagamento!")
-        public String customerNum;
+        public String payerNum;
 
         // plano a ser pago
         ///////////// Begin which ones plan pay
@@ -37,10 +38,8 @@ public class CreateSubscriptionDTO {
         @NotBlank(message = "Indique o tipo o pagador")
         public String payerType;
 
-        // `relacionamento como provedor de serviços,
         public String supplierId;
 
-        // ralacionamento com organizador
         public String organizerId;
 
     }

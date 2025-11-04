@@ -151,6 +151,10 @@ public class GlobalExceptionHandler {
                 message = "Tempo limite da requisição excedido";
                 status = HttpStatus.REQUEST_TIMEOUT;
                 break;
+            case 500:
+                message = "Serviço temporariamente indisponível. Tente novamente em alguns minutos.";
+                status = HttpStatus.REQUEST_TIMEOUT;
+                break;
 
             default:
                 message = "Falha no pagamento via M-Pesa.";

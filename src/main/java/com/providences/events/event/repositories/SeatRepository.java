@@ -3,9 +3,8 @@ package com.providences.events.event.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.providences.events.event.entities.ServicesHasEventEntity;
+import com.providences.events.event.entities.SeatsEntity;
 
 @Repository
-public interface ServicesHasEventRepository extends JpaRepository<ServicesHasEventEntity, String> {
-
+public interface SeatRepository extends JpaRepository<SeatsEntity, String> {
 }

@@ -8,7 +8,7 @@ import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.plans.entities.SubscriptionEntity;
 import com.providences.events.services.ServiceEntity;
 import com.providences.events.supplier.SupplierEntity;
-import com.providences.events.ticket.TicketEntity;
+import com.providences.events.ticket.entities.TicketEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

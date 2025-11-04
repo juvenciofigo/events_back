@@ -71,8 +71,7 @@ public class CreateSubscriptionService {
                 paymentData.setReceiverPlatform(true);
                 paymentData.setTarget(Target.SUBSCRIPTION);
                 paymentData.setPaymentMethod(data.getPaymentMethod());
-                paymentData.setCustomerNum(data.getCustomerNum());
-                ;
+                paymentData.setPayerNum(data.getPayerNum());
 
                 // Begin Who will pay
 
@@ -132,7 +131,6 @@ public class CreateSubscriptionService {
                 paymentData.setSubscription(subscription);
 
                 CreatePaymentDTO.Response paymentResponse = createPaymentService.execute(paymentData);
-                System.out.println("Mostrar nservice na subscricao" + paymentResponse);
 
                 SubscriptionEntity savedSubscription = subscriptionRepository.save(subscription);
 
