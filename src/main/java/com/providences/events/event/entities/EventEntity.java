@@ -109,7 +109,7 @@ public class EventEntity {
 
     // relacionamento como tipos de convites
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SeatsEntity> seats;
+    private List<SeatEntity> seats;
 
     // ///////////
     @PrePersist

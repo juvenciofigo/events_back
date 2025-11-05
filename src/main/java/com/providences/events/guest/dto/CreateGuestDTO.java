@@ -1,10 +1,6 @@
 package com.providences.events.guest.dto;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-import com.providences.events.ticket.entities.TicketEntity;
-
+import com.providences.events.ticket.dto.CreateTicketDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -40,13 +36,10 @@ public class CreateGuestDTO {
 
         private String notes;
 
-        private String seat;
+        private String seatId;
 
         // pagamento
-        @NotNull(message = "Informe se o convite é paga ou nao")
-        public Boolean isPayd;
         public String payerNum;
-        private BigDecimal pricePaid;
         public String paymentMethod;
 
     }
@@ -59,13 +52,6 @@ public class CreateGuestDTO {
         private String name;
         private String email;
         private String phone;
-        private String code;
-        private Integer totalPeople;
-        private String notes;
-        private LocalDateTime sentAt;
-        private LocalDateTime respondedAt;
-        private String seat;
-        private TicketEntity.Status status;
-
+        private CreateTicketDTO.Response ticket;
     }
 }

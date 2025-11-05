@@ -1,11 +1,14 @@
 package com.providences.events.event.dto;
 
+import java.math.BigDecimal;
+
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class CreataSeatsDTO {
+public class CreataSeatDTO {
 
     @Data
     @NoArgsConstructor
@@ -17,11 +20,16 @@ public class CreataSeatsDTO {
 
         private String description;
 
-        @NotBlank(message = "Infome o número de lugares dispoíveis")
+        @NotNull(message = "Infome o número de lugares dispoíveis")
         private Integer totalSeats;
 
         @NotBlank(message = "Infome o evento")
         private String eventId;
+
+        @NotNull(message = "Informe se o assento é pago")
+        private Boolean isPaid;
+
+        private BigDecimal price;
 
         private Double layoutPositionX;
         private Double layoutPositionY;
@@ -38,6 +46,8 @@ public class CreataSeatsDTO {
         private String description;
 
         private Integer totalSeats;
+
+        private Integer availableSeats;
 
         private Double layoutPositionX;
 

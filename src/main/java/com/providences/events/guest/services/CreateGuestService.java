@@ -3,6 +3,7 @@ package com.providences.events.guest.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.providences.events.event.dto.CreataSeatDTO;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.repositories.EventRepository;
 import com.providences.events.guest.GuestEntity;
@@ -10,6 +11,7 @@ import com.providences.events.guest.GuestRepository;
 import com.providences.events.guest.dto.CreateGuestDTO;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
 import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
+import com.providences.events.ticket.dto.CreateTicketDTO;
 import com.providences.events.ticket.entities.TicketEntity;
 import com.providences.events.ticket.services.CreateTicketService;
 
@@ -40,30 +42,41 @@ public class CreateGuestService {
                 }
 
                 GuestEntity guest = new GuestEntity();
-
-                // Criar convite
-                TicketEntity ticket = createTicketService.execute(event, data, guest);
-
                 guest.setName(data.getName());
                 guest.setEmail(data.getEmail());
                 guest.setPhone(data.getPhone());
+
+                // Criar convite
+                TicketEntity ticket = createTicketService.execute(event, data, guest);
                 guest.setTicket(ticket);
 
+                // Gravar informacoes do ticket
                 GuestEntity savedGuest = guestRepository.save(guest);
 
-                CreateGuestDTO.Response responseDTO = new CreateGuestDTO.Response(
+                CreataSeatDTO.Response responseSeat = new CreataSeatDTO.Response(ticket.getSeat().getId(),
+                                ticket.getSeat().getName(),
+                                ticket.getSeat().getDescription(),
+                                ticket.getSeat().getTotalSeats(),
+                                ticket.getSeat().getAvailableSeats(),
+                                ticket.getSeat().getLayoutPositionX(),
+                                ticket.getSeat().getLayoutPositionY());
+
+                CreateTicketDTO.Response responseTicket = new CreateTicketDTO.Response(ticket.getCode(),
+                                ticket.getTotalPeople(),
+                                ticket.getNotes(),
+                                ticket.getStatus(),
+                                ticket.getSentAt(),
+                                ticket.getRespondedAt(),
+                                responseSeat);
+
+                CreateGuestDTO.Response responseGuest = new CreateGuestDTO.Response(
                                 savedGuest.getId(),
                                 savedGuest.getName(),
                                 savedGuest.getEmail(),
                                 savedGuest.getPhone(),
-                                ticket.getCode(),
-                                ticket.getTotalPeople(),
-                                ticket.getNotes(),
-                                ticket.getSentAt(),
-                                ticket.getRespondedAt(),
-                                ticket.getSeat(),
-                                ticket.getStatus());
+                                responseTicket);
+                // ticket.getSeat(),
 
-                return responseDTO;
+                return responseGuest;
         }
 }

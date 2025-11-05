@@ -3,13 +3,12 @@ package com.providences.events.payment;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.plans.entities.SubscriptionEntity;
 import com.providences.events.services.ServiceEntity;
 import com.providences.events.supplier.SupplierEntity;
-import com.providences.events.ticket.entities.TicketEntity;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -122,9 +121,9 @@ public class PaymentEntity {
     @JoinColumn(name = "subscription_id")
     private SubscriptionEntity subscription;
 
-    @OneToOne
-    @JoinColumn(name = "ticket_id")
-    private TicketEntity ticket;
+    @ManyToOne
+    @JoinColumn(name = "seat_id")
+    private SeatEntity seat;
 
     @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
     private PaymentReferenceEntity reference;
@@ -202,7 +201,7 @@ public class PaymentEntity {
     public enum Target {
         SUBSCRIPTION,
         SERVICE,
-        TICKET
+        SEAT
     }
 
     public enum ReceiverType {

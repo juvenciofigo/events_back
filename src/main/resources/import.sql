@@ -18,17 +18,21 @@ INSERT INTO services (id, supplier_id,category,description, price_base,created_a
 -- Event
 INSERT INTO events (id,budget_estimated,budget_spent,cover_image,created_at,date_end,date_start,description,estimated_guest,event_status,is_public,organizer_id,title,type,updated_at) VALUES ('fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c',150000.00,0.00,'https://example.com/imagem-casamento.jpg','2025-10-28 20:00:00','2025-12-20 22:00:00', '2025-12-20 15:00:00', 'Casamento luxuoso na praia de Maputo', 200, 'PLANNED',TRUE,'2bff41a2-eaad-485e-84fa-ddc1660f6965', 'Casamento João & Maria', 'Casamento', '2025-10-28 20:00:00');
 
--- Ticket
-INSERT INTO tickets (code, created_at, event_id, notes, price_paid, responded_at, seat, send_at, status, total_people, updated_at, id) VALUES ('013e1843-1154-40a3-9cba-d4a818f18519', '2025-10-29 23:20:22.145442', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'notas do ticket',0.00, null, 'Mesa x', '2025-10-29 23:20:22.145442', 'PENDING', 2,'2025-10-29 23:20:22.145442', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d')
+-- Seats
+INSERT INTO seats (created_at, description, event_id, layout_position_x, layout_position_y, name, total_seats, updated_at, id, is_paid, price, available_seats) VALUES ('2025-11-05 00:02:36.834399	', 'Descricao do assento', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', null, null, 'Mesa x', 10, '2025-11-05 00:02:36.834399', 'ed961e6d-0f99-45a0-be9a-4c87a6c80af7', true, 200,10);
 
+-- Ticket
+INSERT INTO tickets (code, created_at, event_id, notes, price_paid, responded_at, send_at, status, total_people, updated_at, id, seat_id) VALUES ('013e1843-1154-40a3-9cba-d4a818f18519', '2025-10-29 23:20:22.145442', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'notas do ticket',0.00, null, '2025-10-29 23:20:22.145442', 'PENDING', 2,'2025-10-29 23:20:22.145442', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', 'ed961e6d-0f99-45a0-be9a-4c87a6c80af7');
 -- Gests
-INSERT INTO guests (created_at, email, name, phone, ticket_id, updated_at, id) VALUES ('2025-10-29 23:20:22.159661', 'juvenciofigo@gmail.com', 'juvenciofigo@gmail.com', 'juvenciofigo@gmail.com', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', '2025-10-29 23:20:22.159661', '2025-10-29 23:20:22.159661')
+-- INSERT INTO guests (created_at, email, name, phone, ticket_id, updated_at, id) VALUES ('2025-10-29 23:20:22.159661', 'juvenciofigo@gmail.com', 'juvenciofigo@gmail.com', 'juvenciofigo@gmail.com', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', '2025-10-29 23:20:22.159661', '2025-10-29 23:20:22.159661')
 
 -- Album
  INSERT INTO albums (created_at, description, service_id, title, updated_at, id) VALUES ('2025-10-30 02:35:51.156768', 'Descricao do algum', 'ce6f991a-2343-49b3-aa06-a27c9f9183dc', 'Título do album', '2025-10-30 02:35:51.156768', '341c9554-9dd5-478b-a11e-36c6a92887d9')
 
 -- Organizer plan
 INSERT INTO organizer_plans (created_at, description, features, level, name, price_monthly, price_yearly, resources, updated_at, id) VALUES ('2025-10-30 18:49:04.672495', 'Acesso completo a todas as funcionalidades','{"maxEvents": "ilimitado", "analytics": true}', 3, 'Plano Premium', 199.99, 1999.0, 'Eventos ilimitados, suporte 24h','2025-10-30 18:49:04.672495','7c7cf4b1-0cd0-4b9e-ae26-22f0c96be8f5');
+
+
 
 -- ServiceEntity(id=, supplier=SupplierEntity(), category=hfgh, description=null, priceBase=10.0, unavailability=null, createdAt=2025-10-28T02:09:44.399494900, updatedAt=2025-10-28T02:09:44.399494900, payments=null, albums=null, servicesHasEvent=null, reviews=null)
 

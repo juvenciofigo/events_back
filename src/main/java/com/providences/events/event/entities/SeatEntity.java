@@ -1,7 +1,13 @@
 package com.providences.events.event.entities;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import com.providences.events.payment.PaymentEntity;
+import com.providences.events.ticket.entities.TicketEntity;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,21 +15,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "seats")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SeatsEntity {
+public class SeatEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,9 +46,19 @@ public class SeatsEntity {
     @Column(name = "total_seats")
     private Integer totalSeats;
 
+    @Column(nullable = false, name = "is_paid")
+    private Boolean isPaid;
+
+    @PositiveOrZero
+    @Column(precision = 10, scale = 2, name = "price")
+    private BigDecimal price = BigDecimal.ZERO;
+
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private EventEntity event;
+
+    @Column(name = "available_seats")
+    private Integer availableSeats;
 
     @Column(name = "layout_position_x")
     private Double layoutPositionX;
@@ -53,14 +72,30 @@ public class SeatsEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "seat")
+    private List<TicketEntity> tickets;
+
+    @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PaymentEntity> payment;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+
     }
 
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    @Override
+    public String toString() {
+        return "SeatEntity [id=" + id + ", name=" + name + ", description=" + description + ", totalSeats=" + totalSeats
+                + ", availableSeats=" + availableSeats + ", layoutPositionX=" + layoutPositionX + ", layoutPositionY="
+                + layoutPositionY + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", tickets=" + tickets
+                + "]";
+    }
+
 }

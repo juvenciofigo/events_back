@@ -3,6 +3,7 @@ package com.providences.events.payment.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.payment.PaymentEntity.Currency;
@@ -12,10 +13,10 @@ import com.providences.events.payment.PaymentEntity.Target;
 import com.providences.events.plans.entities.SubscriptionEntity;
 import com.providences.events.services.ServiceEntity;
 import com.providences.events.supplier.SupplierEntity;
-import com.providences.events.ticket.entities.TicketEntity;
-
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,10 +31,11 @@ public class CreatePaymentDTO {
         @NotBlank(message = "Informe o metodo de pagamento!")
         public String paymentMethod;
 
-        @NotBlank(message = "Informe numemero para cobrar o pagamento!")
+        @NotBlank(message = "Informe numero para cobrar o pagamento!")
+        @Size(max = 9, min = 9,message = "O nomero deve conter 9 digitos")
         public String payerNum;
 
-        @NotBlank(message = "Informe o valor de pagamento!")
+        @NotNull(message = "Informe o valor de pagamento!")
         @Positive(message = "O valor do pagamento precisa ser maior que zero!")
         public BigDecimal amount;
 
@@ -42,7 +44,7 @@ public class CreatePaymentDTO {
         public Currency currency;
 
         // Payer
-        @NotBlank(message = "Infome quem faz o pagamento!")
+        @NotNull(message = "Infome quem faz o pagamento!")
         public PayerType payerType;
 
         public SupplierEntity payerSupplier;
@@ -53,7 +55,7 @@ public class CreatePaymentDTO {
 
         // Receiver
 
-        @NotBlank(message = "Infome quem para quem vai o pagamento!")
+        @NotNull(message = "Infome quem para quem vai o pagamento!")
         public ReceiverType receiverType;
 
         public SupplierEntity receiverSupplier;
@@ -63,14 +65,14 @@ public class CreatePaymentDTO {
         public Boolean receiverPlatform;
 
         // Target
-        @NotBlank(message = "Informe quem recebe o pagamento")
+        @NotNull(message = "Informe quem recebe o pagamento")
         public Target target;
 
         public ServiceEntity service;
 
         public SubscriptionEntity subscription;
 
-        public TicketEntity ticket;
+        public SeatEntity seat;
 
     }
 

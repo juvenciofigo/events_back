@@ -6,6 +6,7 @@ import com.providences.events.shared.dto.ValidationErrorDTO;
 import com.providences.events.shared.exception.exceptions.*;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -44,6 +48,33 @@ public class GlobalExceptionHandler {
                 Instant.now(),
                 status.value(),
                 e.getMessage(),
+                request.getRequestURI());
+        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ApiResponse<CustomErrorDTO>> error(BusinessException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.NOT_ACCEPTABLE;
+        CustomErrorDTO err = new CustomErrorDTO(
+                Instant.now(),
+                status.value(),
+                e.getMessage(),
+                request.getRequestURI());
+        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiResponse<CustomErrorDTO>> error(ConstraintViolationException e,
+            HttpServletRequest request) {
+        HttpStatus status = HttpStatus.NOT_ACCEPTABLE;
+        List<String> messages = new ArrayList<>();
+
+        messages = Arrays.asList(e.getMessage().split(":"));
+
+        CustomErrorDTO err = new CustomErrorDTO(
+                Instant.now(),
+                status.value(),
+                messages.get(1),
                 request.getRequestURI());
         return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
     }

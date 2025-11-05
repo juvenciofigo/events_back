@@ -1,12 +1,10 @@
 package com.providences.events.ticket.entities;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.providences.events.event.entities.EventEntity;
+import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.guest.GuestEntity;
-import com.providences.events.payment.PaymentEntity;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +19,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -60,11 +57,9 @@ public class TicketEntity {
 
     private String notes;
 
-    private String seat;
-
-    @PositiveOrZero
-    @Column(precision = 10, scale = 2, name = "price_paid")
-    private BigDecimal pricePaid = BigDecimal.ZERO;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "seat_id")
+    private SeatEntity seat;
 
     @Column(nullable = false, updatable = false, name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -75,8 +70,7 @@ public class TicketEntity {
     @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     private GuestEntity guest;
 
-    @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
-    private PaymentEntity payment;
+   
 
     // ///////////
     @PrePersist

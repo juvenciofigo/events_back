@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import com.fc.sdk.APIResponse;
 import com.providences.events.config.MpesaService;
@@ -14,8 +15,11 @@ import com.providences.events.payment.PaymentReferenceEntity;
 import com.providences.events.payment.dto.CreatePaymentDTO;
 import com.providences.events.shared.exception.exceptions.MpesaPaymentException;
 
+import jakarta.validation.Valid;
+
 @Service
 @Transactional
+@Validated
 public class CreatePaymentService {
     private final PaymentRepository paymentRepository;
 
@@ -44,7 +48,7 @@ public class CreatePaymentService {
         return ref.toUpperCase();
     }
 
-    public CreatePaymentDTO.Response execute(CreatePaymentDTO.Request data) {
+    public CreatePaymentDTO.Response execute(@Valid CreatePaymentDTO.Request data) {
 
         PaymentEntity payment = new PaymentEntity();
 
@@ -66,12 +70,13 @@ public class CreatePaymentService {
         payment.setTarget(data.getTarget());
         payment.setService(data.getService());
         payment.setSubscription(data.getSubscription());
-        payment.setTicket(data.getTicket());
+        payment.setSeat(data.getSeat());
 
         String transactionRef = generateTransactionReference();
         String thirdPartyRef = generateThirdPartyReference();
 
-        APIResponse responseMpesa = mpesaService.executePayment(transactionRef, thirdPartyRef, data.payerNum);
+        APIResponse responseMpesa = mpesaService.executePayment(transactionRef, thirdPartyRef, data.payerNum,
+                payment.getAmount());
 
         if (responseMpesa == null) {
             throw new MpesaPaymentException(400);
