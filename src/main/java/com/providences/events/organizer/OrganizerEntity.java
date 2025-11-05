@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.payment.PaymentEntity;
-import com.providences.events.reviews.ReviewsEntity;
+import com.providences.events.reviews.ReviewEntity;
 import com.providences.events.user.UserEntity;
 
 import jakarta.persistence.CascadeType;
@@ -40,7 +40,7 @@ public class OrganizerEntity {
     private String id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private UserEntity user;
 
     @Column(nullable = false, length = 100)
@@ -69,8 +69,13 @@ public class OrganizerEntity {
     private List<EventEntity> events;
 
     // relacionameto com comentarios
-    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ReviewsEntity> reviews;
+
+    // Relacionemnto com comentarios
+    @OneToMany(mappedBy = "senderOrganizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReviewEntity> senderReviews;
+
+    @OneToMany(mappedBy = "receiverOrganizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReviewEntity> receiverReviews;
 
     // relacionameto com participacoes em conversas
     // @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval =

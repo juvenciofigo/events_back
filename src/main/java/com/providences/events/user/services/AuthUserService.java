@@ -44,12 +44,7 @@ public class AuthUserService implements UserDetailsService {
             UserEntity user = (UserEntity) authentication.getPrincipal();
             String token = tokenService.generateToken(user);
 
-            return new AuthUserDTO.Response(
-                    user.getId(), user.getEmail(),
-                    user.getName(),
-                    user.getProfilePicture(),
-                    user.getAuthorities().stream().map(auth -> auth.getAuthority()).toList(),
-                    token);
+            return AuthUserDTO.Response.response(user, token);
 
         } catch (AuthenticationException ex) {
             throw new UsernameNotFoundException("Credenciais inválidas!");

@@ -7,10 +7,14 @@ INSERT INTO users (id,name,email,password_hash,phone,profile_picture,role,is_del
 
 INSERT INTO users (id,name,email,password_hash,phone,profile_picture,role,is_deleted, created_at, updated_at) VALUES ('ec81164e-1f69-47ba-95c7-e011f0a682eb','juvencio','juvencio@gmail.com', '$2a$10$aZ2tgJGN870hTb8fdwmW7uBs8htiQykFzor3VJ9ZDNLP8q1rHtY1a','845698235','fotodoperigl','CLIENT',false,'2025-10-22 15:30:00','2025-10-22 15:30:00');
 
+INSERT INTO users (id,name,email,password_hash,phone,profile_picture,role,is_deleted, created_at, updated_at) VALUES ('ec81164e-1f69-47ba-95c7-e011f0a682er','figo','figo@gmail.com', '$2a$10$aZ2tgJGN870hTb8fdwmW7uBs8htiQykFzor3VJ9ZDNLP8q1rHtY1a','845698235','fotodoperigl','CLIENT',false,'2025-10-22 15:30:00','2025-10-22 15:30:00');
+
 
 INSERT INTO suppliers (id, company_name, user_id,description,profile_picture,logo, created_at, updated_at) VALUES ('d787df6d-17e8-444a-88c2-ad21c4117139','Providences','ec81164e-1f69-47ba-95c7-e011f0a682eb','Sem nada a dizer','Foto do profile','Foto de logo','2025-10-22 15:30:00','2025-10-22 15:30:00');
 
 INSERT INTO organizers (id, user_id, name,phone, created_at,updated_at)VALUES ('2bff41a2-eaad-485e-84fa-ddc1660f6965','ec81164e-1f69-47ba-95c7-e011f0a682eb','juvencio','84669548','2025-10-22 15:30:00','2025-10-22 15:30:00');
+
+INSERT INTO organizers (id, user_id, name,phone, created_at,updated_at)VALUES ('2bff41a2-eaad-485e-84fa-ddc1660f6997','ec81164e-1f69-47ba-95c7-e011f0a682er','figo','84669548','2025-10-22 15:30:00','2025-10-22 15:30:00');
 
 -- -- services
 INSERT INTO services (id, supplier_id,category,description, price_base,created_at, updated_at ) VALUES  ('ce6f991a-2343-49b3-aa06-a27c9f9183dc', 'd787df6d-17e8-444a-88c2-ad21c4117139', 'Alimentacao', 'Aqui devia ser a descricao', '100.0', '2025-10-22 15:30:00', '2025-10-22 15:30:00');
@@ -18,11 +22,14 @@ INSERT INTO services (id, supplier_id,category,description, price_base,created_a
 -- Event
 INSERT INTO events (id,budget_estimated,budget_spent,cover_image,created_at,date_end,date_start,description,estimated_guest,event_status,is_public,organizer_id,title,type,updated_at) VALUES ('fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c',150000.00,0.00,'https://example.com/imagem-casamento.jpg','2025-10-28 20:00:00','2025-12-20 22:00:00', '2025-12-20 15:00:00', 'Casamento luxuoso na praia de Maputo', 200, 'PLANNED',TRUE,'2bff41a2-eaad-485e-84fa-ddc1660f6965', 'Casamento João & Maria', 'Casamento', '2025-10-28 20:00:00');
 
+INSERT INTO events (id,budget_estimated,budget_spent,cover_image,created_at,date_end,date_start,description,estimated_guest,event_status,is_public,organizer_id,title,type,updated_at) VALUES ('fe3c85b9-5ee5-4e88-b17c-38d65d7af134',150000.00,0.00,'https://example.com/imagem-casamento.jpg','2025-10-28 20:00:00','2025-12-20 22:00:00', '2025-12-20 15:00:00', 'Casamento luxuoso na praia de Maputo', 200, 'PLANNED',TRUE,'2bff41a2-eaad-485e-84fa-ddc1660f6997', 'Casamento João & Maria', 'Casamento', '2025-10-28 20:00:00');
+
 -- Seats
 INSERT INTO seats (created_at, description, event_id, layout_position_x, layout_position_y, name, total_seats, updated_at, id, is_paid, price, available_seats) VALUES ('2025-11-05 00:02:36.834399	', 'Descricao do assento', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', null, null, 'Mesa x', 10, '2025-11-05 00:02:36.834399', 'ed961e6d-0f99-45a0-be9a-4c87a6c80af7', true, 200,10);
 
 -- Ticket
-INSERT INTO tickets (code, created_at, event_id, notes, price_paid, responded_at, send_at, status, total_people, updated_at, id, seat_id) VALUES ('013e1843-1154-40a3-9cba-d4a818f18519', '2025-10-29 23:20:22.145442', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'notas do ticket',0.00, null, '2025-10-29 23:20:22.145442', 'PENDING', 2,'2025-10-29 23:20:22.145442', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', 'ed961e6d-0f99-45a0-be9a-4c87a6c80af7');
+INSERT INTO tickets (code, created_at, event_id, notes, responded_at, send_at, status, total_people, updated_at, id, seat_id) VALUES ('013e1843-1154-40a3-9cba-d4a818f18519', '2025-10-29 23:20:22.145442', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'notas do ticket', null, '2025-10-29 23:20:22.145442', 'PENDING', 2,'2025-10-29 23:20:22.145442', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', 'ed961e6d-0f99-45a0-be9a-4c87a6c80af7');
+
 -- Gests
 -- INSERT INTO guests (created_at, email, name, phone, ticket_id, updated_at, id) VALUES ('2025-10-29 23:20:22.159661', 'juvenciofigo@gmail.com', 'juvenciofigo@gmail.com', 'juvenciofigo@gmail.com', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', '2025-10-29 23:20:22.159661', '2025-10-29 23:20:22.159661')
 

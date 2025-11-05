@@ -6,7 +6,7 @@ import java.util.List;
 import com.providences.events.interaction.entities.ParticipantChatEntity;
 import com.providences.events.location.LocationEntity;
 import com.providences.events.payment.PaymentEntity;
-import com.providences.events.reviews.ReviewsEntity;
+import com.providences.events.reviews.ReviewEntity;
 import com.providences.events.services.ServiceEntity;
 import com.providences.events.user.UserEntity;
 
@@ -18,6 +18,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
@@ -78,13 +79,16 @@ public class SupplierEntity {
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ServiceEntity> services;
 
-    // Relacionamento com comentarios
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReviewsEntity> reviews;
-
     // relacionameto com participacoes em conversas
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ParticipantChatEntity> participantChat;
+
+    // Relacionemnto com comentarios
+    @OneToMany(mappedBy = "senderSupplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReviewEntity> senderReviews;
+
+    @OneToMany(mappedBy = "receiverSupplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReviewEntity> receiverReviews;
 
     // ///////////
     @PrePersist

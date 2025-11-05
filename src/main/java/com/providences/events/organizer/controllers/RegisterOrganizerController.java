@@ -31,9 +31,9 @@ public class RegisterOrganizerController {
             Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
-        String UserIdFromToken = userData.getUserId();
+        String UserId = userData.getUserId();
 
-        RegisterOrganizerDTO.Response organizer = registerOrganizerService.execute(dto, UserIdFromToken);
+        RegisterOrganizerDTO.Response organizer = registerOrganizerService.execute(dto, UserId);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponse<RegisterOrganizerDTO.Response>(true, organizer));

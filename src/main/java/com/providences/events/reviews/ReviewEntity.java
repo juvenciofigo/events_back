@@ -8,6 +8,8 @@ import com.providences.events.supplier.SupplierEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +29,7 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewsEntity {
+public class ReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -37,17 +39,35 @@ public class ReviewsEntity {
 
     private Double rating;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier_id", nullable = false)
-    private SupplierEntity supplier;
+    // Sender
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ReviewSender sender;
 
     @ManyToOne
-    @JoinColumn(name = "organizer_id", nullable = false)
-    private OrganizerEntity organizer;
+    @JoinColumn(name = "sender_supplier_id")
+    private SupplierEntity senderSupplier;
 
     @ManyToOne
-    @JoinColumn(name = "service_id", nullable = false)
-    private ServiceEntity service;
+    @JoinColumn(name = "sender_organizer_id")
+    private OrganizerEntity senderOrganizer;
+
+    // Target
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ReviewTarget target;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_supplier_id")
+    private SupplierEntity receiverSupplier;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_organizer_id")
+    private OrganizerEntity receiverOrganizer;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_service_id")
+    private ServiceEntity receiverService;
 
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")
@@ -67,4 +87,14 @@ public class ReviewsEntity {
         updatedAt = LocalDateTime.now();
     }
 
+   public enum ReviewTarget {
+        SERVICE,
+        SUPPLIER,
+        ORGANIZER
+    }
+
+   public enum ReviewSender {
+        SUPPLIER,
+        ORGANIZER
+    }
 }

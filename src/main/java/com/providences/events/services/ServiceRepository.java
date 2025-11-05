@@ -1,6 +1,7 @@
 package com.providences.events.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,6 +27,6 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, String> 
                   LEFT JOIN FETCH usr.organizer org
                   WHERE ser.id = :serviceID
                   """)
-      ServiceEntity getService(@Param("serviceID") String serviceID);
+      Optional<ServiceEntity> getService(@Param("serviceID") String serviceID);
 
 }
