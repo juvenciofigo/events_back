@@ -30,13 +30,5 @@ public interface EventRepository extends JpaRepository<EventEntity, String> {
             """)
     EventEntity getEventById(@Param("eventId") String eventId);
 
-    // @EntityGraph(attributePaths = {
-    // "organizer",
-    // "organizer.user",
-    // "services",
-    // "services.supplier",
-    // "suppliers"
-    // })
-    // @Query("SELECT obj FROM EventEntity obj WHERE obj.id = :eventId")
-    // EventEntity getEvent(@Param("eventId") String eventId);
+    
 }

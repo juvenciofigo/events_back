@@ -1,5 +1,8 @@
 package com.providences.events.supplier.dto;
 
+import com.providences.events.supplier.SupplierEntity;
+import com.providences.events.user.dto.AuthUserDTO;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -25,7 +28,6 @@ public class RegisterSupplierDTO {
     }
 
     @Data
-    @NoArgsConstructor
     @AllArgsConstructor
     public static class Response {
         private String id;
@@ -38,17 +40,17 @@ public class RegisterSupplierDTO {
 
         private String description;
 
-        private UserDTO user;
+        private AuthUserDTO.Response user;
 
+        public static Response reponse(SupplierEntity supplier, AuthUserDTO.Response user) {
+            return new Response(
+                    supplier.getId(),
+                    supplier.getCompanyName(),
+                    supplier.getProfilePicture(),
+                    supplier.getLogo(),
+                    supplier.getDescription(),
+                    user);
+        }
     }
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class UserDTO {
-        private String id;
-        private String name;
-        private String email;
-        private String profilePicture;
-    }
 }

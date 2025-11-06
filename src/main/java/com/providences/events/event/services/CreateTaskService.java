@@ -23,12 +23,8 @@ public class CreateTaskService {
     }
 
     public CreateTaskDTO.Response execute(CreateTaskDTO.Request data, String userId) {
-        EventEntity event = eventRepository.getEventById(data.getEventId());
-
-        if (event == null) {
-
-            throw new ResourceNotFoundException("Evento não encontrado!");
-        }
+        EventEntity event = eventRepository.findById(data.getEventId())
+                .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
 
         if (!event.getOrganizer().getUser().getId().equals(userId)) {
             throw new ForbiddenException("Sem permissão!");
@@ -42,13 +38,7 @@ public class CreateTaskService {
         task.setEvent(event);
 
         TaskEntity taskSaved = taskRepository.save(task);
-        CreateTaskDTO.Response responseDTO = new CreateTaskDTO.Response(
-                taskSaved.getId(),
-                taskSaved.getResponsibleName(),
-                taskSaved.getResponsiblePhone(),
-                taskSaved.getTitle(),
-                taskSaved.getDescription(),
-                taskSaved.getDueDate());
+        CreateTaskDTO.Response responseDTO = CreateTaskDTO.Response.response(taskSaved);
 
         return responseDTO;
     }

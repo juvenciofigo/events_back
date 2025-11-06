@@ -1,5 +1,6 @@
 package com.providences.events.guest.dto;
 
+import com.providences.events.guest.GuestEntity;
 import com.providences.events.ticket.dto.CreateTicketDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -53,5 +54,14 @@ public class CreateGuestDTO {
         private String email;
         private String phone;
         private CreateTicketDTO.Response ticket;
+
+        public static Response response(GuestEntity guest, CreateTicketDTO.Response ticket) {
+            return new Response(
+                    guest.getId(),
+                    guest.getName(),
+                    guest.getEmail(),
+                    guest.getPhone(),
+                    ticket);
+        }
     }
 }

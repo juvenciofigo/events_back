@@ -4,14 +4,16 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.providences.events.event.entities.EventEntity;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class CreateEventDTO {
 
@@ -46,10 +48,9 @@ public class CreateEventDTO {
         private BigDecimal budgetSpent;
     }
 
-    @Data
-    @NoArgsConstructor
+    @Setter
+    @Getter
     @AllArgsConstructor
-    @Builder
     public static class Response {
         private String id;
         private String type;
@@ -62,5 +63,20 @@ public class CreateEventDTO {
         private Integer estimatedGuest;
         private BigDecimal budgetEstimated;
         private BigDecimal budgetSpent;
+
+        public static Response response(EventEntity event) {
+            return new Response(
+                    event.getId(),
+                    event.getType(),
+                    event.getIsPublic(),
+                    event.getTitle(),
+                    event.getDateStart(),
+                    event.getDateEnd(),
+                    event.getCoverImage(),
+                    event.getDescription(),
+                    event.getEstimatedGuest(),
+                    event.getBudgetEstimated(),
+                    event.getBudgetSpent());
+        }
     }
 }

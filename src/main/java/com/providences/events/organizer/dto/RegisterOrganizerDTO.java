@@ -1,12 +1,16 @@
 package com.providences.events.organizer.dto;
 
+import com.providences.events.organizer.OrganizerEntity;
+import com.providences.events.user.dto.AuthUserDTO;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class RegisterOrganizerDTO {
 
@@ -25,26 +29,21 @@ public class RegisterOrganizerDTO {
 
     }
 
-    @Data
-    @NoArgsConstructor
+    @Setter
+    @Getter
     @AllArgsConstructor
-    @Builder
     public static class Response {
         private String id;
         private String name;
         private String profilePicture;
-        private UserDTO user;
+        private AuthUserDTO.Response user;
 
+        public static Response response(OrganizerEntity organizer, AuthUserDTO.Response user) {
+            return new Response(organizer.getId(),
+                    organizer.getName(),
+                    organizer.getProfilePicture(),
+                    user);
+        }
     }
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class UserDTO {
-        private String id;
-        private String name;
-        private String email;
-        private String profilePicture;
-    }
 }

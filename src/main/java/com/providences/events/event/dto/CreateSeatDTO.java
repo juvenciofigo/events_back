@@ -2,13 +2,15 @@ package com.providences.events.event.dto;
 
 import java.math.BigDecimal;
 
+import com.providences.events.event.entities.SeatEntity;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class CreataSeatDTO {
+public class CreateSeatDTO {
 
     @Data
     @NoArgsConstructor
@@ -52,5 +54,16 @@ public class CreataSeatDTO {
         private Double layoutPositionX;
 
         private Double layoutPositionY;
+
+        public static CreateSeatDTO.Response response(SeatEntity seat) {
+            return new CreateSeatDTO.Response(
+                    seat.getId(),
+                    seat.getName(),
+                    seat.getDescription(),
+                    seat.getTotalSeats(),
+                    seat.getAvailableSeats(),
+                    seat.getLayoutPositionX(),
+                    seat.getLayoutPositionY());
+        }
     }
 }

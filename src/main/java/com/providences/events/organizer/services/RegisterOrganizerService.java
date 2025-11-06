@@ -7,6 +7,7 @@ import com.providences.events.organizer.dto.RegisterOrganizerDTO;
 import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
 import com.providences.events.user.UserEntity;
 import com.providences.events.user.UserRepository;
+import com.providences.events.user.dto.AuthUserDTO;
 
 import org.springframework.stereotype.Service;
 
@@ -24,27 +25,17 @@ public class RegisterOrganizerService {
                 UserEntity user = userRepository.findById(userId)
                                 .orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
 
-                OrganizerEntity organizer = OrganizerEntity.builder()
-                                .name(data.getName())
-                                .phone(data.getPhone())
-                                .profilePicture(data.getProfilePicture()).build();
-
+                OrganizerEntity organizer = new OrganizerEntity();
+                organizer.setName(data.getName());
+                organizer.setPhone(data.getPhone());
+                organizer.setProfilePicture(data.getProfilePicture());
                 organizer.setUser(user);
 
                 OrganizerEntity savedOrganizer = organizerRepository.save(organizer);
 
-                RegisterOrganizerDTO.UserDTO userDTO = new RegisterOrganizerDTO.UserDTO(
-                                savedOrganizer.getUser().getId(),
-                                savedOrganizer.getUser().getName(),
-                                savedOrganizer.getUser().getEmail(),
-                                savedOrganizer.getUser().getProfilePicture());
+                AuthUserDTO.Response userDTO = AuthUserDTO.Response.response(savedOrganizer.getUser(), null);
 
-                RegisterOrganizerDTO.Response responseDTO = new RegisterOrganizerDTO.Response(
-                                savedOrganizer.getId(),
-                                savedOrganizer.getName(),
-                                savedOrganizer.getProfilePicture(),
-                                userDTO);
+                return RegisterOrganizerDTO.Response.response(savedOrganizer, userDTO);
 
-                return responseDTO;
         }
 }

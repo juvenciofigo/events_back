@@ -1,5 +1,6 @@
 package com.providences.events.reviews.services;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -42,18 +43,18 @@ public class CreateReviewService {
 
         if (!StringUtils.hasText(data.getReceiverOrganizerID()) && !StringUtils.hasText(data.getReceiverServiceID())
                 && !StringUtils.hasText(data.getReceiverSupplierId())) {
-            throw new BusinessException("Receiver desconhecido");
+            throw new BusinessException("Receiver desconhecido", HttpStatus.BAD_REQUEST);
         }
 
         if (!StringUtils.hasText(data.getSenderOrganizerID()) && !StringUtils.hasText(data.getSenderSupplierID())) {
-            throw new BusinessException("Sender desconhecido");
+            throw new BusinessException("Sender desconhecido", HttpStatus.BAD_REQUEST);
         }
 
         switch (data.getSender().toUpperCase()) {
             case "ORGANIZER":
             System.out.println(data.getSenderOrganizerID());
                 OrganizerEntity organizer = organizerRepository.findById(data.getSenderOrganizerID())
-                        .orElseThrow(() -> new BusinessException("Sender Organizer não encontrado!"));
+                        .orElseThrow(() -> new BusinessException("Sender Organizer não encontrado!", HttpStatus.BAD_REQUEST));
 
                 review.setSenderOrganizer(organizer);
                 review.setSender(ReviewSender.ORGANIZER);
@@ -61,7 +62,7 @@ public class CreateReviewService {
 
             case "SUPPLIER":
                 SupplierEntity supplier = supplierRepository.findById(data.getSenderSupplierID())
-                        .orElseThrow(() -> new BusinessException("Sender Supplier Organizer não encontrado!"));
+                        .orElseThrow(() -> new BusinessException("Sender Supplier Organizer não encontrado!", HttpStatus.BAD_REQUEST));
 
                 review.setSenderSupplier(supplier);
                 review.setSender(ReviewSender.SUPPLIER);
@@ -104,7 +105,7 @@ public class CreateReviewService {
                 yield ReviewTarget.SUPPLIER;
             }
 
-            default -> throw new BusinessException("Destinatário do comentário nao encontrado!");
+            default -> throw new BusinessException("Destinatário do comentário nao encontrado!", HttpStatus.BAD_REQUEST);
         };
 
         review.setTarget(target);

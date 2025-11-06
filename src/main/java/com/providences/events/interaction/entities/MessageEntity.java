@@ -2,8 +2,14 @@ package com.providences.events.interaction.entities;
 
 import java.time.LocalDateTime;
 
+import com.providences.events.guest.GuestEntity;
+import com.providences.events.organizer.OrganizerEntity;
+import com.providences.events.supplier.SupplierEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,14 +19,14 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "messages")
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageEntity {
@@ -39,7 +45,24 @@ public class MessageEntity {
     @Column(nullable = false)
     private Boolean is_read = false;
 
-    // sender_id (convidado/ organizador/ admin/ fornecedor)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SenderType sender;
+
+    @ManyToOne
+    @JoinColumn(name = "sender_supplier_id")
+    private SupplierEntity senderSupplier;
+
+    @ManyToOne
+    @JoinColumn(name = "sender_organizer_id")
+    private OrganizerEntity senderOrganizer;
+
+    @ManyToOne
+    @JoinColumn(name = "sender_guest_id")
+    private GuestEntity senderGuest;
+
+    @Column(name = "is_admin")
+    private boolean senderAdmin;
 
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")
@@ -59,16 +82,20 @@ public class MessageEntity {
         updatedAt = LocalDateTime.now();
     }
 
-    enum Priority {
-        LOW,
-        MEDIUM,
-        HIGH
+    public enum SenderType {
+        SUPPLIER,
+        GUEST,
+        ORGANIZER,
+        ADMIN
     }
 
-    enum Status {
-        PENDING,
-        IN_PROGRESS,
-        DONE
+    @Override
+    public String toString() {
+        return "MessageEntity [id=" + id + ", chat=" + chat + ", content=" + content + ", is_read=" + is_read
+                + ", sender=" + sender + ", senderSupplier=" + senderSupplier + ", senderOrganizer=" + senderOrganizer
+                + ", senderGuest=" + senderGuest + ", senderAdmin=" + senderAdmin + ", createdAt=" + createdAt
+                + ", updatedAt=" + updatedAt + "]";
     }
 
+ 
 }

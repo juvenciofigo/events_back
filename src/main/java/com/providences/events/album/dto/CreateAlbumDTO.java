@@ -2,6 +2,8 @@ package com.providences.events.album.dto;
 
 import java.time.LocalDateTime;
 
+import com.providences.events.album.entities.AlbumEntity;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +29,6 @@ public class CreateAlbumDTO {
     @Getter
     @Setter
     @AllArgsConstructor
-    @Builder
     public static class Response {
         private String title;
 
@@ -38,5 +39,14 @@ public class CreateAlbumDTO {
         private LocalDateTime createdAt;
 
         private LocalDateTime updatedAt;
+
+        public static Response response(AlbumEntity album, String serviceId) {
+            return new Response(
+                    album.getTitle(),
+                    album.getDescription(),
+                    serviceId,
+                    album.getCreatedAt(),
+                    album.getUpdatedAt());
+        }
     }
 }

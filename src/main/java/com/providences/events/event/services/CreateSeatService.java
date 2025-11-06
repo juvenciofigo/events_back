@@ -2,10 +2,11 @@ package com.providences.events.event.services;
 
 import java.math.BigDecimal;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.providences.events.event.dto.CreataSeatDTO;
+import com.providences.events.event.dto.CreateSeatDTO;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.event.repositories.EventRepository;
@@ -26,13 +27,9 @@ public class CreateSeatService {
         this.eventRepository = eventRepository;
     }
 
-    public CreataSeatDTO.Response execute(CreataSeatDTO.Request data, String userId) {
-        EventEntity event = eventRepository.getEventById(data.getEventId());
-
-        if (event == null) {
-
-            throw new ResourceNotFoundException("Evento não encontrado!");
-        }
+    public CreateSeatDTO.Response execute(CreateSeatDTO.Request data, String userId) {
+        EventEntity event = eventRepository.findById(data.getEventId())
+                .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
 
         if (!event.getOrganizer().getUser().getId().equals(userId)) {
             throw new ForbiddenException("Sem permissão!");
@@ -42,7 +39,8 @@ public class CreateSeatService {
             if (seat.getName().equals(data.getName())) {
 
                 throw new BusinessException(
-                        "Nome de assento existente! Crie com um nome diferente de " + data.getName());
+                        "Nome de assento existente! Crie com um nome diferente de " + data.getName(),
+                        HttpStatus.CONFLICT);
             }
         }
 
@@ -50,7 +48,7 @@ public class CreateSeatService {
 
         if (Boolean.TRUE.equals(data.getIsPaid())
                 && (data.getPrice() == null || data.getPrice().compareTo(BigDecimal.ZERO) <= 0)) {
-            throw new BusinessException("O preço deve ser maior que zero para assentos pagos.");
+            throw new BusinessException("O preço deve ser maior que zero para assentos pagos.", HttpStatus.BAD_REQUEST);
         }
 
         if (data.getTotalSeats() != null) {
@@ -68,14 +66,7 @@ public class CreateSeatService {
 
         SeatEntity savedSeats = seatRepository.save(seat);
 
-        return new CreataSeatDTO.Response(
-                savedSeats.getId(),
-                savedSeats.getName(),
-                savedSeats.getDescription(),
-                savedSeats.getTotalSeats(),
-                savedSeats.getAvailableSeats(),
-                savedSeats.getLayoutPositionX(),
-                savedSeats.getLayoutPositionY());
+        return CreateSeatDTO.Response.response(savedSeats);
 
     }
 }

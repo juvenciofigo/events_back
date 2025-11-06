@@ -3,7 +3,6 @@ package com.providences.events.interaction.entities;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 import com.providences.events.event.entities.EventEntity;
 
 import jakarta.persistence.CascadeType;
@@ -21,14 +20,14 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "chats")
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatEntity {
@@ -39,7 +38,22 @@ public class ChatEntity {
     ////
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TYPE type;
+    private ChatType type;
+
+    // relacionamento como evento
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false)
+    private EventEntity event;
+
+    @Column(nullable = false)
+    private String title;
+
+    // ///////////
+    @Column(nullable = false, updatable = false, name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false, name = "updated_at")
+    private LocalDateTime updatedAt;
 
     // relacionamento como mensagem
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -48,22 +62,6 @@ public class ChatEntity {
     // relacionamento como participante
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ParticipantChatEntity> participants;
-
-    // relacionamento como evento
-    @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false, referencedColumnName = "id")
-    private EventEntity event;
-
-
-
-    @Column(nullable = false)
-    private String title;
-    // ///////////
-    @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Column(nullable = false, name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
 
     @PrePersist
     protected void onCreate() {
@@ -76,11 +74,16 @@ public class ChatEntity {
         updatedAt = LocalDateTime.now();
     }
 
-    public enum TYPE {
+    public enum ChatType {
         SUPPLIER,
         GUESTS,
         ORGANIZER,
         ADMIN
     }
 
+    @Override
+    public String toString() {
+        return "ChatEntity [id=" + id + ", type=" + type + ", event=" + event + ", title=" + title + ", createdAt="
+                + createdAt + ", updatedAt=" + updatedAt + "]";
+    }
 }

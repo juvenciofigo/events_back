@@ -40,19 +40,7 @@ public class CreateEventService {
 
         EventEntity savedEvent = eventRepository.save(event);
 
-        return CreateEventDTO.Response.builder()
-                .id(savedEvent.getId())
-                .type(savedEvent.getType())
-                .isPublic(savedEvent.getIsPublic())
-                .title(savedEvent.getTitle())
-                .dateStart(savedEvent.getDateStart())
-                .dateEnd(savedEvent.getDateEnd())
-                .coverImage(savedEvent.getCoverImage())
-                .description(savedEvent.getDescription())
-                .estimatedGuest(savedEvent.getEstimatedGuest())
-                .budgetSpent(savedEvent.getBudgetSpent())
-                .budgetEstimated(savedEvent.getBudgetEstimated())
-                .build();
+        return CreateEventDTO.Response.response(savedEvent);
 
     }
 }

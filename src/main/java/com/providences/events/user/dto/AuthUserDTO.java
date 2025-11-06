@@ -2,6 +2,8 @@ package com.providences.events.user.dto;
 
 import java.util.List;
 
+import org.springframework.util.StringUtils;
+
 import com.providences.events.user.UserEntity;
 
 import jakarta.validation.constraints.NotBlank;
@@ -40,7 +42,7 @@ public class AuthUserDTO {
                     user.getName(),
                     user.getProfilePicture(),
                     user.getAuthorities().stream().map(auth -> auth.getAuthority()).toList(),
-                    token);
+                    StringUtils.hasText(token) ? token : null);
         }
 
     }

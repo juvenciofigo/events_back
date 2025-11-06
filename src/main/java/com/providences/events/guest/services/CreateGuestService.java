@@ -3,12 +3,14 @@ package com.providences.events.guest.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.providences.events.event.dto.CreataSeatDTO;
+import com.providences.events.event.dto.CreateSeatDTO;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.repositories.EventRepository;
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.guest.GuestRepository;
 import com.providences.events.guest.dto.CreateGuestDTO;
+import com.providences.events.interaction.entities.ParticipantChatEntity.ParticipantType;
+import com.providences.events.interaction.services.AddParticipantToChat;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
 import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
 import com.providences.events.ticket.dto.CreateTicketDTO;
@@ -21,22 +23,22 @@ public class CreateGuestService {
         private final CreateTicketService createTicketService;
         private final GuestRepository guestRepository;
         private final EventRepository eventRepository;
+        private AddParticipantToChat addParticipantToChat;
 
         public CreateGuestService(CreateTicketService createTicketService, GuestRepository guestRepository,
-                        EventRepository eventRepository) {
+                        EventRepository eventRepository, AddParticipantToChat addParticipantToChat) {
                 this.createTicketService = createTicketService;
                 this.guestRepository = guestRepository;
                 this.eventRepository = eventRepository;
+                this.addParticipantToChat = addParticipantToChat;
         }
 
         public CreateGuestDTO.Response execute(CreateGuestDTO.Request data, String userId) {
 
                 // buscar evento
-                EventEntity event = eventRepository.getEventById(data.getEventId());
+                EventEntity event = eventRepository.findById(data.getEventId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
 
-                if (event == null) {
-                        throw new ResourceNotFoundException("Evento não encontrado!");
-                }
                 if (!event.getOrganizer().getUser().getId().equals(userId)) {
                         throw new ForbiddenException("Sem permissão!");
                 }
@@ -53,30 +55,20 @@ public class CreateGuestService {
                 // Gravar informacoes do ticket
                 GuestEntity savedGuest = guestRepository.save(guest);
 
-                CreataSeatDTO.Response responseSeat = new CreataSeatDTO.Response(ticket.getSeat().getId(),
-                                ticket.getSeat().getName(),
-                                ticket.getSeat().getDescription(),
-                                ticket.getSeat().getTotalSeats(),
-                                ticket.getSeat().getAvailableSeats(),
-                                ticket.getSeat().getLayoutPositionX(),
-                                ticket.getSeat().getLayoutPositionY());
+                CreateSeatDTO.Response responseSeat = CreateSeatDTO.Response.response(ticket.getSeat());
 
-                CreateTicketDTO.Response responseTicket = new CreateTicketDTO.Response(ticket.getCode(),
-                                ticket.getTotalPeople(),
-                                ticket.getNotes(),
-                                ticket.getStatus(),
-                                ticket.getSentAt(),
-                                ticket.getRespondedAt(),
-                                responseSeat);
+                CreateTicketDTO.Response responseTicket = CreateTicketDTO.Response.response(ticket, responseSeat);
 
-                CreateGuestDTO.Response responseGuest = new CreateGuestDTO.Response(
-                                savedGuest.getId(),
-                                savedGuest.getName(),
-                                savedGuest.getEmail(),
-                                savedGuest.getPhone(),
-                                responseTicket);
-                // ticket.getSeat(),
+                CreateGuestDTO.Response responseGuest = CreateGuestDTO.Response.response(savedGuest, responseTicket);
 
+                event.getChats().stream()
+                                .filter(chat -> chat.getType().name().equalsIgnoreCase("guests"))
+                                .findFirst()
+                                .ifPresent(chat -> {
+                                        System.out.println(chat);
+                                        addParticipantToChat.addParticipant(chat, ParticipantType.GUESTS, savedGuest,
+                                                        null, null);
+                                });
                 return responseGuest;
         }
 }

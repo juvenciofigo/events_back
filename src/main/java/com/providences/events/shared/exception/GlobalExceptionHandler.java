@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ApiResponse<CustomErrorDTO>> error(BusinessException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.NOT_ACCEPTABLE;
+        HttpStatus status = e.getStatusCode() != null ? e.getStatusCode() : HttpStatus.NOT_ACCEPTABLE;
         CustomErrorDTO err = new CustomErrorDTO(
                 Instant.now(),
                 status.value(),

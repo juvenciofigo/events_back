@@ -2,7 +2,7 @@ package com.providences.events.ticket.dto;
 
 import java.time.LocalDateTime;
 
-import com.providences.events.event.dto.CreataSeatDTO;
+import com.providences.events.event.dto.CreateSeatDTO;
 import com.providences.events.ticket.entities.TicketEntity;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +27,17 @@ public class CreateTicketDTO {
         private TicketEntity.Status status;
         private LocalDateTime sentAt;
         private LocalDateTime respondedAt;
-        private CreataSeatDTO.Response seat;
+        private CreateSeatDTO.Response seat;
+
+        public static Response response(TicketEntity ticket, CreateSeatDTO.Response seat) {
+            return new Response(
+                    ticket.getCode(),
+                    ticket.getTotalPeople(),
+                    ticket.getNotes(),
+                    ticket.getStatus(),
+                    ticket.getSentAt(),
+                    ticket.getRespondedAt(),
+                    seat);
+        }
     }
 }

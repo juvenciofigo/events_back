@@ -30,15 +30,14 @@ public class CreateSupplierPlanService {
 
         SupplierPlanEntity saved = supplierPlanRepository.save(plan);
 
-        return CreatePlanDTO.Response.builder()
-                .id(saved.getId())
-                .name(saved.getName())
-                .description(saved.getDescription())
-                .resources(saved.getResources())
-                .priceMonthly(saved.getPriceMonthly())
-                .priceYearly(saved.getPriceYearly())
-                .features(saved.getFeatures())
-                .level(saved.getLevel())
-                .build();
+        return new CreatePlanDTO.Response(
+                saved.getId(),
+                saved.getName(),
+                saved.getDescription(),
+                saved.getResources(),
+                saved.getPriceMonthly(),
+                saved.getPriceYearly(),
+                saved.getFeatures(),
+                saved.getLevel());
     }
 }

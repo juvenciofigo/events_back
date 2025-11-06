@@ -1,11 +1,13 @@
 package com.providences.events.user.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.providences.events.config.TokenService;
+import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.user.UserEntity;
 import com.providences.events.user.UserRepository;
 import com.providences.events.user.dto.AuthUserDTO;
@@ -23,25 +25,23 @@ public class CreateUserService {
     private TokenService tokenService;
 
     @Transactional
-    public AuthUserDTO.Response execute(RegisterUserDTO.Request dto) {
+    public AuthUserDTO.Response execute(RegisterUserDTO.Request data) {
+        Boolean existUser = userRepository.findByEmail(data.getEmail()).isPresent();
+        if (existUser) {
+            throw new BusinessException("Email em uso! Experimento com um email diferente!", HttpStatus.CONFLICT);
+        }
 
         UserEntity user = UserEntity.builder()
-                .email(dto.getEmail())
-                .passwordHash(passwordEncoder.encode(dto.getPassword()))
-                .phone(dto.getPhone())
-                .name(dto.getName())
-                .role(UserEntity.ROLE.CLIENT)
+                .email(data.getEmail())
+                .passwordHash(passwordEncoder.encode(data.getPassword()))
+                .phone(data.getPhone())
+                .name(data.getName())
                 .build();
 
         this.userRepository.save(user);
         String token = tokenService.generateToken(user);
 
-        return new AuthUserDTO.Response(
-                user.getId(), user.getEmail(),
-                user.getName(),
-                user.getProfilePicture(),
-                user.getAuthorities().stream().map(auth -> auth.getAuthority()).toList(),
-                token);
+        return AuthUserDTO.Response.response(user, token);
     }
 
 }

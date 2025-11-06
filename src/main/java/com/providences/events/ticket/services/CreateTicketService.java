@@ -3,6 +3,7 @@ package com.providences.events.ticket.services;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,10 +65,10 @@ public class CreateTicketService {
                 } else {
                     throw new BusinessException(
                             "Assentos insuficientes! Existem apenas "
-                                    + seat.getAvailableSeats() + " assentos disponíveis.");
+                                    + seat.getAvailableSeats() + " assentos disponíveis.",
+                            HttpStatus.BAD_REQUEST);
                 }
             }
-            
 
             // quando o seat for pago, fazer pagamento
             if (Boolean.TRUE.equals(seat.getIsPaid())) {
@@ -89,15 +90,13 @@ public class CreateTicketService {
                 paymentData.setTarget(Target.SEAT);
                 paymentData.setSeat(seat);
 
-                CreatePaymentDTO.Response paymentResponse = createPaymentService.execute(paymentData);
-                System.out.println(paymentResponse);
+                createPaymentService.execute(paymentData);
             }
 
             // graval alterações no seat
             seatRepository.save(seat);
             ticket.setSeat(seat);
 
-            System.out.println(seat);
         }
 
         return ticketRepository.save(ticket);

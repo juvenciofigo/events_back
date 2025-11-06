@@ -2,6 +2,7 @@ package com.providences.events.interaction.entities;
 
 import java.time.LocalDateTime;
 import com.providences.events.guest.GuestEntity;
+import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.supplier.SupplierEntity;
 
 import jakarta.persistence.Column;
@@ -42,11 +43,9 @@ public class ParticipantChatEntity {
     private ChatEntity chat;
 
     // relacionameto com organizador
-    /*
-     * @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval =
-     * true, fetch = FetchType.LAZY)
-     * private List<ParticipantChatEntity> participantChat;
-     */
+    @ManyToOne
+    @JoinColumn(name = "organizer_id", referencedColumnName = "id")
+    private OrganizerEntity organizer;
 
     // relacionameto com fornecedor de servicos
     @ManyToOne
@@ -79,8 +78,8 @@ public class ParticipantChatEntity {
     public enum ParticipantType {
         SUPPLIER,
         GUESTS,
-        // ORGANIZER,
-        // ADMIN
+        ORGANIZER,
+        ADMIN
     }
 
 }

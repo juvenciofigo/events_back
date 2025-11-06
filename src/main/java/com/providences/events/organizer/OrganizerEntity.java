@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.providences.events.event.entities.EventEntity;
+import com.providences.events.interaction.entities.MessageEntity;
+import com.providences.events.interaction.entities.ParticipantChatEntity;
 import com.providences.events.payment.PaymentEntity;
 import com.providences.events.reviews.ReviewEntity;
 import com.providences.events.user.UserEntity;
@@ -22,18 +24,16 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "organizers")
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class OrganizerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -45,7 +45,6 @@ public class OrganizerEntity {
 
     @Column(nullable = false, length = 100)
     private String name;
-
 
     @Column(length = 15, nullable = false)
     private String phone;
@@ -78,9 +77,13 @@ public class OrganizerEntity {
     private List<ReviewEntity> receiverReviews;
 
     // relacionameto com participacoes em conversas
-    // @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval =
-    // true, fetch = FetchType.LAZY)
-    // private List<ParticipantChatEntity> participantChat;
+    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval =
+    true, fetch = FetchType.LAZY)
+    private List<ParticipantChatEntity> participantChat;
+
+    // Relacionamento como mensagem
+    @OneToMany(mappedBy = "senderOrganizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<MessageEntity> chats;
 
     // ///////////
     @PrePersist
@@ -92,6 +95,12 @@ public class OrganizerEntity {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "OrganizerEntity [id=" + id + ", user=" + user + ", name=" + name + ", phone=" + phone
+                + ", profilePicture=" + profilePicture + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
 
 }

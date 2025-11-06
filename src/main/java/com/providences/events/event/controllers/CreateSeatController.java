@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 
 import com.providences.events.config.JWTUserData;
-import com.providences.events.event.dto.CreataSeatDTO;
+import com.providences.events.event.dto.CreateSeatDTO;
 import com.providences.events.event.services.CreateSeatService;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +24,7 @@ public class CreateSeatController {
 
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public CreataSeatDTO.Response postMethodName(@Validated @RequestBody CreataSeatDTO.Request data,
+    public CreateSeatDTO.Response postMethodName(@Validated @RequestBody CreateSeatDTO.Request data,
             Authentication authentication) {
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
 

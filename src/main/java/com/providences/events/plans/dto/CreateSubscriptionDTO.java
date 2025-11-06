@@ -3,6 +3,7 @@ package com.providences.events.plans.dto;
 import java.time.LocalDateTime;
 
 import com.providences.events.payment.dto.CreatePaymentDTO;
+import com.providences.events.plans.entities.SubscriptionEntity;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -57,6 +58,19 @@ public class CreateSubscriptionDTO {
         public String payerType;
         public String payerId;
         public CreatePaymentDTO.Response payment;
+
+        public static Response response(SubscriptionEntity subscription, CreatePaymentDTO.Response payment) {
+            return new Response(
+                    subscription.getId(),
+                    subscription.getStatus().name(),
+                    subscription.getPlanType().name(),
+                    subscription.getAutoRenew(),
+                    subscription.getStartDate(),
+                    subscription.getEndDate(),
+                    subscription.getPayerType().name(),
+                    subscription.getOrganizer().getId(),
+                    payment);
+        }
 
     }
 

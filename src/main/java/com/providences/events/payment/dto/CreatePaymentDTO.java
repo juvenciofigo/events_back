@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.organizer.OrganizerEntity;
+import com.providences.events.payment.PaymentEntity;
 import com.providences.events.payment.PaymentEntity.Currency;
 import com.providences.events.payment.PaymentEntity.PayerType;
 import com.providences.events.payment.PaymentEntity.ReceiverType;
@@ -32,7 +33,7 @@ public class CreatePaymentDTO {
         public String paymentMethod;
 
         @NotBlank(message = "Informe numero para cobrar o pagamento!")
-        @Size(max = 9, min = 9,message = "O nomero deve conter 9 digitos")
+        @Size(max = 9, min = 9, message = "O nomero deve conter 9 digitos")
         public String payerNum;
 
         @NotNull(message = "Informe o valor de pagamento!")
@@ -88,5 +89,14 @@ public class CreatePaymentDTO {
         public String paymentMethod;
         public LocalDateTime createdAt;
 
+        public static Response response(PaymentEntity payment) {
+            return new Response(
+                    payment.getId(),
+                    payment.getStatus().name(),
+                    payment.getAmount(),
+                    payment.getCurrency().name(),
+                    payment.getPaymentMethod().name(),
+                    payment.getCreatedAt());
+        }
     }
 }

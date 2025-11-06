@@ -3,6 +3,7 @@ package com.providences.events.guest;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.providences.events.interaction.entities.MessageEntity;
 import com.providences.events.interaction.entities.ParticipantChatEntity;
 import com.providences.events.ticket.entities.TicketEntity;
 
@@ -20,14 +21,14 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "guests")
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class GuestEntity {
@@ -57,6 +58,10 @@ public class GuestEntity {
     @OneToMany(mappedBy = "guests", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ParticipantChatEntity> participantChat;
 
+    // Relacionamento como mensagem
+    @OneToMany(mappedBy = "senderGuest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<MessageEntity> chats;
+
     // ///////////
     @PrePersist
     protected void onCreate() {
@@ -67,6 +72,12 @@ public class GuestEntity {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "GuestEntity [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", ticket="
+                + ticket + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
 
 }

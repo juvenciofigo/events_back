@@ -37,12 +37,7 @@ public class CreateAlbumService {
 
                 AlbumEntity savedAlbum = albumRepository.save(album);
 
-                CreateAlbumDTO.Response responseDTO = new CreateAlbumDTO.Response(
-                                savedAlbum.getTitle(),
-                                savedAlbum.getDescription(),
-                                service.getId(),
-                                savedAlbum.getCreatedAt(),
-                                savedAlbum.getUpdatedAt());
+                CreateAlbumDTO.Response responseDTO = CreateAlbumDTO.Response.response(savedAlbum, service.getId());
 
                 return responseDTO;
         }

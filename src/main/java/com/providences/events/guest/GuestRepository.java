@@ -1,7 +1,19 @@
 package com.providences.events.guest;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface GuestRepository extends JpaRepository<GuestEntity, String> {
-    
+
+    @Query("""
+                Select obj
+                FROM  GuestEntity obj
+                JOIN FETCH obj.ticket tic
+                WHERE tic.event.id = :eventId
+            """)
+
+    List<GuestEntity> findGuestEvent(@Param("eventId") String eventId);
 }

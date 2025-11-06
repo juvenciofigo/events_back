@@ -8,6 +8,7 @@ import com.providences.events.supplier.SupplierRepository;
 import com.providences.events.supplier.dto.RegisterSupplierDTO;
 import com.providences.events.user.UserEntity;
 import com.providences.events.user.UserRepository;
+import com.providences.events.user.dto.AuthUserDTO;
 
 import org.springframework.stereotype.Service;
 
@@ -41,20 +42,8 @@ public class RegisterSupplierService {
 
         SupplierEntity savedSupplier = supplierRepository.save(supplier);
 
-        RegisterSupplierDTO.UserDTO userDTO = new RegisterSupplierDTO.UserDTO(
-                savedSupplier.getUser().getId(),
-                savedSupplier.getUser().getName(),
-                savedSupplier.getUser().getEmail(),
-                savedSupplier.getUser().getProfilePicture());
+        AuthUserDTO.Response userDTO = AuthUserDTO.Response.response(savedSupplier.getUser(), null);
 
-        RegisterSupplierDTO.Response responseDTO = new RegisterSupplierDTO.Response(
-                savedSupplier.getId(),
-                savedSupplier.getCompanyName(),
-                savedSupplier.getProfilePicture(),
-                savedSupplier.getLogo(),
-                savedSupplier.getDescription(),
-                userDTO);
-
-        return responseDTO;
+        return RegisterSupplierDTO.Response.reponse(savedSupplier, userDTO);
     }
 }

@@ -18,7 +18,6 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
@@ -54,10 +53,9 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false, name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 11)
-    private ROLE role = ROLE.CLIENT;
+    private ROLE role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private SupplierEntity supplier;
@@ -68,6 +66,7 @@ public class UserEntity implements UserDetails {
     // //////////////////
     @PrePersist
     protected void onCreate() {
+        role = ROLE.CLIENT;
         isDeleted = false;
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
@@ -122,4 +121,12 @@ public class UserEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "UserEntity [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", passwordHash="
+                + passwordHash + ", profilePicture=" + profilePicture + ", isDeleted=" + isDeleted + ", createdAt="
+                + createdAt + ", updatedAt=" + updatedAt + ", role=" + role + "]";
+    }
+
 }

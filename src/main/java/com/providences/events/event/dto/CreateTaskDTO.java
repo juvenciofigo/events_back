@@ -3,6 +3,8 @@ package com.providences.events.event.dto;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.providences.events.event.entities.TaskEntity;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,5 +44,15 @@ public class CreateTaskDTO {
         private String title;
         private String description;
         private LocalDateTime dueDate;
+
+        public static Response response(TaskEntity task) {
+            return new Response(
+                    task.getId(),
+                    task.getResponsibleName(),
+                    task.getResponsiblePhone(),
+                    task.getTitle(),
+                    task.getDescription(),
+                    task.getDueDate());
+        }
     }
 }

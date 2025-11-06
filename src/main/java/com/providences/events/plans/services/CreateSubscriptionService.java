@@ -134,15 +134,7 @@ public class CreateSubscriptionService {
 
                 SubscriptionEntity savedSubscription = subscriptionRepository.save(subscription);
 
-                CreateSubscriptionDTO.Response responseDTO = new CreateSubscriptionDTO.Response(
-                                savedSubscription.getId(),
-                                savedSubscription.getStatus().name(),
-                                savedSubscription.getPlanType().name(),
-                                savedSubscription.getAutoRenew(),
-                                savedSubscription.getStartDate(),
-                                savedSubscription.getEndDate(),
-                                savedSubscription.getPayerType().name(),
-                                savedSubscription.getOrganizer().getId(),
+                CreateSubscriptionDTO.Response responseDTO =  CreateSubscriptionDTO.Response.response(savedSubscription,
                                 paymentResponse);
 
                 return responseDTO;

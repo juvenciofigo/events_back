@@ -97,12 +97,6 @@ public class CreatePaymentService {
         reference.setPayment(payment);
         paymentReferenceRepository.save(reference);
 
-        return new CreatePaymentDTO.Response(
-                createdPayment.getId(),
-                createdPayment.getStatus().name(),
-                createdPayment.getAmount(),
-                createdPayment.getCurrency().name(),
-                createdPayment.getPaymentMethod().name(),
-                createdPayment.getCreatedAt());
+        return CreatePaymentDTO.Response.response(createdPayment);
     }
 }
