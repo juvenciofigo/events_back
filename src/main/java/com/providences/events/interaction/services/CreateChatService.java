@@ -2,6 +2,7 @@ package com.providences.events.interaction.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,12 @@ import com.providences.events.event.repositories.EventRepository;
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.guest.GuestRepository;
 import com.providences.events.interaction.dto.CreateChatDTO;
+import com.providences.events.interaction.dto.ParticipantChatDTO;
 import com.providences.events.interaction.entities.ChatEntity;
 import com.providences.events.interaction.entities.ChatEntity.ChatType;
 import com.providences.events.interaction.entities.ParticipantChatEntity.ParticipantType;
 import com.providences.events.interaction.repositories.ChatRepository;
+import com.providences.events.interaction.repositories.ParticipantChatRepository;
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.organizer.OrganizerRepository;
 import com.providences.events.shared.exception.exceptions.BusinessException;
@@ -32,6 +35,7 @@ public class CreateChatService {
     private final SupplierRepository supplierRepository;
     private final AddParticipantToChat addParticipantToChat;
     private final GuestRepository guestRepository;
+    private final ParticipantChatRepository participantChatRepository;
 
     public CreateChatService(
             ChatRepository chatRepository,
@@ -39,13 +43,14 @@ public class CreateChatService {
             OrganizerRepository organizerRepository,
             AddParticipantToChat addParticipantToChat,
             GuestRepository guestRepository,
-            SupplierRepository supplierRepository) {
+            SupplierRepository supplierRepository, ParticipantChatRepository participantChatRepository) {
         this.chatRepository = chatRepository;
         this.eventRepository = eventRepository;
         this.organizerRepository = organizerRepository;
         this.addParticipantToChat = addParticipantToChat;
         this.guestRepository = guestRepository;
         this.supplierRepository = supplierRepository;
+        this.participantChatRepository = participantChatRepository;
     }
 
     public CreateChatDTO.Response execute(CreateChatDTO.Request data) {
@@ -81,7 +86,7 @@ public class CreateChatService {
 
                 if (!guests.isEmpty()) {
                     for (GuestEntity guest : guests) {
-                        addParticipantToChat.addParticipant(chat, ParticipantType.GUESTS, guest, null, null);
+                        addParticipantToChat.addParticipant(chat, ParticipantType.GUEST, guest, null, null);
                     }
                 }
 
@@ -131,7 +136,12 @@ public class CreateChatService {
             default -> throw new BusinessException("Unexpected value: " + chatType, HttpStatus.BAD_REQUEST);
         }
 
-        return CreateChatDTO.Response.response(chat);
+        List<ParticipantChatDTO.Response> participants = participantChatRepository.findByChatId(chat.getId()).stream()
+                .map(p -> ParticipantChatDTO.Response.response(p)).collect(Collectors.toList());
+
+        System.out.println(participants.size());
+
+        return CreateChatDTO.Response.response(chat, participants);
 
     }
 

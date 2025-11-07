@@ -16,6 +16,7 @@ public interface ChatRepository extends JpaRepository<ChatEntity, String> {
         @Query("""
                             Select chat
                             FROM  ChatEntity chat
+                            LEFT JOIN FETCH chat.participants
                             WHERE chat.event.id = :eventId AND chat.type=:type
                         """)
         Optional<ChatEntity> findByEventAndType(@Param("eventId") String eventId, @Param("type") ChatType type);

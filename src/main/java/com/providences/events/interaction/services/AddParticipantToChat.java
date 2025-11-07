@@ -26,7 +26,7 @@ public class AddParticipantToChat {
         ParticipantChatEntity participant = new ParticipantChatEntity();
         participant.setChat(chat);
         participant.setType(type);
-        participant.setGuests(guest);
+        participant.setGuest(guest);
         participant.setOrganizer(organizer);
         participant.setSupplier(supplier);
         return participantChatRepository.save(participant);

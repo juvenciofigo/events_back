@@ -1,10 +1,9 @@
 package com.providences.events.interaction.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.providences.events.interaction.entities.ChatEntity;
-import com.providences.events.interaction.entities.ParticipantChatEntity;
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,12 +36,20 @@ public class CreateChatDTO {
     @AllArgsConstructor
     public static class Response {
         private String id;
-        private List<ParticipantChatEntity> participants;
+        private List<ParticipantChatDTO.Response> participants;
 
         public static Response response(ChatEntity chat) {
             return new Response(
                     chat.getId(),
-                    chat.getParticipants());
+                    chat.getParticipants().stream()
+                            .map(p -> ParticipantChatDTO.Response.response(p)).collect(Collectors.toList()));
         }
+
+        public static Response response(ChatEntity chat, List<ParticipantChatDTO.Response> participants) {
+            return new Response(
+                    chat.getId(),
+                    participants);
+        }
+
     }
 }

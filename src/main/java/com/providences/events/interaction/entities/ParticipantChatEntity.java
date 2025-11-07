@@ -55,7 +55,7 @@ public class ParticipantChatEntity {
     // relacionameto com fornecedor de servicos
     @ManyToOne
     @JoinColumn(name = "guest_id", referencedColumnName = "id")
-    private GuestEntity guests;
+    private GuestEntity guest;
 
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")
@@ -77,7 +77,7 @@ public class ParticipantChatEntity {
 
     public enum ParticipantType {
         SUPPLIER,
-        GUESTS,
+        GUEST,
         ORGANIZER,
         ADMIN
     }

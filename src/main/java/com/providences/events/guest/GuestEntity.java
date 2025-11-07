@@ -55,7 +55,7 @@ public class GuestEntity {
     private LocalDateTime updatedAt;
 
     // relacionameto com participacoes em conversas
-    @OneToMany(mappedBy = "guests", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ParticipantChatEntity> participantChat;
 
     // Relacionamento como mensagem
