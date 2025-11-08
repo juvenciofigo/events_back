@@ -13,38 +13,50 @@ import com.providences.events.interaction.entities.ChatEntity.ChatType;
 @Repository
 public interface ChatRepository extends JpaRepository<ChatEntity, String> {
 
-        @Query("""
-                            Select chat
-                            FROM  ChatEntity chat
-                            LEFT JOIN FETCH chat.participants
-                            WHERE chat.event.id = :eventId AND chat.type=:type
-                        """)
-        Optional<ChatEntity> findByEventAndType(@Param("eventId") String eventId, @Param("type") ChatType type);
+  @Query("""
+          Select chat
+          FROM  ChatEntity chat
+          LEFT JOIN FETCH chat.participants
+          WHERE chat.event.id = :eventId AND chat.type=:type
+      """)
+  Optional<ChatEntity> findByEventAndType(@Param("eventId") String eventId, @Param("type") ChatType type);
 
-        @Query("""
-                            SELECT chat
-                            FROM ChatEntity chat
-                            JOIN chat.participants p
-                            WHERE chat.event.id = :eventId
-                              AND chat.type = :type
-                              AND p.organizer.id = :participantId
-                        """)
-        Optional<ChatEntity> findByEventAndTypeAndParticipantOrganizer(
-                        @Param("eventId") String eventId,
-                        @Param("type") ChatType type,
-                        @Param("participantId") String participantId);
+  @Query("""
+          SELECT chat
+          FROM ChatEntity chat
+          JOIN chat.participants p
+          WHERE chat.event.id = :eventId
+            AND chat.type = :type
+            AND p.organizer.id = :participantId
+      """)
+  Optional<ChatEntity> findByEventAndTypeAndParticipantOrganizer(
+      @Param("eventId") String eventId,
+      @Param("type") ChatType type,
+      @Param("participantId") String participantId);
 
-        @Query("""
-                            SELECT chat
-                            FROM ChatEntity chat
-                            JOIN chat.participants p
-                            WHERE chat.event.id = :eventId
-                              AND chat.type = :type
-                              AND p.organizer.id = :participantId
-                        """)
-        Optional<ChatEntity> findByEventAndTypeAndParticipantSupplier(
-                        @Param("eventId") String eventId,
-                        @Param("type") ChatType type,
-                        @Param("participantId") String participantId);
+  @Query("""
+          SELECT chat
+          FROM ChatEntity chat
+          JOIN chat.participants p
+          WHERE chat.event.id = :eventId
+            AND chat.type = :type
+            AND p.organizer.id = :participantId
+      """)
+  Optional<ChatEntity> findByEventAndTypeAndParticipantSupplier(
+      @Param("eventId") String eventId,
+      @Param("type") ChatType type,
+      @Param("participantId") String participantId);
 
+  @Query("""
+          SELECT chat
+          FROM ChatEntity chat
+          JOIN FETCH chat.participants p
+          JOIN FETCH p.guest
+          JOIN FETCH chat.event e
+          JOIN FETCH e.organizer o
+          JOIN FETCH o.user u
+          JOIN FETCH u.supplier
+          WHERE chat.id = :chat
+      """)
+  Optional<ChatEntity> findByIdAndParticipants(String chat);
 }

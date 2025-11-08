@@ -44,6 +44,6 @@ public class RegisterSupplierService {
 
         AuthUserDTO.Response userDTO = AuthUserDTO.Response.response(savedSupplier.getUser(), null);
 
-        return RegisterSupplierDTO.Response.reponse(savedSupplier, userDTO);
+        return RegisterSupplierDTO.Response.response(savedSupplier, userDTO);
     }
 }

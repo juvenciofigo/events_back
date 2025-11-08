@@ -32,6 +32,7 @@ public class RegisterOrganizerDTO {
     @Setter
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Response {
         private String id;
         private String name;
@@ -43,6 +44,15 @@ public class RegisterOrganizerDTO {
                     organizer.getName(),
                     organizer.getProfilePicture(),
                     user);
+        }
+
+        public static Response response2(OrganizerEntity organizer) {
+
+            Response res = new Response();
+            res.setId(organizer.getId());
+            res.setName(organizer.getName());
+            res.setProfilePicture(organizer.getProfilePicture());
+            return res;
         }
     }
 

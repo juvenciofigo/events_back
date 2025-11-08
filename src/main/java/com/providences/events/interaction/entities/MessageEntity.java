@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -39,11 +40,11 @@ public class MessageEntity {
     @JoinColumn(name = "chat_id", nullable = false)
     private ChatEntity chat;
 
-    @Column(columnDefinition = "Text", nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private Boolean is_read = false;
+    @Column(nullable = false, name="is_read")
+    private Boolean isRead = false;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -61,15 +62,15 @@ public class MessageEntity {
     @JoinColumn(name = "sender_guest_id")
     private GuestEntity senderGuest;
 
-    @Column(name = "is_admin")
-    private boolean senderAdmin;
+    @Column(name = "is_admin", nullable = false)
+    private boolean senderAdmin = false;
 
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(nullable = false, name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
@@ -91,11 +92,10 @@ public class MessageEntity {
 
     @Override
     public String toString() {
-        return "MessageEntity [id=" + id + ", chat=" + chat + ", content=" + content + ", is_read=" + is_read
+        return "MessageEntity [id=" + id + ", chat=" + chat + ", content=" + content + ", isRead=" + isRead
                 + ", sender=" + sender + ", senderSupplier=" + senderSupplier + ", senderOrganizer=" + senderOrganizer
                 + ", senderGuest=" + senderGuest + ", senderAdmin=" + senderAdmin + ", createdAt=" + createdAt
                 + ", updatedAt=" + updatedAt + "]";
     }
 
- 
 }

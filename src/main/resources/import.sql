@@ -31,7 +31,13 @@ INSERT INTO seats (created_at, description, event_id, layout_position_x, layout_
 INSERT INTO tickets (code, created_at, event_id, notes, responded_at, send_at, status, total_people, updated_at, id, seat_id) VALUES ('013e1843-1154-40a3-9cba-d4a818f18519', '2025-10-29 23:20:22.145442', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'notas do ticket', null, '2025-10-29 23:20:22.145442', 'PENDING', 2,'2025-10-29 23:20:22.145442', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', 'ed961e6d-0f99-45a0-be9a-4c87a6c80af7');
 
 -- Gests
--- INSERT INTO guests (created_at, email, name, phone, ticket_id, updated_at, id) VALUES ('2025-10-29 23:20:22.159661', 'juvenciofigo@gmail.com', 'juvenciofigo@gmail.com', 'juvenciofigo@gmail.com', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', '2025-10-29 23:20:22.159661', '2025-10-29 23:20:22.159661')
+INSERT INTO guests (created_at, email, name, phone, ticket_id, updated_at, id) VALUES ('2025-11-07 05:07:03.493465','juvenciofigo@gmail.com','juvrncio','845678954','1c7b184c-46cd-4ef6-9ae8-86e58c588f6d','2025-11-07 05:07:03.493465','6ea20085-7477-4c98-981d-64eecc8ff0f7')
+
+-- Chats
+INSERT INTO chats (created_at, event_id, title, type, updated_at, id) values ('2025-11-07 05:14:48.753768', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'Convidados', 'GUESTS', '2025-11-07 05:14:48.753768', '2aaff332-fb3a-4fa3-8bd9-ef550d25c262');
+
+-- Participants
+INSERT INTO participant_chat (chat_id, created_at, guest_id, organizer_id, supplier_id, type, updated_at, id) values ('2aaff332-fb3a-4fa3-8bd9-ef550d25c262', '2025-11-07 05:14:48.753768','6ea20085-7477-4c98-981d-64eecc8ff0f7', null, null, 'GUEST', '2025-11-07 05:14:48.753768', '197eb488-761a-417e-9407-4aa0a16d3527');
 
 -- Album
  INSERT INTO albums (created_at, description, service_id, title, updated_at, id) VALUES ('2025-10-30 02:35:51.156768', 'Descricao do algum', 'ce6f991a-2343-49b3-aa06-a27c9f9183dc', 'Título do album', '2025-10-30 02:35:51.156768', '341c9554-9dd5-478b-a11e-36c6a92887d9')
@@ -49,55 +55,9 @@ INSERT INTO organizer_plans (created_at, description, features, level, name, pri
 -- -- addon
 -- INSERT INTO supplier_plans (id, name, description, resources, price_monthly, price_yearly, features, level, created_at, updated_at) VALUES (1,'Backstage', 'Entre no palco do marketplace.', 'Até 3 serviços, 1 álbum, visibilidade básica', 500.00, 5000.00,  '{"limite_eventos": 5, "suporte": "básico"}', 1,'2025-10-22 15:30:00','2025-10-22 15:30:00');
 
+ 
 
 
 
 
 
-
-
--- Hibernate: 
---     select
---         se1_0.id,
---         se1_0.company_name,
---         se1_0.created_at,
---         se1_0.description,
---         l1_0.id,
---         l1_0.address,
---         l1_0.city,
---         l1_0.country,
---         l1_0.created_at,
---         l1_0.description,
---         l1_0.latitude,
---         l1_0.longitude,
---         l1_0.name,
---         l1_0.photo,
---         l1_0.province,
---         l1_0.update_at,
---         se1_0.logo,
---         se1_0.profile_picture,
---         se1_0.updated_at,
---         se1_0.user_id
---     from
---         suppliers se1_0
---     left join
---         locations l1_0
---             on l1_0.id=se1_0.location_id
---     where
---         se1_0.id=?
--- Hibernate: 
---     select
---         se1_0.id,
---         se1_0.category,
---         se1_0.created_at,
---         se1_0.description,
---         se1_0.price_base,
---         se1_0.supplier_id,
---         se1_0.updated_at
---     from
---         services se1_0
---     left join
---         suppliers s1_0
---             on s1_0.id=se1_0.supplier_id
---     where
---         s1_0.id=?

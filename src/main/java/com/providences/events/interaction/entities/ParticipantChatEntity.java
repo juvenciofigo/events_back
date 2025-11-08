@@ -19,13 +19,14 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "participant_chat")
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ParticipantChatEntity {
@@ -80,6 +81,13 @@ public class ParticipantChatEntity {
         GUEST,
         ORGANIZER,
         ADMIN
+    }
+
+    @Override
+    public String toString() {
+        return "ParticipantChatEntity [id=" + id + ", type=" + type + ", chat=" + chat + ", organizer=" + organizer
+                + ", supplier=" + supplier + ", guest=" + guest + ", createdAt=" + createdAt + ", updatedAt="
+                + updatedAt + "]";
     }
 
 }
