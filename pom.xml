@@ -109,6 +109,19 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- 💬 Spring Boot Starter WebSocket (para comunicação em tempo real) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+
+		<!-- 🔄 STOMP over WebSocket (incluso automaticamente com spring-messaging) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+		</dependency>
+
+		<!-- Mpesa -->
 		<dependency>
 			<groupId>com.vodacom.mpesa</groupId>
             <artifactId>portal-sdk</artifactId>

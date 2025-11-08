@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class CreateGuestDTO {
@@ -45,9 +46,10 @@ public class CreateGuestDTO {
 
     }
 
-    @Getter
     @Setter
+    @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Response {
         private String id;
         private String name;
@@ -62,6 +64,15 @@ public class CreateGuestDTO {
                     guest.getEmail(),
                     guest.getPhone(),
                     ticket);
+        }
+
+        public static Response response2(GuestEntity guest) {
+            Response res = new Response();
+            res.setId(guest.getId());
+            res.setName(guest.getName());
+            res.setEmail(guest.getEmail());
+            res.setPhone(guest.getPhone());
+            return res;
         }
     }
 }

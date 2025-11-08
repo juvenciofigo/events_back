@@ -62,10 +62,9 @@ public class CreateGuestService {
                 CreateGuestDTO.Response responseGuest = CreateGuestDTO.Response.response(savedGuest, responseTicket);
 
                 event.getChats().stream()
-                                .filter(chat -> chat.getType().name().equalsIgnoreCase("guest"))
+                                .filter(chat -> chat.getType().name().equalsIgnoreCase("guests"))
                                 .findFirst()
                                 .ifPresent(chat -> {
-                                        System.out.println(chat);
                                         addParticipantToChat.addParticipant(chat, ParticipantType.GUEST, savedGuest,
                                                         null, null);
                                 });
