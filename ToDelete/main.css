@@ -1,7 +1,7 @@
 body {
     background-color: #171831;
     color: white;
-    font-family: 'Arial', sans-serif;
+    font-family: "Arial", sans-serif;
 }
 
 #main-content {
@@ -119,6 +119,8 @@ h2 {
 
 #conversation tr:hover {
     background-color: #44456e;
+    display: flex;
+    flex-flow: row;
 }
 
 #livechat {
@@ -140,4 +142,10 @@ h2 {
     color: #c2c2c2;
     margin-top: 5px;
     text-align: right;
+}
+.fim {
+    text-align: end;
+}
+.inicio {
+    text-align: start;
 }

@@ -1,6 +1,7 @@
 package com.providences.events.services.services;
 
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +26,12 @@ public class GetServicesBySupplierService {
         this.serviceRepository = serviceRepository;
     }
 
-    public List<ServicesBySupplierDTO> execute(String supplierId) {
+    public Set<ServicesBySupplierDTO> execute(String supplierId) {
         SupplierEntity supplier = supplierRepository.findById(supplierId)
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado"));
 
-        List<ServiceEntity> services = serviceRepository.findBySupplier_Id(supplier.getId());
+        Set<ServiceEntity> services = serviceRepository.findBySupplier_Id(supplier.getId());
 
-        return services.stream().map(service -> ServicesBySupplierDTO.response(service)).toList();
+        return services.stream().map(service -> ServicesBySupplierDTO.response(service)).collect(Collectors.toSet());
     }
 }

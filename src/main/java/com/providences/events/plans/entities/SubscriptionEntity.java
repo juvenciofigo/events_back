@@ -22,14 +22,14 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "subscriptions")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubscriptionEntity {
@@ -52,7 +52,7 @@ public class SubscriptionEntity {
     private Boolean autoRenew = false;
 
     // Relacionamento como pagamentos
-    @OneToOne(mappedBy = "subscription", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "subscription", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private PaymentEntity payment;
 
     // relacionamentos com potencias planos
@@ -61,17 +61,17 @@ public class SubscriptionEntity {
     private PlanType planType;
 
     // relacionamento com os planos de fornecedores de serviços
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_plan_id")
     private SupplierPlanEntity supplierPlan;
 
     // relacionamento como Addons
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "addon_plan_id")
     private AddonPlanEntity addonPlan;
 
     // relacionamento com os planos de organizadores
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "organizer_plan_id")
     private OrganizerPlanEntity organizerPlan;
 
@@ -101,7 +101,7 @@ public class SubscriptionEntity {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-        status= SubscriptionStatus.ACTIVE;
+        status = SubscriptionStatus.ACTIVE;
     }
 
     @PreUpdate
@@ -125,4 +125,12 @@ public class SubscriptionEntity {
         ORGANIZER,
         SUPPLIER,
     }
+
+    @Override
+    public String toString() {
+        return "SubscriptionEntity [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate + ", status="
+                + status + ", autoRenew=" + autoRenew + ", planType=" + planType + ", payerType=" + payerType
+                + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+    }
+    
 }

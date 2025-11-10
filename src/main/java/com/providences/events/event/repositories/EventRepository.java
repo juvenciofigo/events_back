@@ -1,6 +1,7 @@
 package com.providences.events.event.repositories;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,22 +14,33 @@ import com.providences.events.event.entities.EventEntity;
 public interface EventRepository extends JpaRepository<EventEntity, String> {
 
     @Query("""
-                Select obj
-                FROM  EventEntity obj
-                JOIN FETCH obj.organizer org
-                WHERE org.user = :userID
+                Select e
+                FROM  EventEntity e
+                JOIN FETCH e.organizer o
+                WHERE o.user = :userID
             """)
-    List<EventEntity> getEventByUser(@Param("userID") String userID);
+    Set<EventEntity> getEventByUser(@Param("userID") String userID);
 
     @Query("""
-                SELECT obj
-                FROM EventEntity obj
-                JOIN FETCH obj.organizer org
-                JOIN FETCH org.user usr
-                LEFT JOIN FETCH usr.supplier supp
-                WHERE obj.id = :eventId
+                SELECT e
+                FROM EventEntity e
+                JOIN FETCH e.organizer o
+                JOIN FETCH o.user u
+                JOIN FETCH e.chats c
+                JOIN FETCH e.tickets t
+                JOIN FETCH c.participants
+                LEFT JOIN FETCH u.supplier s
+                WHERE e.id = :eventId
             """)
-    EventEntity getEventById(@Param("eventId") String eventId);
+    Optional<EventEntity> findId(@Param("eventId") String eventId);
 
-    
+    @Query("""
+                SELECT e
+                FROM EventEntity e
+                JOIN FETCH e.tickets t
+                JOIN FETCH t.guest g
+                WHERE e.id = :eventId
+            """)
+    Optional<EventEntity> findIdFetchTickesAndGuests(@Param("eventId") String eventId);
+
 }

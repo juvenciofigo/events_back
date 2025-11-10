@@ -2,7 +2,8 @@ package com.providences.events.event.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.providences.events.payment.PaymentEntity;
 import com.providences.events.ticket.entities.TicketEntity;
@@ -10,6 +11,7 @@ import com.providences.events.ticket.entities.TicketEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -52,7 +54,7 @@ public class SeatEntity {
     @Column(precision = 10, scale = 2, name = "price")
     private BigDecimal price = BigDecimal.ZERO;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     private EventEntity event;
 
@@ -71,11 +73,11 @@ public class SeatEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "seat")
-    private List<TicketEntity> tickets;
+    @OneToMany(mappedBy = "seat", fetch = FetchType.LAZY)
+    private Set<TicketEntity> tickets;
 
-    @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PaymentEntity> payment;
+    @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<PaymentEntity> payment;
 
     @PrePersist
     protected void onCreate() {

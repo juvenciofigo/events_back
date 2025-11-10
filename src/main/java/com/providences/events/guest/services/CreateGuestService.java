@@ -55,9 +55,7 @@ public class CreateGuestService {
                 // Gravar informacoes do ticket
                 GuestEntity savedGuest = guestRepository.save(guest);
 
-                CreateSeatDTO.Response responseSeat = CreateSeatDTO.Response.response(ticket.getSeat());
-
-                CreateTicketDTO.Response responseTicket = CreateTicketDTO.Response.response(ticket, responseSeat);
+                CreateTicketDTO.Response responseTicket = CreateTicketDTO.Response.response(ticket);
 
                 CreateGuestDTO.Response responseGuest = CreateGuestDTO.Response.response(savedGuest, responseTicket);
 

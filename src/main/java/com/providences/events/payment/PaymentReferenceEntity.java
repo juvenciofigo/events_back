@@ -27,7 +27,6 @@ public class PaymentReferenceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @ToString.Include
     private String id;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -35,18 +34,22 @@ public class PaymentReferenceEntity {
     private PaymentEntity payment;
 
     @Column(unique = true, name = "reference_code")
-    @ToString.Include
     private String thirdPartyReference;
 
-    @ToString.Include
-    @Column(name = "transaction_reference")
+    @Column(unique = true,name = "transaction_reference")
     private String transactionReference;
 
     @Column(columnDefinition = "json")
-    @ToString.Include
     private String gatewayResponse;
 
-    @ToString.Include
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Override
+    public String toString() {
+        return "PaymentReferenceEntity [id=" + id + ", thirdPartyReference=" + thirdPartyReference
+                + ", transactionReference=" + transactionReference + ", gatewayResponse=" + gatewayResponse
+                + ", createdAt=" + createdAt + "]";
+    }
+
+    
 }

@@ -2,7 +2,7 @@ package com.providences.events.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import com.providences.events.album.entities.AlbumEntity;
 import com.providences.events.event.entities.ServicesHasEventEntity;
@@ -27,13 +27,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "services")
-@ToString(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class ServiceEntity {
@@ -42,7 +40,7 @@ public class ServiceEntity {
     private String id;
 
     // relacionamento com o fornecedor desse serviço
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id", nullable = false)
     private SupplierEntity supplier;
 
@@ -54,8 +52,8 @@ public class ServiceEntity {
     @Column(name = "price_base", precision = 10, scale = 2)
     private BigDecimal priceBase;
 
-    @OneToMany(mappedBy = "service")
-    private List<ServiceUnavailability> unavailability;
+    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
+    private Set<ServiceUnavailability> unavailability;
 
     @Column(nullable = false, updatable = false, name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -64,20 +62,20 @@ public class ServiceEntity {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     // relaciomanto com pagamentos
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PaymentEntity> payments;
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<PaymentEntity> payments;
 
     // relacionamento com algum de midia
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AlbumEntity> albums;
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<AlbumEntity> albums;
 
     // relacionamento como servicos do evento
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ServicesHasEventEntity> servicesHasEvent;
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<ServicesHasEventEntity> servicesHasEvent;
 
     // relacionameto com comentarios
     @OneToMany(mappedBy = "receiverService", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ReviewEntity> receiverReviews;
+    private Set<ReviewEntity> receiverReviews;
 
     // ///////////
     @PrePersist
@@ -91,4 +89,11 @@ public class ServiceEntity {
         updatedAt = LocalDateTime.now();
     }
 
+    @Override
+    public String toString() {
+        return "ServiceEntity [id=" + id + ", category=" + category + ", description=" + description + ", priceBase="
+                + priceBase + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+    }
+
+    
 }

@@ -6,6 +6,7 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,14 +15,14 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "supplier_plans")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class SupplierPlanEntity {
@@ -49,7 +50,7 @@ public class SupplierPlanEntity {
 
     private Integer level;
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "supplierPlan")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplierPlan", fetch = FetchType.LAZY)
     private Set<SubscriptionEntity> subscriptions;
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")
@@ -67,6 +68,13 @@ public class SupplierPlanEntity {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "SupplierPlanEntity [id=" + id + ", name=" + name + ", description=" + description + ", resources="
+                + resources + ", priceMonthly=" + priceMonthly + ", priceYearly=" + priceYearly + ", features="
+                + features + ", level=" + level + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
 
 }

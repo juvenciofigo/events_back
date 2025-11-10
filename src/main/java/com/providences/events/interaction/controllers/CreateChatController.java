@@ -1,18 +1,20 @@
 package com.providences.events.interaction.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.providences.events.interaction.dto.CreateChatDTO;
+import com.providences.events.interaction.dto.MessageDTO;
 import com.providences.events.interaction.services.CreateChatService;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import java.util.Set;
+
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@RestController
-@RequestMapping("/chats")
+// @RestController
+// @RequestMapping("/chats")
+@Controller
 public class CreateChatController {
     private final CreateChatService createChatService;
 
@@ -20,9 +22,11 @@ public class CreateChatController {
         this.createChatService = createChatService;
     }
 
-    @PostMapping()
-    @PreAuthorize("isAuthenticated()")
-    public CreateChatDTO.Response postMethodName(@Validated @RequestBody CreateChatDTO.Request data) {
+    // @PostMapping()
+    // @PreAuthorize("isAuthenticated()")
+    @MessageMapping("/new-chat")
+    @SendTo("/topics/livechat")
+    public Set<MessageDTO.Response> postMethodName(@Validated @RequestBody CreateChatDTO.Request data) {
 
         return createChatService.execute(data);
     }

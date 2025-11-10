@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,14 +15,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "medias_album")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class MediaEntity {
@@ -36,7 +37,7 @@ public class MediaEntity {
     @Column(nullable = false, name = "media_type")
     private Type type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_album_id")
     private AlbumEntity service_album;
 
@@ -52,6 +53,11 @@ public class MediaEntity {
     public enum Type {
         IMAGE,
         VIDEO
+    }
+
+    @Override
+    public String toString() {
+        return "MediaEntity [id=" + id + ", file_url=" + file_url + ", type=" + type + ", createdAt=" + createdAt + "]";
     }
 
 }

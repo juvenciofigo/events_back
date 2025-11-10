@@ -2,24 +2,26 @@ const stompClient = new StompJs.Client({
     brokerURL: "ws://localhost:8080/events-livechat/websocket",
 });
 
-stompClient.onConnect = (frame) => {
+stompClient.onConnect = async (frame) => {
     setConnected(true);
     console.log("Connected: " + frame);
-    stompClient.subscribe("/topics/livechat", (message) => {
+    await stompClient.subscribe("/topics/livechat", (message) => {
         console.log(JSON.parse(message.body));
 
         updateLiveChat(JSON.parse(message.body));
     });
     stompClient.publish({
-        destination: "/app/new-message",
+        destination: "/app/new-chat",
+        // headers: {
+        //     Authorization:
+        //         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlYzgxMTY0ZS0xZjY5LTQ3YmEtOTVjNy1lMDExZjBhNjgyZWIiLCJyb2xlcyI6WyJDTElFTlQiXSwic3ViIjoianV2ZW5jaW9AZ21haWwuY29tIiwiZXhwIjoxNzYyNjU1MzM4LCJpYXQiOjE3NjI1Njg5Mzh9.E1L6klIROsXhIXVGTNaKNcR6T8B0FJoNsORwzg35pN4",
+        // },
         body: JSON.stringify({
-            sender: "GUEST",
-            chatId: "2aaff332-fb3a-4fa3-8bd9-ef550d25c262",
-            senderGuestId: "6ea20085-7477-4c98-981d-64eecc8ff0f7",
-            content: $("#message").val(),
+            type: "GUESTS",
+            eventId: "fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c",
+            title: "Convidados",
         }),
     });
-    $("#message").val("");
 };
 
 stompClient.onWebSocketError = (error) => {
@@ -42,6 +44,9 @@ function setConnected(connected) {
 }
 
 function connect() {
+    if ($("#user").val() == null || $("#user").val() == "") {
+        return;
+    }
     stompClient.activate();
 }
 
@@ -55,20 +60,33 @@ function sendMessage() {
     stompClient.publish({
         destination: "/app/new-message",
         body: JSON.stringify({
-            sender: "GUEST",
             chatId: "2aaff332-fb3a-4fa3-8bd9-ef550d25c262",
-            senderGuestId: "6ea20085-7477-4c98-981d-64eecc8ff0f7",
             content: $("#message").val(),
+            senderRole: "GUEST",
+            senderId: $("#user").val(),
         }),
     });
-    $("#message").val("");
+    // 6ea20085-7477-4c98-981d-64eecc8ff0f7
 }
 
 function updateLiveChat(message) {
     document.getElementById("livechat").replaceChildren();
+    console.log(message);
 
     message.forEach((element) => {
-        $("#livechat").append("<tr><td>" + element.content + "</td></tr>");
+        if (element.senderId === $("#user").val()) {
+            $("#livechat").append(
+                `<tr>
+                <td class="inicio"> Eu: ${element.content} </td>
+            </tr>`
+            );
+        } else {
+            $("#livechat").append(
+                `<tr>
+                <td class="fim"> ${element.senderName}: ${element.content} </td>
+            </tr>`
+            );
+        }
     });
 }
 

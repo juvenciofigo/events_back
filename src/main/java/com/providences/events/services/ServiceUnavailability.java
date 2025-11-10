@@ -1,6 +1,7 @@
 package com.providences.events.services;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,13 +13,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "service_unavailability")
@@ -33,6 +34,11 @@ public class ServiceUnavailability {
     private ServiceEntity service;
 
     @Column(name = "unavailable_date", nullable = false)
-    private LocalDate unavailableDate;
+    private LocalDateTime unavailableDate;
+
+    @Override
+    public String toString() {
+        return "ServiceUnavailability [id=" + id + ", unavailableDate=" + unavailableDate + "]";
+    }
 
 }

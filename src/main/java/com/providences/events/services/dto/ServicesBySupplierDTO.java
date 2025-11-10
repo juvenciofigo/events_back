@@ -12,7 +12,7 @@ public class ServicesBySupplierDTO {
     private String category;
     private String description;
     private BigDecimal priceBase;
-    // private List<ServiceUnavailability> unavailability;
+    // private Set<ServiceUnavailability> unavailability;
 
     public static ServicesBySupplierDTO response(ServiceEntity data) {
         // Hibernate.initialize(data.getUnavailability());

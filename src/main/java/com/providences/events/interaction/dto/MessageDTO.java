@@ -1,13 +1,10 @@
 package com.providences.events.interaction.dto;
 
-import com.providences.events.guest.dto.CreateGuestDTO;
 import com.providences.events.interaction.entities.MessageEntity;
-import com.providences.events.organizer.dto.RegisterOrganizerDTO;
-import com.providences.events.supplier.dto.RegisterSupplierDTO;
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class MessageDTO {
@@ -24,20 +21,17 @@ public class MessageDTO {
         private String content;
 
         @NotBlank(message = "Quem envia mensagem!")
-        private String sender;
+        private String senderRole;
+        
+        @NotBlank(message = "Informe o remetente!")
+        private String senderId;
 
-        private String senderSupplierId;
-
-        private String senderOrganizerId;
-
-        private String senderGuestId;
-
-        private Boolean senderAdmin;
     }
 
     @Setter
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Response {
 
         private String id;
@@ -46,31 +40,41 @@ public class MessageDTO {
 
         private String content;
 
-        private String sender;
+        private String senderId;
 
-        private RegisterSupplierDTO.Response senderSupplier;
+        private String senderName;
 
-        private RegisterOrganizerDTO.Response senderOrganizer;
-
-        private CreateGuestDTO.Response senderGuest;
-
-        private Boolean senderAdmin;
+        private String senderRole;
 
         public static Response response(MessageEntity message) {
-            return new Response(
-                    message.getId(),
-                    message.getChat().getId(),
-                    message.getContent(),
-                    message.getSender().name(),
-                    message.getSenderSupplier() != null
-                            ? RegisterSupplierDTO.Response.response2(message.getSenderSupplier())
-                            : null,
-                    message.getSenderOrganizer() != null
-                            ? RegisterOrganizerDTO.Response.response2(message.getSenderOrganizer())
-                            : null,
-                    message.getSenderGuest() != null ? CreateGuestDTO.Response.response2(message.getSenderGuest())
-                            : null,
-                    message.isSenderAdmin());
+            Response res = new Response();
+            res.setId(message.getId());
+            res.setChatId(message.getId());
+            res.setContent(message.getContent());
+
+            switch (message.getSender()) {
+                case SUPPLIER:
+                    res.setSenderId(message.getSenderSupplier().getId());
+                    res.setSenderName(message.getSenderSupplier().getCompanyName());
+                    res.setSenderRole("supplier");
+                    break;
+
+                case GUEST:
+                    res.setSenderId(message.getSenderGuest().getId());
+                    res.setSenderName(message.getSenderGuest().getName());
+                    res.setSenderRole("guest");
+                    break;
+
+                case ORGANIZER:
+                    res.setSenderId(message.getSenderOrganizer().getId());
+                    res.setSenderName(message.getSenderOrganizer().getName());
+                    res.setSenderRole("organizer");
+                    break;
+
+                default:
+                    break;
+            }
+            return res;
         }
     }
 }

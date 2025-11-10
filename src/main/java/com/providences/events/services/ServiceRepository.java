@@ -1,7 +1,7 @@
 package com.providences.events.services;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface ServiceRepository extends JpaRepository<ServiceEntity, String> {
 
-      // List<ServiceEntity> findBySupplier_Id(String id);
+      // Set<ServiceEntity> findBySupplier_Id(String id);
 
       @Query("""
                   SELECT s
@@ -17,7 +17,7 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, String> 
                   JOIN FETCH s.supplier sup
                   WHERE sup.id=:id
                   """)
-      List<ServiceEntity> findBySupplier_Id(@Param("id") String id);
+      Set<ServiceEntity> findBySupplier_Id(@Param("id") String id);
 
       @Query("""
                   SELECT ser

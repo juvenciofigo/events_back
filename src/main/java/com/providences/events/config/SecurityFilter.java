@@ -1,8 +1,9 @@
 package com.providences.events.config;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,9 +42,10 @@ public class SecurityFilter extends OncePerRequestFilter {
             if (optUser.isPresent()) {
                 JWTUserData userData = optUser.get();
 
-                List<SimpleGrantedAuthority> authorities = userData.getRoles().stream()
+                Set<SimpleGrantedAuthority> authorities = userData.getRoles()
+                        .stream()
                         .map(role -> new SimpleGrantedAuthority(role))
-                        .toList();
+                        .collect(Collectors.toSet());
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userData,
                         null, authorities);

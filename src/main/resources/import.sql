@@ -12,6 +12,8 @@ INSERT INTO users (id,name,email,password_hash,phone,profile_picture,role,is_del
 
 INSERT INTO suppliers (id, company_name, user_id,description,profile_picture,logo, created_at, updated_at) VALUES ('d787df6d-17e8-444a-88c2-ad21c4117139','Providences','ec81164e-1f69-47ba-95c7-e011f0a682eb','Sem nada a dizer','Foto do profile','Foto de logo','2025-10-22 15:30:00','2025-10-22 15:30:00');
 
+INSERT INTO suppliers (id, company_name, user_id,description,profile_picture,logo, created_at, updated_at) VALUES ('d787df6d-17e8-444a-88c2-ad21c411713','Levezza','ec81164e-1f69-47ba-95c7-e011f0a682er','Sem nada a dizer','Foto do profile','Foto de logo','2025-10-22 15:30:00','2025-10-22 15:30:00');
+
 INSERT INTO organizers (id, user_id, name,phone, created_at,updated_at)VALUES ('2bff41a2-eaad-485e-84fa-ddc1660f6965','ec81164e-1f69-47ba-95c7-e011f0a682eb','juvencio','84669548','2025-10-22 15:30:00','2025-10-22 15:30:00');
 
 INSERT INTO organizers (id, user_id, name,phone, created_at,updated_at)VALUES ('2bff41a2-eaad-485e-84fa-ddc1660f6997','ec81164e-1f69-47ba-95c7-e011f0a682er','figo','84669548','2025-10-22 15:30:00','2025-10-22 15:30:00');
@@ -28,7 +30,7 @@ INSERT INTO events (id,budget_estimated,budget_spent,cover_image,created_at,date
 INSERT INTO seats (created_at, description, event_id, layout_position_x, layout_position_y, name, total_seats, updated_at, id, is_paid, price, available_seats) VALUES ('2025-11-05 00:02:36.834399	', 'Descricao do assento', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', null, null, 'Mesa x', 10, '2025-11-05 00:02:36.834399', 'ed961e6d-0f99-45a0-be9a-4c87a6c80af7', false, 200,10);
 
 -- Ticket
-INSERT INTO tickets (code, created_at, event_id, notes, responded_at, send_at, status, total_people, updated_at, id, seat_id) VALUES ('013e1843-1154-40a3-9cba-d4a818f18519', '2025-10-29 23:20:22.145442', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'notas do ticket', null, '2025-10-29 23:20:22.145442', 'PENDING', 2,'2025-10-29 23:20:22.145442', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', 'ed961e6d-0f99-45a0-be9a-4c87a6c80af7');
+INSERT INTO tickets (code, created_at, event_id, notes, responded_at, send_at, ticket_status, total_people, updated_at, id, seat_id) VALUES ('013e1843-1154-40a3-9cba-d4a818f18519', '2025-10-29 23:20:22.145442', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'notas do ticket', null, '2025-10-29 23:20:22.145442', 'PENDING', 2,'2025-10-29 23:20:22.145442', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', 'ed961e6d-0f99-45a0-be9a-4c87a6c80af7');
 
 -- Gests
 INSERT INTO guests (created_at, email, name, phone, ticket_id, updated_at, id) VALUES ('2025-11-07 05:07:03.493465','juvenciofigo@gmail.com','juvrncio','845678954','1c7b184c-46cd-4ef6-9ae8-86e58c588f6d','2025-11-07 05:07:03.493465','6ea20085-7477-4c98-981d-64eecc8ff0f7')
@@ -36,8 +38,16 @@ INSERT INTO guests (created_at, email, name, phone, ticket_id, updated_at, id) V
 -- Chats
 INSERT INTO chats (created_at, event_id, title, type, updated_at, id) values ('2025-11-07 05:14:48.753768', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'Convidados', 'GUESTS', '2025-11-07 05:14:48.753768', '2aaff332-fb3a-4fa3-8bd9-ef550d25c262');
 
+INSERT INTO chats (created_at, event_id, title, type, updated_at, id) values ('2025-11-07 05:14:48.753768','fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'Fornecedor Leveza', 'SUPPLIER', '2025-11-07 05:14:48.753768', '2aaff332-fb3a-4fa-8bd9-ef550d25c26');
+
 -- Participants
-INSERT INTO participant_chat (chat_id, created_at, guest_id, organizer_id, supplier_id, type, updated_at, id) values ('2aaff332-fb3a-4fa3-8bd9-ef550d25c262', '2025-11-07 05:14:48.753768','6ea20085-7477-4c98-981d-64eecc8ff0f7', null, null, 'GUEST', '2025-11-07 05:14:48.753768', '197eb488-761a-417e-9407-4aa0a16d3527');
+INSERT INTO participant_chat (chat_id, created_at, guest_id, organizer_id, supplier_id, type, updated_at, id, is_removed) values ('2aaff332-fb3a-4fa3-8bd9-ef550d25c262', '2025-11-07 05:14:48.753768','6ea20085-7477-4c98-981d-64eecc8ff0f7', null, null, 'GUEST', '2025-11-07 05:14:48.753768', '197eb488-761a-417e-9407-4aa0a16d3527', false);
+
+INSERT INTO participant_chat (chat_id, created_at, guest_id, organizer_id, supplier_id, type, updated_at, id, is_removed) values ('2aaff332-fb3a-4fa3-8bd9-ef550d25c262', '2025-11-07 05:14:48.753768',null, '2bff41a2-eaad-485e-84fa-ddc1660f6965', null, 'ORGANIZER', '2025-11-07 05:14:48.753768', '197eb488-761a-417e-9407-4aa0a16d3523', false);
+
+INSERT INTO participant_chat (chat_id, created_at, guest_id, organizer_id, supplier_id, type, updated_at, id, is_removed) values ('2aaff332-fb3a-4fa-8bd9-ef550d25c26', '2025-11-07 05:14:48.753768',null, '2bff41a2-eaad-485e-84fa-ddc1660f6965', null, 'ORGANIZER', '2025-11-07 05:14:48.753768', '197eb488-761a-417e-9407-4aa0a16d35', false);
+
+INSERT INTO participant_chat (chat_id, created_at, guest_id, organizer_id, supplier_id, type, updated_at, id, is_removed) values ('2aaff332-fb3a-4fa-8bd9-ef550d25c26', '2025-11-07 05:14:48.753768' ,null, null, 'd787df6d-17e8-444a-88c2-ad21c411713', 'SUPPLIER', '2025-11-07 05:14:48.753768', '197eb488-761a-417e-9407-4aa0a6d3523', false);
 
 -- Album
  INSERT INTO albums (created_at, description, service_id, title, updated_at, id) VALUES ('2025-10-30 02:35:51.156768', 'Descricao do algum', 'ce6f991a-2343-49b3-aa06-a27c9f9183dc', 'Título do album', '2025-10-30 02:35:51.156768', '341c9554-9dd5-478b-a11e-36c6a92887d9')

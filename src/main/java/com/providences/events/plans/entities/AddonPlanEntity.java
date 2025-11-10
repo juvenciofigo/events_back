@@ -6,6 +6,7 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,21 +15,22 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
+
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "addon_plans")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddonPlanEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    
+
     //////
     @Column(length = 30)
     private String name;
@@ -50,7 +52,7 @@ public class AddonPlanEntity {
 
     private Integer level;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "addonPlan")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "addonPlan", fetch = FetchType.LAZY)
     private Set<SubscriptionEntity> subscriptions;
 
     // ///////////
@@ -69,6 +71,13 @@ public class AddonPlanEntity {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "AddonPlanEntity [id=" + id + ", name=" + name + ", description=" + description + ", resources="
+                + resources + ", priceMonthly=" + priceMonthly + ", priceYearly=" + priceYearly + ", features="
+                + features + ", level=" + level + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
 
 }

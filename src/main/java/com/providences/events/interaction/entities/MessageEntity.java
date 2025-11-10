@@ -10,11 +10,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -36,29 +36,29 @@ public class MessageEntity {
     private String id;
 
     ////
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id", nullable = false)
     private ChatEntity chat;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Column(nullable = false, name="is_read")
+    @Column(nullable = false, name = "is_read")
     private Boolean isRead = false;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SenderType sender;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_supplier_id")
     private SupplierEntity senderSupplier;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_organizer_id")
     private OrganizerEntity senderOrganizer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_guest_id")
     private GuestEntity senderGuest;
 
@@ -92,10 +92,10 @@ public class MessageEntity {
 
     @Override
     public String toString() {
-        return "MessageEntity [id=" + id + ", chat=" + chat + ", content=" + content + ", isRead=" + isRead
-                + ", sender=" + sender + ", senderSupplier=" + senderSupplier + ", senderOrganizer=" + senderOrganizer
-                + ", senderGuest=" + senderGuest + ", senderAdmin=" + senderAdmin + ", createdAt=" + createdAt
-                + ", updatedAt=" + updatedAt + "]";
+        return "MessageEntity [id=" + id + ", content=" + content + ", isRead=" + isRead + ", sender=" + sender
+                + ", senderAdmin=" + senderAdmin + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
+
+
 
 }

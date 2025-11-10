@@ -23,7 +23,6 @@ public class AddParticipantToChat {
     public ParticipantChatEntity addParticipant(ChatEntity chat, ParticipantType type, GuestEntity guest,
             OrganizerEntity organizer,
             SupplierEntity supplier) {
-        System.out.println("fffffffffffffffffffffffffffffffffffff");
         ParticipantChatEntity participant = new ParticipantChatEntity();
         participant.setChat(chat);
         participant.setType(type);

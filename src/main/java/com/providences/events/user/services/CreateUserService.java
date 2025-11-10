@@ -31,12 +31,11 @@ public class CreateUserService {
             throw new BusinessException("Email em uso! Experimento com um email diferente!", HttpStatus.CONFLICT);
         }
 
-        UserEntity user = UserEntity.builder()
-                .email(data.getEmail())
-                .passwordHash(passwordEncoder.encode(data.getPassword()))
-                .phone(data.getPhone())
-                .name(data.getName())
-                .build();
+        UserEntity user = new UserEntity();
+        user.setEmail(data.getEmail());
+        user.setPasswordHash(passwordEncoder.encode(data.getPassword()));
+        user.setPhone(data.getPhone());
+        user.setName(data.getName());
 
         this.userRepository.save(user);
         String token = tokenService.generateToken(user);

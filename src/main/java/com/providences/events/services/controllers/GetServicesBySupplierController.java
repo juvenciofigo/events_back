@@ -7,7 +7,7 @@ import com.providences.events.services.dto.ServicesBySupplierDTO;
 import com.providences.events.services.services.GetServicesBySupplierService;
 import com.providences.events.shared.dto.ApiResponse;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +23,11 @@ public class GetServicesBySupplierController {
     }
 
     @GetMapping("/supplier/{supplierId}")
-    public ResponseEntity<ApiResponse<List<ServicesBySupplierDTO>>> execute(@PathVariable String supplierId) {
+    public ResponseEntity<ApiResponse<Set<ServicesBySupplierDTO>>> execute(@PathVariable String supplierId) {
 
-        List<ServicesBySupplierDTO> services = getServicesBySupplierService.execute(supplierId);
+        Set<ServicesBySupplierDTO> services = getServicesBySupplierService.execute(supplierId);
 
-        return ResponseEntity.ok(new ApiResponse<List<ServicesBySupplierDTO>>(true, services));
+        return ResponseEntity.ok(new ApiResponse<Set<ServicesBySupplierDTO>>(true, services));
     }
 
 }

@@ -28,7 +28,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "payments")
@@ -39,37 +38,29 @@ import lombok.ToString;
 public class PaymentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @ToString.Include
     private String id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "payment_method")
-    @ToString.Include
     private PaymentMethod paymentMethod;
 
     @Column(precision = 10, scale = 2)
-    @ToString.Include
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @ToString.Include
     private Currency currency;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @ToString.Include
     private Status status = Status.PENDING;
 
-    @ToString.Include
     private String description;
 
     @Column(nullable = false, updatable = false, name = "created_at")
-    @ToString.Include
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = false, name = "update_at")
-    @ToString.Include
     private LocalDateTime updatedAt;
 
     // Payer
@@ -77,15 +68,15 @@ public class PaymentEntity {
     @Column(nullable = false, name = "payer_type")
     private PayerType payerType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payer_supplier_id")
     private SupplierEntity payerSupplier;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payer_organizer_id")
     private OrganizerEntity payerOrganizer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payer_guest_id")
     private GuestEntity payerGuest;
 
@@ -93,14 +84,13 @@ public class PaymentEntity {
 
     @Column(nullable = false, name = "receiver_type")
     @Enumerated(EnumType.STRING)
-    @ToString.Include
     private ReceiverType receiverType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_supplier_id")
     private SupplierEntity receiverSupplier;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_organizer_id")
     private OrganizerEntity receiverOrganizer;
 
@@ -110,10 +100,9 @@ public class PaymentEntity {
     // Target
     @Column(nullable = false, name = "payment_target")
     @Enumerated(EnumType.STRING)
-    @ToString.Include
     private Target target;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "services_id")
     private ServiceEntity service;
 
@@ -121,11 +110,11 @@ public class PaymentEntity {
     @JoinColumn(name = "subscription_id")
     private SubscriptionEntity subscription;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seat_id")
     private SeatEntity seat;
 
-    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private PaymentReferenceEntity reference;
 
     // Método para identificar quem fez o pagamento
@@ -210,4 +199,14 @@ public class PaymentEntity {
         SUPPLIER
 
     }
+
+    @Override
+    public String toString() {
+        return "PaymentEntity [id=" + id + ", paymentMethod=" + paymentMethod + ", amount=" + amount + ", currency="
+                + currency + ", status=" + status + ", description=" + description + ", createdAt=" + createdAt
+                + ", updatedAt=" + updatedAt + ", payerType=" + payerType + ", receiverType=" + receiverType
+                + ", receiverPlatform=" + receiverPlatform + ", target=" + target + "]";
+    }
+
+    
 }

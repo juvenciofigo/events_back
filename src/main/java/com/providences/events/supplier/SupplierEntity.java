@@ -1,7 +1,7 @@
 package com.providences.events.supplier;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import com.providences.events.interaction.entities.MessageEntity;
 import com.providences.events.interaction.entities.ParticipantChatEntity;
@@ -26,25 +26,21 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "suppliers")
-@Builder
 public class SupplierEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
@@ -52,7 +48,7 @@ public class SupplierEntity {
     private String profilePicture;
     private String logo;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private LocationEntity location;
 
@@ -68,32 +64,31 @@ public class SupplierEntity {
     private LocalDateTime updatedAt;
 
     // Relecionamento no caso de fazer pagamento
-    @OneToMany(mappedBy = "payerSupplier")
-    private List<PaymentEntity> payments;
+    @OneToMany(mappedBy = "payerSupplier", fetch = FetchType.LAZY)
+    private Set<PaymentEntity> payments;
 
     // Relecionamento no caso de receber pagamento
-    @OneToMany(mappedBy = "receiverSupplier")
-    private List<PaymentEntity> receivers;
+    @OneToMany(mappedBy = "receiverSupplier", fetch = FetchType.LAZY)
+    private Set<PaymentEntity> receivers;
 
     // Relecionamento com serviços
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ServiceEntity> services;
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<ServiceEntity> services;
 
     // relacionameto com participacoes em conversas
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ParticipantChatEntity> participantChat;
-    
+    private Set<ParticipantChatEntity> participantChat;
+
     // Relacionamento como mensagem
     @OneToMany(mappedBy = "senderSupplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<MessageEntity> chats;
-    
+    private Set<MessageEntity> chats;
 
     // Relacionemnto com comentarios
     @OneToMany(mappedBy = "senderSupplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ReviewEntity> senderReviews;
+    private Set<ReviewEntity> senderReviews;
 
     @OneToMany(mappedBy = "receiverSupplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ReviewEntity> receiverReviews;
+    private Set<ReviewEntity> receiverReviews;
 
     // ///////////
     @PrePersist
@@ -106,4 +101,13 @@ public class SupplierEntity {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    @Override
+    public String toString() {
+        return "SupplierEntity [id=" + id + ", profilePicture=" + profilePicture + ", logo=" + logo + ", description="
+                + description + ", companyName=" + companyName + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
+                + "]";
+    }
+
+    
 }

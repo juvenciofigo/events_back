@@ -1,6 +1,7 @@
 package com.providences.events.interaction.services;
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -33,13 +34,12 @@ public class CreateMessageService {
         this.chatRepository = chatRepository;
     }
 
-    public  List<MessageDTO.Response> execute(MessageDTO.Request data) {
-        SenderType senderType;
-        try {
-            senderType = SenderType.valueOf(data.getSender().toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new BusinessException("Tipo de chat inválido", HttpStatus.BAD_REQUEST);
-        }
+    public Set<MessageDTO.Response> execute(MessageDTO.Request data) {
+
+        SenderType senderType = Arrays.stream(SenderType.values())
+                .filter(type -> type.name().equalsIgnoreCase(data.getSenderRole()))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException("Tipo de remetente inválido", HttpStatus.BAD_REQUEST));
 
         ChatEntity chat = chatRepository.findByIdAndParticipants(data.getChatId())
                 .orElseThrow(() -> new ResourceNotFoundException("Conversa não encontrada!"));
@@ -49,15 +49,12 @@ public class CreateMessageService {
         message.setContent(data.getContent());
         message.setSender(senderType);
 
-        switch (senderType.name()) {
-            case "GUEST" -> {
-                if (data.getSenderGuestId() == null || data.getSenderGuestId().isBlank()) {
-                    throw new BusinessException("Informe o convidado", HttpStatus.BAD_REQUEST);
-                }
+        switch (senderType) {
+            case GUEST -> {
 
                 GuestEntity guestExist = chat.getParticipants().stream()
                         .filter(participant -> participant.getGuest() != null
-                                && participant.getGuest().getId().equals(data.getSenderGuestId()))
+                                && participant.getGuest().getId().equals(data.getSenderId()))
                         .map(participant -> participant.getGuest())
                         .findFirst()
                         .orElseThrow(() -> new ResourceNotFoundException("Esse Guest não pertence a essa conversa!"));
@@ -66,13 +63,10 @@ public class CreateMessageService {
 
             }
 
-            case "ORGANIZER" -> {
-                if (data.getSenderOrganizerId() == null || data.getSenderOrganizerId().isBlank()) {
-                    throw new BusinessException("Informe o organizador", HttpStatus.BAD_REQUEST);
-                }
+            case ORGANIZER -> {
 
                 OrganizerEntity organizerExist = chat.getParticipants().stream()
-                        .filter(participant -> participant.getId().equals(data.getSenderOrganizerId()))
+                        .filter(participant -> participant.getId().equals(data.getSenderId()))
                         .map(participant -> participant.getOrganizer())
                         .findFirst()
                         .orElseThrow(
@@ -82,12 +76,10 @@ public class CreateMessageService {
 
             }
 
-            case "SUPPLIER" -> {
-                if (data.getSenderSupplierId() == null || data.getSenderSupplierId().isBlank()) {
-                    throw new BusinessException("Informe o fornecedor", HttpStatus.BAD_REQUEST);
-                }
+            case SUPPLIER -> {
+
                 SupplierEntity supplierExist = chat.getParticipants().stream()
-                        .filter(participant -> participant.getId().equals(data.getSenderSupplierId()))
+                        .filter(participant -> participant.getId().equals(data.getSenderId()))
                         .map(participant -> participant.getSupplier())
                         .findFirst()
                         .orElseThrow(
@@ -99,10 +91,10 @@ public class CreateMessageService {
             default -> throw new BusinessException("informa o remetente", HttpStatus.BAD_REQUEST);
         }
         messageRepository.save(message);
-        
-        List<MessageDTO.Response> messages = messageRepository.findByChatId(data.getChatId())
-        .stream()
-        .map(me-> MessageDTO.Response.response(me)).collect(Collectors.toList());
+
+        Set<MessageDTO.Response> messages = messageRepository.findByChatId(data.getChatId())
+                .stream()
+                .map(me -> MessageDTO.Response.response(me)).collect(Collectors.toSet());
 
         return messages;
     }

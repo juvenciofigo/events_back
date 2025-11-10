@@ -24,20 +24,20 @@ public class CreateTicketDTO {
         private String code;
         private Integer totalPeople;
         private String notes;
-        private TicketEntity.Status status;
+        private TicketEntity.TicketStatus ticketStatus;
         private LocalDateTime sentAt;
         private LocalDateTime respondedAt;
         private CreateSeatDTO.Response seat;
 
-        public static Response response(TicketEntity ticket, CreateSeatDTO.Response seat) {
+        public static Response response(TicketEntity ticket) {
             return new Response(
                     ticket.getCode(),
                     ticket.getTotalPeople(),
                     ticket.getNotes(),
-                    ticket.getStatus(),
+                    ticket.getTicketStatus(),
                     ticket.getSentAt(),
                     ticket.getRespondedAt(),
-                    seat);
+                    CreateSeatDTO.Response.response(ticket.getSeat()));
         }
     }
 }

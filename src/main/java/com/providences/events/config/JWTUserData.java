@@ -1,6 +1,7 @@
 package com.providences.events.config;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class JWTUserData {
     String userId;
     String email;
-    List<String> roles;
+    Set<String> roles = new HashSet<>();
 
 }

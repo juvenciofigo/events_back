@@ -1,13 +1,14 @@
 package com.providences.events.album.entities;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import com.providences.events.services.ServiceEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,14 +19,14 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "albums")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AlbumEntity {
@@ -38,7 +39,7 @@ public class AlbumEntity {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
     private ServiceEntity service;
 
@@ -48,8 +49,8 @@ public class AlbumEntity {
     @Column(nullable = false, name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "service_album", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<MediaEntity> medias;
+    @OneToMany(mappedBy = "service_album", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    Set<MediaEntity> medias;
 
     // ///////////
     @PrePersist
@@ -61,6 +62,12 @@ public class AlbumEntity {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "AlbumEntity [id=" + id + ", title=" + title + ", description=" + description + ", createdAt="
+                + createdAt + ", updatedAt=" + updatedAt + "]";
     }
 
 }

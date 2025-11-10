@@ -20,7 +20,7 @@ import com.providences.events.payment.services.CreatePaymentService;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
 import com.providences.events.ticket.entities.TicketEntity;
-import com.providences.events.ticket.entities.TicketEntity.Status;
+import com.providences.events.ticket.entities.TicketEntity.TicketStatus;
 import com.providences.events.ticket.repositories.TicketRepository;
 
 @Service
@@ -72,7 +72,7 @@ public class CreateTicketService {
 
             // quando o seat for pago, fazer pagamento
             if (Boolean.TRUE.equals(seat.getIsPaid())) {
-                ticket.setStatus(Status.CONFIRMED);
+                ticket.setTicketStatus(TicketStatus.CONFIRMED);
                 ticket.setRespondedAt(LocalDateTime.now());
 
                 CreatePaymentDTO.Request paymentData = new CreatePaymentDTO.Request();

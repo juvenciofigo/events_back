@@ -1,7 +1,8 @@
 package com.providences.events.organizer;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.interaction.entities.MessageEntity;
@@ -39,7 +40,7 @@ public class OrganizerEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private UserEntity user;
 
@@ -58,32 +59,31 @@ public class OrganizerEntity {
     @Column(nullable = false, name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "payerOrganizer")
-    private List<PaymentEntity> payments;
+    @OneToMany(mappedBy = "payerOrganizer", fetch = FetchType.LAZY)
+    private Set<PaymentEntity> payments;
 
-    @OneToMany(mappedBy = "receiverOrganizer")
-    private List<PaymentEntity> receivers;
+    @OneToMany(mappedBy = "receiverOrganizer", fetch = FetchType.LAZY)
+    private Set<PaymentEntity> receivers;
 
-    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EventEntity> events;
+    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<EventEntity> events;
 
     // relacionameto com comentarios
 
     // Relacionemnto com comentarios
     @OneToMany(mappedBy = "senderOrganizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ReviewEntity> senderReviews;
+    private Set<ReviewEntity> senderReviews;
 
     @OneToMany(mappedBy = "receiverOrganizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ReviewEntity> receiverReviews;
+    private Set<ReviewEntity> receiverReviews;
 
     // relacionameto com participacoes em conversas
-    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval =
-    true, fetch = FetchType.LAZY)
-    private List<ParticipantChatEntity> participantChat;
+    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<ParticipantChatEntity> participantChat;
 
     // Relacionamento como mensagem
     @OneToMany(mappedBy = "senderOrganizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<MessageEntity> chats;
+    private Set<MessageEntity> chats;
 
     // ///////////
     @PrePersist
@@ -99,8 +99,9 @@ public class OrganizerEntity {
 
     @Override
     public String toString() {
-        return "OrganizerEntity [id=" + id + ", user=" + user + ", name=" + name + ", phone=" + phone
-                + ", profilePicture=" + profilePicture + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+        return "OrganizerEntity [id=" + id + ", name=" + name + ", phone=" + phone + ", profilePicture="
+                + profilePicture + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
 
+  
 }

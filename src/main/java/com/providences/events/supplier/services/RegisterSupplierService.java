@@ -31,14 +31,13 @@ public class RegisterSupplierService {
             new ResourceNotFoundException("Utilizador não encontrado");
         }
 
-        SupplierEntity supplier = SupplierEntity.builder()
-                .companyName(data.getCompanyName())
-                .description(data.getDescription())
-                .logo(data.getLogo().isBlank() ? user.get().getProfilePicture() : data.getLogo())
-                .profilePicture(
-                        data.getProfilePicture().isBlank() ? user.get().getProfilePicture() : data.getProfilePicture())
-                .user(user.get())
-                .build();
+        SupplierEntity supplier = new SupplierEntity();
+                supplier.setCompanyName(data.getCompanyName());
+                supplier.setDescription(data.getDescription());
+                supplier.setLogo(data.getLogo().isBlank() ? user.get().getProfilePicture() : data.getLogo());
+                supplier.setProfilePicture(
+                        data.getProfilePicture().isBlank() ? user.get().getProfilePicture() : data.getProfilePicture());
+                supplier.setUser(user.get());
 
         SupplierEntity savedSupplier = supplierRepository.save(supplier);
 

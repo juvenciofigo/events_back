@@ -10,6 +10,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,14 +20,14 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "reviews")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReviewEntity {
@@ -44,11 +45,11 @@ public class ReviewEntity {
     @Enumerated(EnumType.STRING)
     private ReviewSender sender;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_supplier_id")
     private SupplierEntity senderSupplier;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_organizer_id")
     private OrganizerEntity senderOrganizer;
 
@@ -57,15 +58,15 @@ public class ReviewEntity {
     @Enumerated(EnumType.STRING)
     private ReviewTarget target;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_supplier_id")
     private SupplierEntity receiverSupplier;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_organizer_id")
     private OrganizerEntity receiverOrganizer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_service_id")
     private ServiceEntity receiverService;
 
@@ -87,14 +88,21 @@ public class ReviewEntity {
         updatedAt = LocalDateTime.now();
     }
 
-   public enum ReviewTarget {
+    public enum ReviewTarget {
         SERVICE,
         SUPPLIER,
         ORGANIZER
     }
 
-   public enum ReviewSender {
+    public enum ReviewSender {
         SUPPLIER,
         ORGANIZER
     }
+
+    @Override
+    public String toString() {
+        return "ReviewEntity [id=" + id + ", comment=" + comment + ", rating=" + rating + ", sender=" + sender
+                + ", target=" + target + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+    }
+
 }

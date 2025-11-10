@@ -1,8 +1,9 @@
 package com.providences.events.config;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class TokenService {
                     .build()
                     .verify(token);
 
-            List<String> roles = decoded.getClaim("roles").asList(String.class);
+            Set<String> roles = new HashSet<>(decoded.getClaim("roles").asList(String.class));
 
             // decoded.getClaim("userId").asString(),
             // decoded.getSubject(),

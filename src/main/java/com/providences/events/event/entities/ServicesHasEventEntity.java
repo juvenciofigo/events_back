@@ -18,13 +18,13 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 @Entity
-@ToString(onlyExplicitlyIncluded = true)
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "services_has_event")
@@ -89,4 +89,12 @@ public class ServicesHasEventEntity {
         PARTIAL,
         PAID
     }
+
+    @Override
+    public String toString() {
+        return "ServicesHasEventEntity [id=" + id + ", status=" + status + ", contractDate=" + contractDate
+                + ", balanceDue=" + balanceDue + ", notes=" + notes + ", paymentStatus=" + paymentStatus
+                + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+    }
+
 }

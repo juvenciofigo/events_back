@@ -1,6 +1,8 @@
 package com.providences.events.user.dto;
 
-import java.util.List;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
 
@@ -32,7 +34,7 @@ public class AuthUserDTO {
         private String email;
         private String name;
         private String profilePicture;
-        private List<String> roles;
+        private Set<String> roles;
         private String token;
 
         public static Response response(UserEntity user, String token) {
@@ -41,7 +43,7 @@ public class AuthUserDTO {
                     user.getEmail(),
                     user.getName(),
                     user.getProfilePicture(),
-                    user.getAuthorities().stream().map(auth -> auth.getAuthority()).toList(),
+                    user.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.toSet()),
                     StringUtils.hasText(token) ? token : null);
         }
 

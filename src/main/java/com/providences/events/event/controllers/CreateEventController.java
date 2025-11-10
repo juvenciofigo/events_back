@@ -32,11 +32,13 @@ public class CreateEventController {
             @Validated @RequestBody CreateEventDTO.Request data, Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
-        String UserIdFromToken = userData.getUserId();
+        String userId = userData.getUserId();
 
-        CreateEventDTO.Response event = createEventService.execute(data, UserIdFromToken);
+        CreateEventDTO.Response event = createEventService.execute(data, userId);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<CreateEventDTO.Response>(true, event));
+        return ResponseEntity
+        .status(HttpStatus.CREATED)
+        .body(new ApiResponse<CreateEventDTO.Response>(true, event));
     }
 
 }

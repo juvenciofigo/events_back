@@ -52,7 +52,6 @@ public class CreateReviewService {
 
         switch (data.getSender().toUpperCase()) {
             case "ORGANIZER":
-            System.out.println(data.getSenderOrganizerID());
                 OrganizerEntity organizer = organizerRepository.findById(data.getSenderOrganizerID())
                         .orElseThrow(() -> new BusinessException("Sender Organizer não encontrado!", HttpStatus.BAD_REQUEST));
 

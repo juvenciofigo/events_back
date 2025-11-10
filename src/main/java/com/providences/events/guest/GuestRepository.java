@@ -1,6 +1,6 @@
 package com.providences.events.guest;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,5 +15,5 @@ public interface GuestRepository extends JpaRepository<GuestEntity, String> {
                 WHERE tic.event.id = :eventId
             """)
 
-    List<GuestEntity> findGuestEvent(@Param("eventId") String eventId);
+    Set<GuestEntity> findGuestEvent(@Param("eventId") String eventId);
 }

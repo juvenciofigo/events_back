@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Convite Especial</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+  
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #6B0F1A, #B91372);
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .card {
+    background: rgba(0,0,0,0.6);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    box-shadow: 0 8px 30px rgba(255, 0, 150, 0.6);
+    text-align: center;
+  }
+
+  .card h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    font-weight: 300;
+    color: #f3a6c7;
+  }
+
+  .details {
+    font-size: 1rem;
+    margin-bottom: 25px;
+    line-height: 1.5;
+  }
+
+  .qr-code img {
+    width: 160px;
+    height: 160px;
+    margin: 25px 0;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #f13ac4;
+  }
+
+  .btn-confirm {
+    background: #f13ac4;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 40px;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 6px 15px #f13ac4aa;
+    transition: background 0.3s ease;
+  }
+  .btn-confirm:hover {
+    background: #e027a3;
+  }
+
+  .footer {
+    font-size: 0.8rem;
+    margin-top: 30px;
+    color: #ff8fbb;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Convite VIP</h1>
+    <p class="subtitle">Olá, <strong>{{nome_do_convidado}}</strong></p>
+    <p class="details">Você está cordialmente convidado para o evento <strong>{{titulo_do_evento}}</strong>.</p>
+    <p class="details"><strong>Quando:</strong> {{data_do_evento}}<br />
+    <strong>Onde:</strong> {{local_do_evento}}</p>
+    <p class="details">{{descricao_do_evento}}</p>
+    
+    <div class="qr-code">
+      <img src="{{url_do_qr_code}}" alt="QR Code do convite" />
+    </div>
+
+    <a href="{{link_confirmacao}}" class="btn-confirm">Confirmar Presença</a>
+    
+    <div class="footer">Organização: {{nome_do_organizador}}</div>
+  </div>
+</body>
+</html>

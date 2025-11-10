@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Convite para Evento</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2a7ae2;
+            margin-bottom: 10px;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .button {
+            display: inline-block;
+            background-color: #2a7ae2;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+        }
+        .qr-code {
+            margin-top: 25px;
+            text-align: center;
+        }
+        .qr-code img {
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Você está convidado!</h1>
+        <p>Olá <strong>{{nome_do_convidado}}</strong>,</p>
+        <p>Temos o prazer de convidá-lo para o evento <strong>{{titulo_do_evento}}</strong>.</p>
+        
+        <p><strong>Data:</strong> {{data_do_evento}}</p>
+        <p><strong>Local:</strong> {{local_do_evento}}</p>
+        
+        <p>{{descricao_do_evento}}</p>
+        
+        <div class="qr-code">
+            <p>Apresente o QR Code abaixo na entrada:</p>
+            <img src="{{url_do_qr_code}}" alt="QR Code do convite" />
+        </div>
+        
+        <a href="{{link_confirmacao}}" class="button">Confirmar Presença</a>
+
+        <div class="footer">
+            <p>Esperamos você no evento!</p>
+            <p>Organização: {{nome_do_organizador}}</p>
+        </div>
+    </div>
+</body>
+</html>

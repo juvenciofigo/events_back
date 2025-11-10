@@ -9,6 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,7 +19,6 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,22 +39,22 @@ public class ParticipantChatEntity {
     @Column(nullable = false)
     private ParticipantType type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id", nullable = false)
     private ChatEntity chat;
 
     // relacionameto com organizador
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organizer_id", referencedColumnName = "id")
     private OrganizerEntity organizer;
 
     // relacionameto com fornecedor de servicos
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id", referencedColumnName = "id")
     private SupplierEntity supplier;
 
     // relacionameto com fornecedor de servicos
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest_id", referencedColumnName = "id")
     private GuestEntity guest;
 
@@ -65,10 +65,14 @@ public class ParticipantChatEntity {
     @Column(nullable = false, name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    @Column(nullable = false, name = "is_removed")
+    private Boolean IsRemoved;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        IsRemoved = false;
     }
 
     @PreUpdate
@@ -85,9 +89,8 @@ public class ParticipantChatEntity {
 
     @Override
     public String toString() {
-        return "ParticipantChatEntity [id=" + id + ", type=" + type + ", chat=" + chat + ", organizer=" + organizer
-                + ", supplier=" + supplier + ", guest=" + guest + ", createdAt=" + createdAt + ", updatedAt="
-                + updatedAt + "]";
+        return "ParticipantChatEntity [id=" + id + ", type=" + type + ", createdAt=" + createdAt + ", updatedAt="
+                + updatedAt + ", IsRemoved=" + IsRemoved + "]";
     }
 
 }

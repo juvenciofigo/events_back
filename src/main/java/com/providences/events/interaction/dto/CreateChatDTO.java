@@ -1,6 +1,7 @@
 package com.providences.events.interaction.dto;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.providences.events.interaction.entities.ChatEntity;
@@ -36,16 +37,16 @@ public class CreateChatDTO {
     @AllArgsConstructor
     public static class Response {
         private String id;
-        private List<ParticipantChatDTO.Response> participants;
+        private Set<ParticipantChatDTO.Response> participants;
 
         public static Response response(ChatEntity chat) {
             return new Response(
                     chat.getId(),
                     chat.getParticipants().stream()
-                            .map(p -> ParticipantChatDTO.Response.response(p)).collect(Collectors.toList()));
+                            .map(p -> ParticipantChatDTO.Response.response(p)).collect(Collectors.toSet()));
         }
 
-        public static Response response(ChatEntity chat, List<ParticipantChatDTO.Response> participants) {
+        public static Response response(ChatEntity chat, Set<ParticipantChatDTO.Response> participants) {
             return new Response(
                     chat.getId(),
                     participants);

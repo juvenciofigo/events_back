@@ -2,7 +2,7 @@ package com.providences.events.user;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,7 +21,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-@Builder
 public class UserEntity implements UserDetails {
 
     @Id
@@ -57,10 +56,10 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false, length = 11)
     private ROLE role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private SupplierEntity supplier;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private OrganizerEntity organizer;
 
     // //////////////////
@@ -85,9 +84,9 @@ public class UserEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (role == ROLE.ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("CLIENT"));
+            return Set.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("CLIENT"));
         } else {
-            return List.of(new SimpleGrantedAuthority("CLIENT"));
+            return Set.of(new SimpleGrantedAuthority("CLIENT"));
         }
     }
 
@@ -128,5 +127,7 @@ public class UserEntity implements UserDetails {
                 + passwordHash + ", profilePicture=" + profilePicture + ", isDeleted=" + isDeleted + ", createdAt="
                 + createdAt + ", updatedAt=" + updatedAt + ", role=" + role + "]";
     }
+
+
 
 }
