@@ -11,7 +11,7 @@ public interface GuestRepository extends JpaRepository<GuestEntity, String> {
     @Query("""
                 Select obj
                 FROM  GuestEntity obj
-                JOIN FETCH obj.ticket tic
+                LEFT JOIN FETCH obj.ticket tic
                 WHERE tic.event.id = :eventId
             """)
 

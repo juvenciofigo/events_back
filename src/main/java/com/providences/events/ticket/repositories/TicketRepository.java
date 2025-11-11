@@ -15,8 +15,8 @@ public interface TicketRepository extends JpaRepository<TicketEntity, String> {
     @Query("""
                 SELECT t
                 FROM TicketEntity t
-                LEFT JOIN FETCH t.guest
-                LEFT JOIN FETCH t.seat
+                LEFT JOIN FETCH  t.guest
+                LEFT JOIN FETCH  t.seat
                 WHERE t.id = :ticketId
             """)
     Optional<TicketEntity> getTicketById(@Param("ticketId") String ticketId);

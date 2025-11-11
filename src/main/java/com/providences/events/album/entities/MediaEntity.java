@@ -30,19 +30,19 @@ public class MediaEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false, updatable = false)
-    private String file_url;
+    @Column(nullable = false, updatable = false, name = "file_url")
+    private String fileUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "media_type")
-    private Type type;
+    private MediaType mediaType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_album_id")
-    private AlbumEntity service_album;
+    @JoinColumn(nullable = false, name = "service_album_id")
+    private AlbumEntity serviceAlbum;
 
     @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     // ///////////
     @PrePersist
@@ -50,14 +50,15 @@ public class MediaEntity {
         createdAt = LocalDateTime.now();
     }
 
-    public enum Type {
+    public enum MediaType {
         IMAGE,
         VIDEO
     }
 
     @Override
     public String toString() {
-        return "MediaEntity [id=" + id + ", file_url=" + file_url + ", type=" + type + ", createdAt=" + createdAt + "]";
+        return "MediaEntity [id=" + id + ", fileUrl=" + fileUrl + ", mediaType=" + mediaType + ", createdAt="
+                + createdAt + "]";
     }
 
 }

@@ -23,8 +23,8 @@ public class UploadService {
 
         for (MultipartFile file : files) {
             if (file.isEmpty())
-                continue; // ignora arquivos vazios
-            // Gera nome único
+                continue; 
+                
             String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
 
             // Faz upload para o bucket

@@ -14,7 +14,7 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, String> 
       @Query("""
                   SELECT s
                   FROM ServiceEntity s
-                  JOIN FETCH s.supplier sup
+                  LEFT JOIN FETCH s.supplier sup
                   WHERE sup.id=:id
                   """)
       Set<ServiceEntity> findBySupplier_Id(@Param("id") String id);
@@ -22,9 +22,9 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, String> 
       @Query("""
                   SELECT ser
                   FROM ServiceEntity ser
-                  JOIN FETCH ser.supplier sup
-                  JOIN FETCH sup.user usr
-                  LEFT JOIN FETCH usr.organizer org
+                  LEFT JOIN FETCH ser.supplier sup
+                  LEFT JOIN FETCH sup.user usr
+                  LEFT JOIN FETCH  usr.organizer org
                   WHERE ser.id = :serviceID
                   """)
       Optional<ServiceEntity> getService(@Param("serviceID") String serviceID);

@@ -49,7 +49,7 @@ public class AlbumEntity {
     @Column(nullable = false, name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "service_album", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "serviceAlbum", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     Set<MediaEntity> medias;
 
     // ///////////

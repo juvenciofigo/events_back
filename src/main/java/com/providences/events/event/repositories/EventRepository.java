@@ -16,7 +16,7 @@ public interface EventRepository extends JpaRepository<EventEntity, String> {
     @Query("""
                 Select e
                 FROM  EventEntity e
-                JOIN FETCH e.organizer o
+                LEFT JOIN FETCH e.organizer o
                 WHERE o.user = :userID
             """)
     Set<EventEntity> getEventByUser(@Param("userID") String userID);
@@ -24,12 +24,12 @@ public interface EventRepository extends JpaRepository<EventEntity, String> {
     @Query("""
                 SELECT e
                 FROM EventEntity e
-                JOIN FETCH e.organizer o
-                JOIN FETCH o.user u
-                JOIN FETCH e.chats c
-                JOIN FETCH e.tickets t
-                JOIN FETCH c.participants
-                LEFT JOIN FETCH u.supplier s
+                LEFT JOIN FETCH e.organizer o
+                LEFT JOIN FETCH o.user u
+                LEFT JOIN FETCH e.chats c
+                LEFT JOIN FETCH e.tickets t
+                LEFT JOIN FETCH c.participants
+                LEFT JOIN FETCH  u.supplier s
                 WHERE e.id = :eventId
             """)
     Optional<EventEntity> findId(@Param("eventId") String eventId);
@@ -37,8 +37,8 @@ public interface EventRepository extends JpaRepository<EventEntity, String> {
     @Query("""
                 SELECT e
                 FROM EventEntity e
-                JOIN FETCH e.tickets t
-                JOIN FETCH t.guest g
+                LEFT JOIN FETCH e.tickets t
+                LEFT JOIN FETCH t.guest g
                 WHERE e.id = :eventId
             """)
     Optional<EventEntity> findIdFetchTickesAndGuests(@Param("eventId") String eventId);

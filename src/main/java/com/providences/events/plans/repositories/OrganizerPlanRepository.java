@@ -14,8 +14,8 @@ public interface OrganizerPlanRepository extends JpaRepository<OrganizerPlanEnti
     @Query("""
                 Select obj
                 FROM  OrganizerPlanEntity obj
-                LEFT JOIN FETCH obj.subscriptions
+                LEFT JOIN FETCH  obj.subscriptions
                 WHERE obj.id = :id
             """)
-      Optional<OrganizerPlanEntity> fetchById(@Param("id") String id);
+    Optional<OrganizerPlanEntity> fetchById(@Param("id") String id);
 }
