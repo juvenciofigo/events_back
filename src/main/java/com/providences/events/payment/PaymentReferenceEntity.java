@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "payment_reference")
@@ -36,7 +35,7 @@ public class PaymentReferenceEntity {
     @Column(unique = true, name = "reference_code")
     private String thirdPartyReference;
 
-    @Column(unique = true,name = "transaction_reference")
+    @Column(unique = true, name = "transaction_reference")
     private String transactionReference;
 
     @Column(columnDefinition = "json")
@@ -51,5 +50,4 @@ public class PaymentReferenceEntity {
                 + ", createdAt=" + createdAt + "]";
     }
 
-    
 }

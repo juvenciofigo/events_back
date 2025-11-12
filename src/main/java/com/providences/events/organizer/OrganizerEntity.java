@@ -1,7 +1,6 @@
 package com.providences.events.organizer;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 import com.providences.events.event.entities.EventEntity;
@@ -11,7 +10,6 @@ import com.providences.events.payment.PaymentEntity;
 import com.providences.events.reviews.ReviewEntity;
 import com.providences.events.user.UserEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -65,24 +63,24 @@ public class OrganizerEntity {
     @OneToMany(mappedBy = "receiverOrganizer", fetch = FetchType.LAZY)
     private Set<PaymentEntity> receivers;
 
-    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "organizer", fetch = FetchType.LAZY)
     private Set<EventEntity> events;
 
     // relacionameto com comentarios
 
     // Relacionemnto com comentarios
-    @OneToMany(mappedBy = "senderOrganizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "senderOrganizer", fetch = FetchType.LAZY)
     private Set<ReviewEntity> senderReviews;
 
-    @OneToMany(mappedBy = "receiverOrganizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "receiverOrganizer", fetch = FetchType.LAZY)
     private Set<ReviewEntity> receiverReviews;
 
     // relacionameto com participacoes em conversas
-    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "organizer", fetch = FetchType.LAZY)
     private Set<ParticipantChatEntity> participantChat;
 
     // Relacionamento como mensagem
-    @OneToMany(mappedBy = "senderOrganizer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "senderOrganizer", fetch = FetchType.LAZY)
     private Set<MessageEntity> chats;
 
     // ///////////
@@ -103,5 +101,4 @@ public class OrganizerEntity {
                 + profilePicture + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
 
-  
 }

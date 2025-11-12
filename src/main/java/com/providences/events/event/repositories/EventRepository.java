@@ -39,8 +39,21 @@ public interface EventRepository extends JpaRepository<EventEntity, String> {
                 FROM EventEntity e
                 LEFT JOIN FETCH e.tickets t
                 LEFT JOIN FETCH t.guest g
+                LEFT JOIN FETCH e.organizer o
                 WHERE e.id = :eventId
             """)
-    Optional<EventEntity> findIdFetchTickesAndGuests(@Param("eventId") String eventId);
+    Optional<EventEntity> findIdFetchTicketsAndGuests(@Param("eventId") String eventId);
+
+    @Query("""
+                SELECT e
+                FROM EventEntity e
+                LEFT JOIN FETCH e.organizer o
+                LEFT JOIN FETCH e.seats s
+                LEFT JOIN FETCH e.chats c
+                WHERE e.id = :eventId
+            """)
+    Optional<EventEntity> createGuest(@Param("eventId") String eventId);
+
+
 
 }

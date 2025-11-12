@@ -53,8 +53,11 @@ public class CreateTicketService {
         // adiconar o ticket à um assento
 
         if (!data.getSeatId().isBlank()) {
-            SeatEntity seat = seatRepository.findById(data.getSeatId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Assento não encontrado!"));
+            SeatEntity seat = event.getSeats().stream().filter(s -> s.getId().equals(data.getSeatId())).findFirst()
+                    .get();
+            if (seat == null) {
+                throw new ResourceNotFoundException("Assento não encontrado!");
+            }
 
             if (seat.getAvailableSeats() != null) {
 

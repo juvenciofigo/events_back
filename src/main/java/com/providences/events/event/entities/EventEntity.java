@@ -9,7 +9,6 @@ import com.providences.events.location.LocationEntity;
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.ticket.entities.TicketEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -89,27 +88,27 @@ public class EventEntity {
     private LocalDateTime updatedAt;
 
     // relacionamento como ticket/convite/ingreço
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private Set<TicketEntity> tickets;
 
     // relacionamento como servicos do evento
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private Set<ServicesHasEventEntity> servicesHasEvent;
 
     // relacionamento como servicos do tarefa
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private Set<TaskEntity> tasks;
 
     // relacionamento como servicos do despesa
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private Set<ExpenseEntity> expenses;
 
     // relacionamento como chats
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private Set<ChatEntity> chats;
 
     // relacionamento como tipos de convites
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private Set<SeatEntity> seats;
 
     // ///////////

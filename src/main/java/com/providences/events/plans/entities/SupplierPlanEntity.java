@@ -3,7 +3,6 @@ package com.providences.events.plans.entities;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -50,7 +49,7 @@ public class SupplierPlanEntity {
 
     private Integer level;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplierPlan", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "supplierPlan", fetch = FetchType.LAZY)
     private Set<SubscriptionEntity> subscriptions;
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")

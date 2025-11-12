@@ -1,11 +1,14 @@
 package com.providences.events.config;
 
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import com.google.firebase.cloud.StorageClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -14,17 +17,16 @@ import java.util.UUID;
 
 @Service
 public class UploadService {
+    private final Bucket bucket = StorageClient.getInstance().bucket();
 
-    public List<String> uploadMultiple(MultipartFile[] files)
-            throws IOException {
+    // Upload múltiplo
+    public List<String> uploadMultiple(MultipartFile[] files) throws IOException {
         List<String> urls = new ArrayList<>();
-
-        Bucket bucket = StorageClient.getInstance().bucket();
 
         for (MultipartFile file : files) {
             if (file.isEmpty())
-                continue; 
-                
+                continue;
+
             String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
 
             // Faz upload para o bucket
@@ -42,7 +44,42 @@ public class UploadService {
             urls.add(publicUrl);
         }
 
-        // Retorna lista de URLs
         return urls;
     }
+
+    // Deletar arquivo por URL
+    public void deleteFileByUrl(String fileUrl) {
+        try {
+            // Extrair o nome do arquivo da URL
+            String[] parts = fileUrl.split("/o/");
+            if (parts.length < 2) {
+                throw new IllegalArgumentException("URL inválida do Firebase Storage");
+            }
+
+            String filePath = parts[1].split("\\?")[0];
+            String decodedPath = URLDecoder.decode(filePath, StandardCharsets.UTF_8.name());
+
+            // Buscar arquivo no bucket
+            Blob blob = bucket.get(decodedPath);
+
+            if (blob != null && blob.exists()) {
+                blob.delete();
+                System.out.println("✅ Arquivo deletado com sucesso: " + decodedPath);
+            } else {
+                System.out.println("⚠️ Arquivo não encontrado no Firebase: " + decodedPath);
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Erro ao decodificar URL do Firebase", e);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao deletar arquivo do Firebase", e);
+        }
+    }
+
+    public void deleteMultipleFiles(List<String> urls) {
+        for (String url : urls) {
+            deleteFileByUrl(url);
+        }
+    }
+
 }

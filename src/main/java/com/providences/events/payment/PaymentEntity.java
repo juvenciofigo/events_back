@@ -9,7 +9,7 @@ import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.plans.entities.SubscriptionEntity;
 import com.providences.events.services.ServiceEntity;
 import com.providences.events.supplier.SupplierEntity;
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -114,7 +114,7 @@ public class PaymentEntity {
     @JoinColumn(name = "seat_id")
     private SeatEntity seat;
 
-    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "payment", fetch = FetchType.LAZY)
     private PaymentReferenceEntity reference;
 
     // Método para identificar quem fez o pagamento
@@ -208,5 +208,4 @@ public class PaymentEntity {
                 + ", receiverPlatform=" + receiverPlatform + ", target=" + target + "]";
     }
 
-    
 }

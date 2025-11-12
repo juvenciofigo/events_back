@@ -12,8 +12,6 @@ import com.providences.events.album.entities.AlbumEntity;
 import com.providences.events.album.repositories.AlbumRepository;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 
-import lombok.extern.java.Log;
-
 @Service
 @Transactional(readOnly = true)
 public class FetchMediaAlbumService {

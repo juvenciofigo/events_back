@@ -1,12 +1,10 @@
 package com.providences.events.interaction.entities;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 import com.providences.events.event.entities.EventEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -58,11 +56,11 @@ public class ChatEntity {
     private LocalDateTime updatedAt;
 
     // relacionamento como mensagem
-    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY)
     private Set<MessageEntity> messages;
 
     // relacionamento como participante
-    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY)
     private Set<ParticipantChatEntity> participants;
 
     @PrePersist

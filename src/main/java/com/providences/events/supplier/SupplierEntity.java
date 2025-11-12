@@ -11,7 +11,6 @@ import com.providences.events.reviews.ReviewEntity;
 import com.providences.events.services.ServiceEntity;
 import com.providences.events.user.UserEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -72,22 +71,22 @@ public class SupplierEntity {
     private Set<PaymentEntity> receivers;
 
     // Relecionamento com serviços
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY)
     private Set<ServiceEntity> services;
 
     // relacionameto com participacoes em conversas
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY)
     private Set<ParticipantChatEntity> participantChat;
 
     // Relacionamento como mensagem
-    @OneToMany(mappedBy = "senderSupplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "senderSupplier", fetch = FetchType.LAZY)
     private Set<MessageEntity> chats;
 
     // Relacionemnto com comentarios
-    @OneToMany(mappedBy = "senderSupplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "senderSupplier", fetch = FetchType.LAZY)
     private Set<ReviewEntity> senderReviews;
 
-    @OneToMany(mappedBy = "receiverSupplier", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "receiverSupplier", fetch = FetchType.LAZY)
     private Set<ReviewEntity> receiverReviews;
 
     // ///////////
@@ -109,5 +108,4 @@ public class SupplierEntity {
                 + "]";
     }
 
-    
 }

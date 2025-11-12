@@ -20,7 +20,6 @@ import com.providences.events.interaction.entities.ChatEntity.ChatType;
 import com.providences.events.interaction.entities.ParticipantChatEntity.ParticipantType;
 import com.providences.events.interaction.repositories.ChatRepository;
 import com.providences.events.interaction.repositories.MessageRepository;
-import com.providences.events.interaction.repositories.ParticipantChatRepository;
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.organizer.OrganizerRepository;
 import com.providences.events.shared.exception.exceptions.BusinessException;

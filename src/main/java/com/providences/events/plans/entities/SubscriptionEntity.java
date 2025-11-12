@@ -6,7 +6,6 @@ import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.payment.PaymentEntity;
 import com.providences.events.supplier.SupplierEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -52,7 +51,7 @@ public class SubscriptionEntity {
     private Boolean autoRenew = false;
 
     // Relacionamento como pagamentos
-    @OneToOne(mappedBy = "subscription", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "subscription", fetch = FetchType.LAZY)
     private PaymentEntity payment;
 
     // relacionamentos com potencias planos
@@ -61,17 +60,17 @@ public class SubscriptionEntity {
     private PlanType planType;
 
     // relacionamento com os planos de fornecedores de serviços
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_plan_id")
     private SupplierPlanEntity supplierPlan;
 
     // relacionamento como Addons
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "addon_plan_id")
     private AddonPlanEntity addonPlan;
 
     // relacionamento com os planos de organizadores
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organizer_plan_id")
     private OrganizerPlanEntity organizerPlan;
 
@@ -132,5 +131,5 @@ public class SubscriptionEntity {
                 + status + ", autoRenew=" + autoRenew + ", planType=" + planType + ", payerType=" + payerType
                 + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
-    
+
 }

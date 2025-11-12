@@ -3,7 +3,6 @@ package com.providences.events.guest.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.providences.events.event.dto.CreateSeatDTO;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.repositories.EventRepository;
 import com.providences.events.guest.GuestEntity;
@@ -13,7 +12,6 @@ import com.providences.events.interaction.entities.ParticipantChatEntity.Partici
 import com.providences.events.interaction.services.AddParticipantToChat;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
 import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
-import com.providences.events.ticket.dto.CreateTicketDTO;
 import com.providences.events.ticket.entities.TicketEntity;
 import com.providences.events.ticket.services.CreateTicketService;
 
@@ -36,7 +34,7 @@ public class CreateGuestService {
         public CreateGuestDTO.Response execute(CreateGuestDTO.Request data, String userId) {
 
                 // buscar evento
-                EventEntity event = eventRepository.findById(data.getEventId())
+                EventEntity event = eventRepository.createGuest(data.getEventId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
 
                 if (!event.getOrganizer().getUser().getId().equals(userId)) {
@@ -55,9 +53,7 @@ public class CreateGuestService {
                 // Gravar informacoes do ticket
                 GuestEntity savedGuest = guestRepository.save(guest);
 
-                CreateTicketDTO.Response responseTicket = CreateTicketDTO.Response.response(ticket);
-
-                CreateGuestDTO.Response responseGuest = CreateGuestDTO.Response.response(savedGuest, responseTicket);
+                CreateGuestDTO.Response responseGuest = CreateGuestDTO.Response.response(savedGuest);
 
                 event.getChats().stream()
                                 .filter(chat -> chat.getType().name().equalsIgnoreCase("guests"))

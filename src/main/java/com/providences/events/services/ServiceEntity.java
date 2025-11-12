@@ -10,7 +10,6 @@ import com.providences.events.payment.PaymentEntity;
 import com.providences.events.reviews.ReviewEntity;
 import com.providences.events.supplier.SupplierEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -62,19 +61,19 @@ public class ServiceEntity {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     // relaciomanto com pagamentos
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
     private Set<PaymentEntity> payments;
 
     // relacionamento com algum de midia
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
     private Set<AlbumEntity> albums;
 
     // relacionamento como servicos do evento
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
     private Set<ServicesHasEventEntity> servicesHasEvent;
 
     // relacionameto com comentarios
-    @OneToMany(mappedBy = "receiverService", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "receiverService", fetch = FetchType.LAZY)
     private Set<ReviewEntity> receiverReviews;
 
     // ///////////
@@ -95,5 +94,4 @@ public class ServiceEntity {
                 + priceBase + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
 
-    
 }

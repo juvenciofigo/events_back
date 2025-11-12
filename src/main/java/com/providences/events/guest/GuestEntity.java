@@ -1,7 +1,6 @@
 package com.providences.events.guest;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 import com.providences.events.interaction.entities.MessageEntity;
@@ -45,7 +44,7 @@ public class GuestEntity {
     @Column(nullable = false)
     private String phone;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "ticket_id")
     private TicketEntity ticket;
 
@@ -56,12 +55,12 @@ public class GuestEntity {
     private LocalDateTime updatedAt;
 
     // relacionameto com participacoes em conversas
-    @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ParticipantChatEntity> participantChat;
 
     // Relacionamento como mensagem
-    @OneToMany(mappedBy = "senderGuest", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<MessageEntity> chats;
+    @OneToMany(mappedBy = "senderGuest", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<MessageEntity> messages;
 
     // ///////////
     @PrePersist

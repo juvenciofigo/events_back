@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.guest.GuestEntity;
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -58,7 +58,7 @@ public class TicketEntity {
 
     private String notes;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seat_id")
     private SeatEntity seat;
 
@@ -68,7 +68,7 @@ public class TicketEntity {
     @Column(nullable = false, name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "ticket", fetch = FetchType.LAZY)
     private GuestEntity guest;
 
     // ///////////

@@ -2,13 +2,11 @@ package com.providences.events.event.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 import com.providences.events.payment.PaymentEntity;
 import com.providences.events.ticket.entities.TicketEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -76,7 +74,7 @@ public class SeatEntity {
     @OneToMany(mappedBy = "seat", fetch = FetchType.LAZY)
     private Set<TicketEntity> tickets;
 
-    @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "seat", fetch = FetchType.LAZY)
     private Set<PaymentEntity> payment;
 
     @PrePersist

@@ -6,7 +6,6 @@ import java.util.Set;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.supplier.SupplierEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -57,10 +56,10 @@ public class LocationEntity {
     @Column(nullable = false, name = "update_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @OneToOne(mappedBy = "location",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "location", fetch = FetchType.LAZY)
     private SupplierEntity supplier;
 
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
     private Set<EventEntity> events;
 
     // ///////////
@@ -82,5 +81,5 @@ public class LocationEntity {
                 + ", photo=" + photo + ", description=" + description + ", createdAt=" + createdAt + ", updatedAt="
                 + updatedAt + "]";
     }
-    
+
 }

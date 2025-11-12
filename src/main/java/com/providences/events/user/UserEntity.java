@@ -56,10 +56,10 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false, length = 11)
     private ROLE role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private SupplierEntity supplier;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private OrganizerEntity organizer;
 
     // //////////////////
@@ -127,7 +127,5 @@ public class UserEntity implements UserDetails {
                 + passwordHash + ", profilePicture=" + profilePicture + ", isDeleted=" + isDeleted + ", createdAt="
                 + createdAt + ", updatedAt=" + updatedAt + ", role=" + role + "]";
     }
-
-
 
 }

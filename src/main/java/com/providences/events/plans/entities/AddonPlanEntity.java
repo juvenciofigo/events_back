@@ -3,7 +3,6 @@ package com.providences.events.plans.entities;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,7 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Entity
 @Table(name = "addon_plans")
@@ -52,7 +50,7 @@ public class AddonPlanEntity {
 
     private Integer level;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "addonPlan", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "addonPlan", fetch = FetchType.LAZY)
     private Set<SubscriptionEntity> subscriptions;
 
     // ///////////
