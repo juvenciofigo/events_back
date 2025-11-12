@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.repositories.EventRepository;
-import com.providences.events.guest.dto.CreateGuestDTO;
+import com.providences.events.guest.dto.GuestDTO;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
 import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
 
@@ -21,7 +21,7 @@ public class FetchGuestsService {
         this.eventRepository = eventRepository;
     }
 
-    public Set<CreateGuestDTO.Response> execute(String eventId, String userId) {
+    public Set<GuestDTO.Response> execute(String eventId, String userId) {
 
         EventEntity event = eventRepository.findIdFetchTicketsAndGuests(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
@@ -31,7 +31,7 @@ public class FetchGuestsService {
         }
 
         return event.getTickets().stream()
-                .map(tic -> CreateGuestDTO.Response.response(tic.getGuest())).collect(Collectors.toSet());
+                .map(tic -> GuestDTO.Response.response(tic.getGuest())).collect(Collectors.toSet());
 
     }
 }

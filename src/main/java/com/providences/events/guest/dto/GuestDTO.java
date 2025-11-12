@@ -12,12 +12,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class CreateGuestDTO {
+public class GuestDTO {
 
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class Request {
+    public static class Create {
         @NotBlank(message = "Prencha o nome!")
         @NotNull(message = "Prencha o nome!")
         private String name;
@@ -47,6 +47,32 @@ public class CreateGuestDTO {
 
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class Update {
+        @NotBlank(message = "Prencha o nome!")
+        @NotNull(message = "Prencha o nome!")
+        private String name;
+
+        @Email(message = "Email inválido!")
+        private String email;
+
+        @NotBlank(message = "Prencha o número de telefone")
+        @NotNull(message = "Prencha o número de telefone")
+        private String phone;
+
+        @NotBlank(message = "Informe o guestId")
+        @NotNull(message = "Informe o guestId")
+        private String guestId;
+
+        @Positive(message = "O número de pessoas deve ser maior que zero")
+        @NotNull(message = "Informe o numero de pessoas para esse ticket")
+        private Integer totalPeople;
+
+        private String notes;
+    }
+
     @Setter
     @Getter
     @AllArgsConstructor
@@ -67,4 +93,5 @@ public class CreateGuestDTO {
                     CreateTicketDTO.Response.response(guest.getTicket()));
         }
     }
+
 }

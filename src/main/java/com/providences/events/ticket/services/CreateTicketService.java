@@ -11,7 +11,7 @@ import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.event.repositories.SeatRepository;
 import com.providences.events.guest.GuestEntity;
-import com.providences.events.guest.dto.CreateGuestDTO;
+import com.providences.events.guest.dto.GuestDTO;
 import com.providences.events.payment.PaymentEntity.PayerType;
 import com.providences.events.payment.PaymentEntity.ReceiverType;
 import com.providences.events.payment.PaymentEntity.Target;
@@ -42,7 +42,7 @@ public class CreateTicketService {
         this.createPaymentService = createPaymentService;
     }
 
-    public TicketEntity execute(EventEntity event, CreateGuestDTO.Request data, GuestEntity guest) {
+    public TicketEntity execute(EventEntity event, GuestDTO.Create data, GuestEntity guest) {
 
         TicketEntity ticket = new TicketEntity();
         ticket.setEvent(event);

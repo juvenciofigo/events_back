@@ -25,11 +25,12 @@ public interface GuestRepository extends JpaRepository<GuestEntity, String> {
                 LEFT JOIN FETCH t.event e
                 LEFT JOIN FETCH e.organizer o
                 LEFT JOIN FETCH o.user u
+                LEFT JOIN FETCH u.supplier sup
                 LEFT JOIN FETCH t.seat s
                 LEFT JOIN FETCH g.participantChat p
                 LEFT JOIN FETCH g.messages m
                 WHERE g.id = :guestId
             """)
 
-    Optional<GuestEntity> deleteGuestById(@Param("guestId") String guestId);
+    Optional<GuestEntity> guestById(@Param("guestId") String guestId);
 }

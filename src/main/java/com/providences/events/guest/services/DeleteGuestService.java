@@ -10,7 +10,7 @@ import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.guest.GuestRepository;
-import com.providences.events.guest.dto.CreateGuestDTO;
+import com.providences.events.guest.dto.GuestDTO;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
 
@@ -30,9 +30,9 @@ public class DeleteGuestService {
         this.fetchGuestsService = fetchGuestsService;
     }
 
-    public Set<CreateGuestDTO.Response> execute(String guestId, String eventId, String userId) {
+    public Set<GuestDTO.Response> execute(String guestId, String eventId, String userId) {
 
-        GuestEntity guest = guestRepository.deleteGuestById(guestId)
+        GuestEntity guest = guestRepository.guestById(guestId)
                 .orElseThrow(() -> new BusinessException("Guest não encontrado", HttpStatus.NOT_FOUND));
 
         EventEntity event = guest.getTicket().getEvent();

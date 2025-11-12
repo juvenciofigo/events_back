@@ -7,7 +7,7 @@ import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.repositories.EventRepository;
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.guest.GuestRepository;
-import com.providences.events.guest.dto.CreateGuestDTO;
+import com.providences.events.guest.dto.GuestDTO;
 import com.providences.events.interaction.entities.ParticipantChatEntity.ParticipantType;
 import com.providences.events.interaction.services.AddParticipantToChat;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
@@ -31,7 +31,7 @@ public class CreateGuestService {
                 this.addParticipantToChat = addParticipantToChat;
         }
 
-        public CreateGuestDTO.Response execute(CreateGuestDTO.Request data, String userId) {
+        public GuestDTO.Response execute(GuestDTO.Create data, String userId) {
 
                 // buscar evento
                 EventEntity event = eventRepository.createGuest(data.getEventId())
@@ -53,7 +53,7 @@ public class CreateGuestService {
                 // Gravar informacoes do ticket
                 GuestEntity savedGuest = guestRepository.save(guest);
 
-                CreateGuestDTO.Response responseGuest = CreateGuestDTO.Response.response(savedGuest);
+                GuestDTO.Response responseGuest = GuestDTO.Response.response(savedGuest);
 
                 event.getChats().stream()
                                 .filter(chat -> chat.getType().name().equalsIgnoreCase("guests"))

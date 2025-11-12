@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.config.JWTUserData;
-import com.providences.events.guest.dto.CreateGuestDTO;
+import com.providences.events.guest.dto.GuestDTO;
 import com.providences.events.guest.services.FetchGuestsService;
 import com.providences.events.shared.dto.ApiResponse;
 
@@ -25,9 +25,9 @@ public class FetchGuestsController {
         this.fetchGuestsService = fetchGuestsService;
     }
 
-    @GetMapping("/{eventId}")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<Set<CreateGuestDTO.Response>>> getMethodName(@PathVariable String eventId,
+    @GetMapping("/event/{eventId}")
+    @PreAuthorize("hasAuthority('CLIENT')")
+    public ResponseEntity<ApiResponse<Set<GuestDTO.Response>>> getMethodName(@PathVariable String eventId,
             Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
@@ -35,7 +35,7 @@ public class FetchGuestsController {
 
         return ResponseEntity
                 .ok()
-                .body(new ApiResponse<Set<CreateGuestDTO.Response>>(true, fetchGuestsService.execute(eventId, UserId)));
+                .body(new ApiResponse<Set<GuestDTO.Response>>(true, fetchGuestsService.execute(eventId, UserId)));
     }
 
 }
