@@ -26,7 +26,7 @@ public class CreateSeatController {
     }
 
     @PostMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<ApiResponse<CreateSeatDTO.Response>> postMethodName(
             @Validated @RequestBody CreateSeatDTO.Request data,
             Authentication authentication) {

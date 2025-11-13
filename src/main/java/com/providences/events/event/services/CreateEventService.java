@@ -3,7 +3,7 @@ package com.providences.events.event.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.providences.events.event.dto.CreateEventDTO;
+import com.providences.events.event.dto.EventDTO;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.repositories.EventRepository;
 import com.providences.events.organizer.OrganizerEntity;
@@ -21,7 +21,7 @@ public class CreateEventService {
         this.eventRepository = eventRepository;
     }
 
-    public CreateEventDTO.Response execute(CreateEventDTO.Request data, String UserId) {
+    public EventDTO.Response execute(EventDTO.Create data, String UserId) {
         OrganizerEntity organizer = organizerRepository.findByUserId(UserId)
                 .orElseThrow(() -> new ResourceNotFoundException("Organizador nao encontrado"));
 
@@ -40,7 +40,7 @@ public class CreateEventService {
 
         EventEntity savedEvent = eventRepository.save(event);
 
-        return CreateEventDTO.Response.response(savedEvent);
+        return EventDTO.Response.response(savedEvent);
 
     }
 }

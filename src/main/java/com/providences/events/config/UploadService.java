@@ -17,9 +17,6 @@ import java.util.UUID;
 
 @Service
 public class UploadService {
-    private final Bucket bucket = StorageClient.getInstance().bucket();
-
-    // Upload múltiplo
     public List<String> uploadMultiple(MultipartFile[] files) throws IOException {
         List<String> urls = new ArrayList<>();
 
@@ -29,13 +26,10 @@ public class UploadService {
 
             String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
 
-            // Faz upload para o bucket
+            Bucket bucket = StorageClient.getInstance().bucket();
             bucket.create(fileName, file.getBytes(), file.getContentType());
 
-            // Codifica o nome para URL segura
             String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8);
-
-            // Monta URL pública
             String publicUrl = String.format(
                     "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
                     bucket.getName(),
@@ -60,6 +54,7 @@ public class UploadService {
             String decodedPath = URLDecoder.decode(filePath, StandardCharsets.UTF_8.name());
 
             // Buscar arquivo no bucket
+            Bucket bucket = StorageClient.getInstance().bucket();
             Blob blob = bucket.get(decodedPath);
 
             if (blob != null && blob.exists()) {

@@ -5,40 +5,42 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.config.JWTUserData;
 import com.providences.events.event.dto.EventDTO;
-import com.providences.events.event.services.CreateEventService;
+import com.providences.events.event.services.UpdateEventService;
 import com.providences.events.shared.dto.ApiResponse;
-
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/events")
-public class CreateEventController {
-    private CreateEventService createEventService;
+public class UpdateEventController {
+    private UpdateEventService updateEventService;
 
-    public CreateEventController(CreateEventService createEventService) {
-        this.createEventService = createEventService;
+    public UpdateEventController(UpdateEventService updateEventService) {
+        this.updateEventService = updateEventService;
     }
 
-    @PostMapping
+    @PutMapping("/{eventId}")
     @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<ApiResponse<EventDTO.Response>> createEvent(
-            @Validated @RequestBody EventDTO.Create data, Authentication authentication) {
+            @Validated @RequestBody EventDTO.Update data,
+            @PathVariable(required = true) String eventId,
+            Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
         String userId = userData.getUserId();
 
-        EventDTO.Response event = createEventService.execute(data, userId);
+        EventDTO.Response event = updateEventService.execute(eventId, data, userId);
 
         return ResponseEntity
-        .status(HttpStatus.CREATED)
-        .body(new ApiResponse<EventDTO.Response>(true, event));
+                .status(HttpStatus.ACCEPTED)
+                .body(new ApiResponse<EventDTO.Response>(true, event));
     }
 
 }

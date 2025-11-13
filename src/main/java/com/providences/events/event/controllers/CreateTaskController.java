@@ -26,7 +26,7 @@ public class CreateTaskController {
     }
 
     @PostMapping
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<ApiResponse<CreateTaskDTO.Response>> postMethodName(
             @Validated @RequestBody CreateTaskDTO.Request data, Authentication authentication) {
 

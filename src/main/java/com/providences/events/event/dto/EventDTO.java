@@ -15,12 +15,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class CreateEventDTO {
+public class EventDTO {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Request {
+    public static class Create {
 
         @NotBlank(message = "Informe o tipo de evento")
         private String type;
@@ -43,8 +43,41 @@ public class CreateEventDTO {
         @PositiveOrZero(message = "O numero de convidados deve ser zero ou mais")
         private Integer estimatedGuest;
 
+        @PositiveOrZero(message = "O valor estimado deve ser zero ou mais")
         private BigDecimal budgetEstimated;
 
+        @PositiveOrZero(message = "O valor estimado deve ser zero ou mais")
+        private BigDecimal budgetSpent;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Update {
+
+        private String type;
+
+        private Boolean isPublic;
+
+        private String title;
+
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        private LocalDateTime dateStart;
+
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        private LocalDateTime dateEnd;
+
+        private String coverImage;
+
+        private String description;
+
+        @PositiveOrZero(message = "O numero de convidados deve ser zero ou mais")
+        private Integer estimatedGuest;
+
+        @PositiveOrZero(message = "O numero de convidados deve ser zero ou mais")
+        private BigDecimal budgetEstimated;
+
+        @PositiveOrZero(message = "O numero de convidados deve ser zero ou mais")
         private BigDecimal budgetSpent;
     }
 
