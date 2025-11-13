@@ -10,12 +10,34 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class CreateSeatDTO {
+public class SeatDTO {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Request {
+    public static class Create {
+
+        @NotBlank(message = "Informe o nome desse espaço")
+        private String name;
+
+        private String description;
+
+        @NotNull(message = "Infome o número de lugares dispoíveis")
+        private Integer totalSeats;       
+
+        @NotNull(message = "Informe se o assento é pago")
+        private Boolean isPaid = false;
+
+        private BigDecimal price;
+
+        private Double layoutPositionX;
+        private Double layoutPositionY;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Update {
 
         @NotBlank(message = "Informe o nome desse espaço")
         private String name;
@@ -24,9 +46,6 @@ public class CreateSeatDTO {
 
         @NotNull(message = "Infome o número de lugares dispoíveis")
         private Integer totalSeats;
-
-        @NotBlank(message = "Infome o evento")
-        private String eventId;
 
         @NotNull(message = "Informe se o assento é pago")
         private Boolean isPaid;
@@ -55,8 +74,8 @@ public class CreateSeatDTO {
 
         private Double layoutPositionY;
 
-        public static CreateSeatDTO.Response response(SeatEntity seat) {
-            return new CreateSeatDTO.Response(
+        public static SeatDTO.Response response(SeatEntity seat) {
+            return new SeatDTO.Response(
                     seat.getId(),
                     seat.getName(),
                     seat.getDescription(),

@@ -54,6 +54,4 @@ public interface EventRepository extends JpaRepository<EventEntity, String> {
             """)
     Optional<EventEntity> createGuest(@Param("eventId") String eventId);
 
-
-
 }

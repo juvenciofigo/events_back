@@ -6,38 +6,37 @@ import org.springframework.security.core.Authentication;
 
 import com.providences.events.config.JWTUserData;
 import com.providences.events.event.dto.SeatDTO;
-import com.providences.events.event.services.CreateSeatService;
+import com.providences.events.event.services.FetchSeatsService;
 import com.providences.events.shared.dto.ApiResponse;
+
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/seats")
-public class CreateSeatController {
-    private final CreateSeatService createSeatService;
+public class FetchSeatsController {
+    private final FetchSeatsService fetchSeatsService;
 
-    public CreateSeatController(CreateSeatService createSeatService) {
-        this.createSeatService = createSeatService;
+    public FetchSeatsController(FetchSeatsService fetchSeatsService) {
+        this.fetchSeatsService = fetchSeatsService;
     }
 
-    @PostMapping()
+    @GetMapping("/event/{eventId}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<SeatDTO.Response>> postMethodName(
-            @Validated @RequestBody SeatDTO.Create data,
+    public ResponseEntity<ApiResponse<Set<SeatDTO.Response>>> postMethodName(
             @PathVariable("eventId") String eventId,
             Authentication authentication) {
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ApiResponse<SeatDTO.Response>(true,
-                        createSeatService.execute(eventId,data, userData.getUserId())));
+                .body(new ApiResponse<Set<SeatDTO.Response>>(true,
+                        fetchSeatsService.execute(eventId, userData.getUserId())));
     }
 
 }

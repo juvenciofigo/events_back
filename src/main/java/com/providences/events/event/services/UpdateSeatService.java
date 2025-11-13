@@ -9,49 +9,69 @@ import org.springframework.transaction.annotation.Transactional;
 import com.providences.events.event.dto.SeatDTO;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.entities.SeatEntity;
-import com.providences.events.event.repositories.EventRepository;
 import com.providences.events.event.repositories.SeatRepository;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
-import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
 
 @Service
 @Transactional
-public class CreateSeatService {
+public class UpdateSeatService {
     private final SeatRepository seatRepository;
 
-    private final EventRepository eventRepository;
-
-    public CreateSeatService(SeatRepository seatRepository, EventRepository eventRepository) {
+    public UpdateSeatService(SeatRepository seatRepository) {
         this.seatRepository = seatRepository;
-        this.eventRepository = eventRepository;
     }
 
-    public SeatDTO.Response execute(String eventId,SeatDTO.Create data, String userId) {
-        EventEntity event = eventRepository.createGuest(eventId)
-                .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
+    public SeatDTO.Response execute(String seatId, SeatDTO.Create data, String userId) {
+
+        SeatEntity seat = seatRepository.getSeat(seatId)
+                .orElseThrow(() -> new BusinessException("Assento não encontrado!", HttpStatus.BAD_REQUEST));
+
+        EventEntity event = seat.getEvent();
 
         if (!event.getOrganizer().getUser().getId().equals(userId)) {
-            throw new ForbiddenException("Sem permissão!");
+        throw new ForbiddenException("Sem permissão!");
         }
 
-        for (SeatEntity seat : event.getSeats()) {
-            if (seat.getName().equals(data.getName())) {
+        if (!seat.getName().equals(data.getName())) {
+            boolean nameExists = event.getSeats().stream()
+                    .anyMatch(s -> s.getName().equals(data.getName()));
 
+            if (nameExists) {
                 throw new BusinessException(
-                        "Nome de assento existente! Crie com um nome diferente de " + data.getName(),
+                        String.format("Nome de assento existente! Crie com um nome diferente de %s", data.getName()),
                         HttpStatus.CONFLICT);
             }
         }
-
-        SeatEntity seat = new SeatEntity();
 
         if (Boolean.TRUE.equals(data.getIsPaid())
                 && (data.getPrice() == null || data.getPrice().compareTo(BigDecimal.ZERO) <= 0)) {
             throw new BusinessException("O preço deve ser maior que zero para assentos pagos.", HttpStatus.BAD_REQUEST);
         }
 
-        if (data.getTotalSeats() != null) {
+        Integer oldTotal = seat.getTotalSeats();
+
+        if (data.getTotalSeats() != null && oldTotal != null) {
+            int available = seat.getAvailableSeats();
+            int used = oldTotal - available;
+            int newTotal = data.getTotalSeats();
+
+            if (newTotal < oldTotal && used > newTotal) {
+                throw new BusinessException(
+                        String.format(
+                                "Não é possível reduzir o número de lugares para %d, pois já existem %d lugares ocupados.",
+                                newTotal,
+                                used),
+                        HttpStatus.CONFLICT);
+            }
+
+            if (newTotal != oldTotal) {
+                seat.setTotalSeats(newTotal);
+                seat.setAvailableSeats(available + newTotal - oldTotal);
+            }
+
+        } else if (data.getTotalSeats() != null) {
+
             seat.setTotalSeats(data.getTotalSeats());
             seat.setAvailableSeats(data.getTotalSeats());
         }
@@ -60,7 +80,6 @@ public class CreateSeatService {
         seat.setDescription(data.getDescription());
         seat.setIsPaid(data.getIsPaid());
         seat.setPrice(data.getPrice());
-        seat.setEvent(event);
         seat.setLayoutPositionY(data.getLayoutPositionY());
         seat.setLayoutPositionX(data.getLayoutPositionX());
 
