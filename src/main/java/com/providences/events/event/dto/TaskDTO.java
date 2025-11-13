@@ -3,19 +3,19 @@ package com.providences.events.event.dto;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.providences.events.event.entities.TaskEntity;
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-public class CreateTaskDTO {
+public class TaskDTO {
 
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class Request {
+    public static class Create {
 
         @NotBlank(message = "Informa o evento")
         private String eventId;
@@ -25,6 +25,36 @@ public class CreateTaskDTO {
         private String responsiblePhone;
 
         private String title;
+
+        @NotBlank(message = "Informa a descricao da tarefa")
+        private String description;
+
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        private LocalDateTime dueDate;
+
+        @JsonProperty(defaultValue = "MEDIUM")
+        private String priority;
+
+        @JsonProperty(defaultValue = "PENDING")
+        private String taskStatus;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class Update {
+
+        private String responsibleName;
+
+        private String responsiblePhone;
+
+        private String title;
+
+        @JsonProperty(defaultValue = "MEDIUM")
+        private String priority;
+
+        @JsonProperty(defaultValue = "PENDING")
+        private String taskStatus;
 
         @NotBlank(message = "Informa a descricao da tarefa")
         private String description;
@@ -43,7 +73,11 @@ public class CreateTaskDTO {
         private String responsiblePhone;
         private String title;
         private String description;
+        private String priority;
+        private String taskStatus;
         private LocalDateTime dueDate;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
 
         public static Response response(TaskEntity task) {
             return new Response(
@@ -52,7 +86,11 @@ public class CreateTaskDTO {
                     task.getResponsiblePhone(),
                     task.getTitle(),
                     task.getDescription(),
-                    task.getDueDate());
+                    task.getPriority().name(),
+                    task.getTaskStatus().name(),
+                    task.getDueDate(),
+                    task.getCreatedAt(),
+                    task.getUpdatedAt());
         }
     }
 }

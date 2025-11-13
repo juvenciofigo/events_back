@@ -10,30 +10,33 @@ import org.springframework.validation.annotation.Validated;
 
 import com.providences.events.config.JWTUserData;
 import com.providences.events.event.dto.TaskDTO;
-import com.providences.events.event.services.CreateTaskService;
+import com.providences.events.event.services.UpdateTaskService;
 import com.providences.events.shared.dto.ApiResponse;
 
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/tasks")
-public class CreateTaskController {
-    public CreateTaskService createTaskService;
+public class UpdateTaskController {
+    public UpdateTaskService updateTaskService;
 
-    public CreateTaskController(CreateTaskService createTaskService) {
-        this.createTaskService = createTaskService;
+    public UpdateTaskController(UpdateTaskService updateTaskService) {
+        this.updateTaskService = updateTaskService;
     }
 
-    @PostMapping
+    @PutMapping("/{taskId}")
     @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<ApiResponse<TaskDTO.Response>> postMethodName(
-            @Validated @RequestBody TaskDTO.Create data, Authentication authentication) {
+            @Validated @RequestBody TaskDTO.Update data,
+            @PathVariable("taskId") String taskId,
+            Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
         String UserId = userData.getUserId();
 
-        TaskDTO.Response task = createTaskService.execute(data, UserId);
+        TaskDTO.Response task = updateTaskService.execute(taskId, data, UserId);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<TaskDTO.Response>(true, task));
     }
 

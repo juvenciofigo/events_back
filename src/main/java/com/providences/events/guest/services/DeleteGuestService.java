@@ -30,7 +30,7 @@ public class DeleteGuestService {
         this.fetchGuestsService = fetchGuestsService;
     }
 
-    public Set<GuestDTO.Response> execute(String guestId, String eventId, String userId) {
+    public Set<GuestDTO.Response> execute(String guestId, String userId) {
 
         GuestEntity guest = guestRepository.guestById(guestId)
                 .orElseThrow(() -> new BusinessException("Guest não encontrado", HttpStatus.NOT_FOUND));
@@ -49,7 +49,7 @@ public class DeleteGuestService {
         em.flush();
         em.clear();
 
-        return fetchGuestsService.execute(eventId, userId);
+        return fetchGuestsService.execute(event.getId(), userId);
     }
 
 }

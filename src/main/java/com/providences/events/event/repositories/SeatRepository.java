@@ -15,6 +15,7 @@ public interface SeatRepository extends JpaRepository<SeatEntity, String> {
             SELECT s
             FROM SeatEntity s
             LEFT JOIN FETCH s.event e
+            LEFT JOIN FETCH s.tickets t
             LEFT JOIN FETCH e.organizer o
             LEFT JOIN FETCH o.user u
             LEFT JOIN FETCH u.supplier sp

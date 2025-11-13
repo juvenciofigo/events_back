@@ -55,7 +55,8 @@ INSERT INTO participant_chat (chat_id, created_at, guest_id, organizer_id, suppl
 -- Organizer plan
 INSERT INTO organizer_plans (created_at, description, features, level, name, price_monthly, price_yearly, resources, updated_at, id) VALUES ('2025-10-30 18:49:04.672495', 'Acesso completo a todas as funcionalidades','{"maxEvents": "ilimitado", "analytics": true}', 3, 'Plano Premium', 199.99, 1999.0, 'Eventos ilimitados, suporte 24h','2025-10-30 18:49:04.672495','7c7cf4b1-0cd0-4b9e-ae26-22f0c96be8f5');
 
-
+-- Task
+INSERT INTO tasks (created_at, description, due_date, event_id, priority, responsible_name, responsible_phone, task_status, title, updated_at, id) VALUES ('2025-11-13T17:45:57.1584211', 'tarefa', '2025-10-22T15:30:00', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'MEDIUM', 'Nome do reponsavel', '856526698', 'IN_PROGRESS', 'tarefa', '2025-11-13T18:34:24.7599971', '2f50b8b6-8587-406b-bf0f-9004ec66d191');
 
 -- ServiceEntity(id=, supplier=SupplierEntity(), category=hfgh, description=null, priceBase=10.0, unavailability=null, createdAt=2025-10-28T02:09:44.399494900, updatedAt=2025-10-28T02:09:44.399494900, payments=null, albums=null, servicesHasEvent=null, reviews=null)
 

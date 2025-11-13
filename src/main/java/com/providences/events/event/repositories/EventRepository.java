@@ -25,9 +25,11 @@ public interface EventRepository extends JpaRepository<EventEntity, String> {
                 SELECT e
                 FROM EventEntity e
                 LEFT JOIN FETCH e.organizer o
+                LEFT JOIN FETCH e.tasks ta
                 LEFT JOIN FETCH o.user u
                 LEFT JOIN FETCH e.chats c
                 LEFT JOIN FETCH e.tickets t
+                LEFT JOIN FETCH t.guest g
                 LEFT JOIN FETCH c.participants
                 LEFT JOIN FETCH  u.supplier s
                 WHERE e.id = :eventId
@@ -53,5 +55,6 @@ public interface EventRepository extends JpaRepository<EventEntity, String> {
                 WHERE e.id = :eventId
             """)
     Optional<EventEntity> createGuest(@Param("eventId") String eventId);
+
 
 }

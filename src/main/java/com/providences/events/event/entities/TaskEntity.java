@@ -52,25 +52,23 @@ public class TaskEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Priority priority;
+    private TaskPriority priority;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "task_status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private TaskStatus taskStatus;
 
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(nullable = false, name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-        priority = Priority.MEDIUM;
-        status = Status.PENDING;
     }
 
     @PreUpdate
@@ -78,13 +76,13 @@ public class TaskEntity {
         updatedAt = LocalDateTime.now();
     }
 
-    public enum Priority {
+    public enum TaskPriority {
         LOW,
         MEDIUM,
         HIGH
     }
 
-    public enum Status {
+    public enum TaskStatus {
         PENDING,
         IN_PROGRESS,
         DONE
@@ -94,7 +92,7 @@ public class TaskEntity {
     public String toString() {
         return "TaskEntity [id=" + id + ", responsibleName=" + responsibleName + ", responsiblePhone="
                 + responsiblePhone + ", title=" + title + ", description=" + description + ", dueDate=" + dueDate
-                + ", priority=" + priority + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt="
+                + ", priority=" + priority + ", taskStatus=" + taskStatus + ", createdAt=" + createdAt + ", updatedAt="
                 + updatedAt + "]";
     }
 

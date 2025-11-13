@@ -24,10 +24,10 @@ public class DeleteGuestController {
         this.deleteGuestService = deleteGuestService;
     }
 
-    @DeleteMapping("/{guestId}/{eventId}")
+    @DeleteMapping("/{guestId}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<Set<GuestDTO.Response>>> delete(@PathVariable String guestId,
-            @PathVariable String eventId,
+    public ResponseEntity<ApiResponse<Set<GuestDTO.Response>>> delete(
+            @PathVariable String guestId,
             Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
@@ -35,6 +35,6 @@ public class DeleteGuestController {
         return ResponseEntity
                 .ok()
                 .body(new ApiResponse<Set<GuestDTO.Response>>(true,
-                        deleteGuestService.execute(guestId, eventId, userData.getUserId())));
+                        deleteGuestService.execute(guestId, userData.getUserId())));
     }
 }

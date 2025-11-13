@@ -17,18 +17,21 @@ import com.providences.events.shared.exception.exceptions.ResourceNotFoundExcept
 
 @Service
 @Transactional
-public class CreateTaskService {
+public class UpdateTaskService {
     public final TaskRepository taskRepository;
     public final EventRepository eventRepository;
 
-    public CreateTaskService(TaskRepository taskRepository, EventRepository eventRepository) {
+    public UpdateTaskService(TaskRepository taskRepository, EventRepository eventRepository) {
         this.taskRepository = taskRepository;
         this.eventRepository = eventRepository;
     }
 
-    public TaskDTO.Response execute(TaskDTO.Create data, String userId) {
-        EventEntity event = eventRepository.findId(data.getEventId())
+    public TaskDTO.Response execute(String taskId, TaskDTO.Update data, String userId) {
+
+        TaskEntity task = taskRepository.getTask(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
+
+        EventEntity event = task.getEvent();
 
         if (!event.getOrganizer().getUser().getId().equals(userId)) {
             throw new ForbiddenException("Sem permissão!");
@@ -37,7 +40,7 @@ public class CreateTaskService {
         TaskStatus taskStatus;
         TaskPriority taskPriority;
         try {
-            taskStatus = TaskStatus.valueOf(data.getTaskStatus().toUpperCase()) ;
+            taskStatus = TaskStatus.valueOf(data.getTaskStatus().toUpperCase());
             taskPriority = TaskPriority.valueOf(data.getPriority().toUpperCase());
         } catch (IllegalArgumentException e) {
             if (e.getMessage().toLowerCase().contains("priority")) {
@@ -46,7 +49,6 @@ public class CreateTaskService {
             throw new BusinessException("Tipo de status", HttpStatus.BAD_REQUEST);
         }
 
-        TaskEntity task = new TaskEntity();
         task.setResponsibleName(data.getResponsibleName());
         task.setResponsiblePhone(data.getResponsiblePhone());
         task.setDescription(data.getDescription());
@@ -55,10 +57,8 @@ public class CreateTaskService {
         task.setTaskStatus(taskStatus);
         task.setPriority(taskPriority);
         task.setEvent(event);
-
         TaskEntity taskSaved = taskRepository.save(task);
-        TaskDTO.Response responseDTO = TaskDTO.Response.response(taskSaved);
 
-        return responseDTO;
+        return TaskDTO.Response.response(taskSaved);
     }
 }
