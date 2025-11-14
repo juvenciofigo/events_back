@@ -20,13 +20,13 @@ import com.providences.events.shared.exception.exceptions.BusinessException;
 
 @Service
 @Transactional
-public class AddMediaAlbumService {
+public class AddMediaService {
 
     private final MediaRepository mediaRepository;
     private final UploadService uploadService;
     private final AlbumRepository albumRepository;
 
-    public AddMediaAlbumService(
+    public AddMediaService(
             MediaRepository mediaRepository,
             UploadService uploadService,
             AlbumRepository albumRepository) {
@@ -35,14 +35,18 @@ public class AddMediaAlbumService {
         this.albumRepository = albumRepository;
     }
 
-    public List<AddMediaAlbumDto.Response> execute(String albumId, MultipartFile[] files) {
+    public List<AddMediaAlbumDto.Response> execute(String albumId, MultipartFile[] files, String userId) {
 
         if (files == null || files.length == 0) {
             throw new BusinessException("Nenhum ficheiro enviado", HttpStatus.BAD_REQUEST);
         }
 
-        AlbumEntity album = albumRepository.findById(albumId)
+        AlbumEntity album = albumRepository.findId(albumId)
                 .orElseThrow(() -> new BusinessException("Álbum não encontrado", HttpStatus.BAD_REQUEST));
+
+        if (!album.getService().getSupplier().getUser().getId().equals(userId)) {
+            throw new BusinessException("Não autoridado", HttpStatus.FORBIDDEN);
+        }
 
         List<String> urls = new ArrayList<>();
 

@@ -29,10 +29,11 @@ public class CreateAlbumController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<CreateAlbumDTO.Response>> postMethodName(@RequestBody CreateAlbumDTO.Request data,
             Authentication authentication) {
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
-        String UserId = userData.getUserId();
 
-        CreateAlbumDTO.Response album = createAlbumService.execute(data, UserId);
+        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        String userId = userData.getUserId();
+
+        CreateAlbumDTO.Response album = createAlbumService.execute(data, userId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<CreateAlbumDTO.Response>(true, album));
     }

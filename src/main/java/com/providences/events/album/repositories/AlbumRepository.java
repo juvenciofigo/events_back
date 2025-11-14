@@ -17,4 +17,16 @@ public interface AlbumRepository extends JpaRepository<AlbumEntity, String> {
                 WHERE a.id = :albumId
             """)
     Optional<AlbumEntity> findMediasByAlbumId(@Param("albumId") String albumId);
+
+    @Query("""
+                Select a
+                FROM  AlbumEntity a
+                LEFT JOIN FETCH  a.medias m
+                LEFT JOIN FETCH  a.service s
+                LEFT JOIN FETCH  s.supplier su
+                LEFT JOIN FETCH  su.user u
+                LEFT JOIN FETCH  u.organizer o
+                WHERE a.id = :albumId
+            """)
+    Optional<AlbumEntity> findId(@Param("albumId") String albumId);
 }

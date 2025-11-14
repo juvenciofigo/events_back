@@ -6,8 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.annotation.Validated;
-
 import com.providences.events.config.JWTUserData;
 import com.providences.events.event.dto.TaskDTO;
 import com.providences.events.event.services.GetTaskService;
@@ -15,7 +13,6 @@ import com.providences.events.shared.dto.ApiResponse;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/tasks")

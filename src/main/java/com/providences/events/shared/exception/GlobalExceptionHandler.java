@@ -64,6 +64,25 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ApiResponse<CustomErrorDTO>> error(NullPointerException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        String message = e.getMessage();
+
+        if (e.getMessage().contains("core.Authentication.getPrincipal")) {
+            message = "Sem accesso";
+            status = HttpStatus.FORBIDDEN;
+        }
+
+        CustomErrorDTO err = new CustomErrorDTO(
+                Instant.now(),
+                status.value(),
+                message,
+                request.getRequestURI());
+        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiResponse<CustomErrorDTO>> error(ConstraintViolationException e,
             HttpServletRequest request) {

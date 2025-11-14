@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -71,7 +72,7 @@ public class UploadService {
         }
     }
 
-    public void deleteMultipleFiles(List<String> urls) {
+    public void deleteMultipleFiles(Set<String> urls) {
         for (String url : urls) {
             deleteFileByUrl(url);
         }

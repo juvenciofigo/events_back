@@ -46,16 +46,17 @@ public class ExpenseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_status")
-    private PaymentStatus paymentStatus;
+    private ExpensePaymentStatus paymentStatus;
 
     @Column(name = "due_date")
-    private LocalDateTime DueDate;
+    private LocalDateTime dueDate;
+
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(nullable = false, name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
@@ -68,19 +69,19 @@ public class ExpenseEntity {
         updatedAt = LocalDateTime.now();
     }
 
-    enum Priority {
+    enum ExpensePriority {
         LOW,
         MEDIUM,
         HIGH
     }
 
-    enum Status {
+    enum ExpenseStatus {
         PENDING,
         IN_PROGRESS,
         DONE
     }
 
-    enum PaymentStatus {
+    enum ExpensePaymentStatus {
         PAID,
         PENDING
     }
@@ -88,8 +89,10 @@ public class ExpenseEntity {
     @Override
     public String toString() {
         return "ExpenseEntity [id=" + id + ", title=" + title + ", category=" + category + ", description="
-                + description + ", amount=" + amount + ", paymentStatus=" + paymentStatus + ", DueDate=" + DueDate
+                + description + ", amount=" + amount + ", paymentStatus=" + paymentStatus + ", dueDate=" + dueDate
                 + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
+
+  
 
 }

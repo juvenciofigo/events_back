@@ -12,10 +12,10 @@ import com.providences.events.album.services.FetchMediaAlbumService;
 
 @RestController
 @RequestMapping("/medias")
-public class FetchMediaAlbumController {
+public class FetchMediaController {
     private FetchMediaAlbumService fetchMediaAlbumService;
 
-    public FetchMediaAlbumController(FetchMediaAlbumService fetchMediaAlbumService) {
+    public FetchMediaController(FetchMediaAlbumService fetchMediaAlbumService) {
         this.fetchMediaAlbumService = fetchMediaAlbumService;
     }
 

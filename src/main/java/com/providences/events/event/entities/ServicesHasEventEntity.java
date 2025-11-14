@@ -1,5 +1,6 @@
 package com.providences.events.event.entities;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -40,8 +41,8 @@ public class ServicesHasEventEntity {
     @Column(name = "contract_date")
     private LocalDate contractDate;
 
-    @Column(name = "balance_due")
-    private Double balanceDue;
+    @Column(name = "balance_due", precision = 10, scale = 2)
+    private BigDecimal balanceDue;
 
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
@@ -52,7 +53,7 @@ public class ServicesHasEventEntity {
 
     // Relacionamento com Service
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id", nullable = false)
+    @JoinColumn(name = "service_id")
     private ServiceEntity service;
 
     // Relacionamento com Event

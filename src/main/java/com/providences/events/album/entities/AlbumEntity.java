@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.providences.events.services.ServiceEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -48,7 +49,7 @@ public class AlbumEntity {
     @Column(nullable = false, name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "serviceAlbum", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "serviceAlbum", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     Set<MediaEntity> medias;
 
     // ///////////
