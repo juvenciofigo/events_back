@@ -15,6 +15,7 @@ public interface SupplierRepository extends JpaRepository<SupplierEntity, String
             FROM SupplierEntity s
             LEFT JOIN FETCH s.services ser
             LEFT JOIN FETCH s.user u
+            LEFT JOIN FETCH u.organizer o
             WHERE s.id =:supplierId
             """)
     Optional<SupplierEntity> findId(@Param("supplierId") String supplierId);

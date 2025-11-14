@@ -2,22 +2,18 @@ package com.providences.events.album.services;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.providences.events.album.dto.CreateAlbumDTO;
 import com.providences.events.album.entities.AlbumEntity;
 import com.providences.events.album.entities.MediaEntity;
 import com.providences.events.album.repositories.AlbumRepository;
 import com.providences.events.album.repositories.MediaRepository;
 import com.providences.events.config.UploadService;
-import com.providences.events.services.ServiceEntity;
-import com.providences.events.services.ServiceRepository;
 import com.providences.events.shared.exception.exceptions.BusinessException;
-import com.providences.events.shared.exception.exceptions.ForbiddenException;
-import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
 
 @Service
 @Transactional
@@ -37,25 +33,20 @@ public class DeleteAlbumService {
 
                 AlbumEntity album = albumRepository.findId(albumId)
                                 .orElseThrow(() -> new BusinessException("Álbum não encontrado",
-                                                HttpStatus.BAD_REQUEST));
+                                                HttpStatus.NOT_FOUND));
 
                 if (!album.getService().getSupplier().getUser().getId().equals(userId)) {
                         throw new BusinessException("Não autoridado", HttpStatus.FORBIDDEN);
                 }
 
-                Set<MediaEntity> medias = album.getMedias();
+                Set<MediaEntity> medias = new HashSet<>(album.getMedias());
 
-                Set<String> urls = new HashSet<>();
-
-                for (MediaEntity media : medias) {
-                        urls.add(media.getFileUrl());
-                }
+                Set<String> urls = medias.stream()
+                                .map(MediaEntity::getFileUrl)
+                                .collect(Collectors.toSet());
 
                 uploadService.deleteMultipleFiles(urls);
-
                 albumRepository.delete(album);
-
-                mediaRepository.deleteAll(medias);
 
                 return "deleted";
         }

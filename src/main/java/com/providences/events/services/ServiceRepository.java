@@ -23,6 +23,7 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, String> 
                   SELECT ser
                   FROM ServiceEntity ser
                   LEFT JOIN FETCH ser.supplier sup
+                  LEFT JOIN FETCH ser.albums a
                   LEFT JOIN FETCH sup.user usr
                   LEFT JOIN FETCH  usr.organizer org
                   WHERE ser.id = :serviceID
