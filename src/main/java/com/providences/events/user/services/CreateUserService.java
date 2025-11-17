@@ -1,6 +1,5 @@
 package com.providences.events.user.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,14 +15,16 @@ import com.providences.events.user.dto.RegisterUserDTO;
 @Service
 @Transactional
 public class CreateUserService {
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private TokenService tokenService;
+
+    public CreateUserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+            TokenService tokenService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
+    }
 
     @Transactional
     public AuthUserDTO.Response execute(RegisterUserDTO.Request data) {

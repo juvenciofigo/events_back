@@ -1,6 +1,5 @@
 package com.providences.events.user.dto;
 
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,6 +34,8 @@ public class AuthUserDTO {
         private String name;
         private Set<String> roles;
         private String token;
+        private String organizer;
+        private String supplier;
 
         public static Response response(UserEntity user, String token) {
             return new Response(
@@ -42,7 +43,9 @@ public class AuthUserDTO {
                     user.getEmail(),
                     user.getName(),
                     user.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.toSet()),
-                    StringUtils.hasText(token) ? token : null);
+                    StringUtils.hasText(token) ? token : null,
+                    user.getOrganizer().getId(),
+                    user.getSupplier().getId());
         }
 
     }
