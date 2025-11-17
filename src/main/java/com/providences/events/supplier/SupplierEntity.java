@@ -45,6 +45,7 @@ public class SupplierEntity {
 
     @Column(name = "profile_picture")
     private String profilePicture;
+    
     private String logo;
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.config.JWTUserData;
-import com.providences.events.shared.dto.ApiResponse;
+
 import com.providences.events.ticket.dto.CreateTicketDTO;
 import com.providences.events.ticket.services.CheckInTicketService;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,7 +25,7 @@ public class CheckInTicketController {
 
     @PutMapping("/{ticketId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<CreateTicketDTO.Response>> putMethodName(@PathVariable String ticketId,
+    public ResponseEntity<CreateTicketDTO.Response> putMethodName(@PathVariable String ticketId,
             Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
@@ -33,6 +33,6 @@ public class CheckInTicketController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ApiResponse<CreateTicketDTO.Response>(true, checkInTicketService.execute(ticketId, userId)));
+                .body(checkInTicketService.execute(ticketId, userId));
     }
 }

@@ -12,12 +12,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class RegisterOrganizerDTO {
+public class OrganizerDTO {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Request {
+    public static class Create {
         @NotNull(message = "O campo nome é obrigatário!")
         @NotBlank(message = "Preencha o campo nome")
         @Size(max = 100, min = 3, message = "O nome deve ter de 3 à 100 caracteres!")

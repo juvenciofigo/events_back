@@ -14,6 +14,7 @@ import com.providences.events.user.dto.AuthUserDTO;
 import com.providences.events.user.dto.RegisterUserDTO;
 
 @Service
+@Transactional
 public class CreateUserService {
     @Autowired
     private UserRepository userRepository;

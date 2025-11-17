@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.services.dto.ServiceDTO;
 import com.providences.events.services.services.GetServiceService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +20,11 @@ public class GetServiceController {
     }
 
     @GetMapping("/{serviceId}")
-    public ResponseEntity<ApiResponse<ServiceDTO.Response>> execute(
+    public ResponseEntity<ServiceDTO.Response> execute(
             @PathVariable(required = true, value = "serviceId") String serviceId) {
 
         return ResponseEntity.ok()
-                .body(new ApiResponse<ServiceDTO.Response>(true, getServiceService.execute(serviceId)));
+                .body(getServiceService.execute(serviceId));
     }
 
 }

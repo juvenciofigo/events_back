@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.album.services.DeleteMediaOfAlbumService;
 import com.providences.events.config.JWTUserData;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,14 +21,14 @@ public class DeleteMediaOfAlbum {
     }
 
     @DeleteMapping("/{mediaId}/album/{albumId}")
-    public String uploadMultiple(
-            @PathVariable(value = "albumId",required = true) String albumId,
-            @PathVariable(value="mediaId",required = true) String mediaId,
+    public ResponseEntity<String> uploadMultiple(
+            @PathVariable(value = "albumId", required = true) String albumId,
+            @PathVariable(value = "mediaId", required = true) String mediaId,
             Authentication authentication) {
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
         String userId = userData.getUserId();
 
-        return deleteMediaOfAlbumService.execute(albumId, mediaId, userId);
+        return ResponseEntity.ok().body(deleteMediaOfAlbumService.execute(albumId, mediaId, userId));
     }
 
 }

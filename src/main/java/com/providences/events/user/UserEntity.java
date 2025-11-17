@@ -41,8 +41,6 @@ public class UserEntity implements UserDetails {
     @Column(length = 70, nullable = false)
     private String passwordHash;
 
-    private String profilePicture;
-
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
@@ -124,7 +122,7 @@ public class UserEntity implements UserDetails {
     @Override
     public String toString() {
         return "UserEntity [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", passwordHash="
-                + passwordHash + ", profilePicture=" + profilePicture + ", isDeleted=" + isDeleted + ", createdAt="
+                + passwordHash + ", isDeleted=" + isDeleted + ", createdAt="
                 + createdAt + ", updatedAt=" + updatedAt + ", role=" + role + "]";
     }
 

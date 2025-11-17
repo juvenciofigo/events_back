@@ -3,11 +3,11 @@
 -- INSERT INTO roles (id,authority) VALUES (2,'SUPPLIER_SERVICE');
 -- INSERT INTO roles (id,authority) VALUES (3,'ADMIN');
 
-INSERT INTO users (id,name,email,password_hash,phone,profile_picture,role,is_deleted, created_at, updated_at) VALUES ('159b53d7-4f74-41ad-b3af-ed512b806a32','juvencio','juvenciofigo@gmail.com', '$2a$10$aZ2tgJGN870hTb8fdwmW7uBs8htiQykFzor3VJ9ZDNLP8q1rHtY1a','845698235','fotodoperigl','ADMIN',false,'2025-10-22 15:30:00','2025-10-22 15:30:00');
+INSERT INTO users (id,name,email,password_hash,phone, role,is_deleted, created_at, updated_at) VALUES ('159b53d7-4f74-41ad-b3af-ed512b806a32','juvencio','juvenciofigo@gmail.com', '$2a$10$aZ2tgJGN870hTb8fdwmW7uBs8htiQykFzor3VJ9ZDNLP8q1rHtY1a','845698235', 'ADMIN',false,'2025-10-22 15:30:00','2025-10-22 15:30:00');
 
-INSERT INTO users (id,name,email,password_hash,phone,profile_picture,role,is_deleted, created_at, updated_at) VALUES ('ec81164e-1f69-47ba-95c7-e011f0a682eb','juvencio','juvencio@gmail.com', '$2a$10$aZ2tgJGN870hTb8fdwmW7uBs8htiQykFzor3VJ9ZDNLP8q1rHtY1a','845698235','fotodoperigl','CLIENT',false,'2025-10-22 15:30:00','2025-10-22 15:30:00');
+INSERT INTO users (id,name,email,password_hash,phone, role,is_deleted, created_at, updated_at) VALUES ('ec81164e-1f69-47ba-95c7-e011f0a682eb','juvencio','juvencio@gmail.com', '$2a$10$aZ2tgJGN870hTb8fdwmW7uBs8htiQykFzor3VJ9ZDNLP8q1rHtY1a','845698235', 'CLIENT',false,'2025-10-22 15:30:00','2025-10-22 15:30:00');
 
-INSERT INTO users (id,name,email,password_hash,phone,profile_picture,role,is_deleted, created_at, updated_at) VALUES ('ec81164e-1f69-47ba-95c7-e011f0a682er','figo','figo@gmail.com', '$2a$10$aZ2tgJGN870hTb8fdwmW7uBs8htiQykFzor3VJ9ZDNLP8q1rHtY1a','845698235','fotodoperigl','CLIENT',false,'2025-10-22 15:30:00','2025-10-22 15:30:00');
+INSERT INTO users (id,name,email,password_hash,phone, role,is_deleted, created_at, updated_at) VALUES ('ec81164e-1f69-47ba-95c7-e011f0a682er','figo','figo@gmail.com', '$2a$10$aZ2tgJGN870hTb8fdwmW7uBs8htiQykFzor3VJ9ZDNLP8q1rHtY1a','845698235', 'CLIENT',false,'2025-10-22 15:30:00','2025-10-22 15:30:00');
 
 
 INSERT INTO suppliers (id, company_name, user_id,description,profile_picture,logo, created_at, updated_at) VALUES ('d787df6d-17e8-444a-88c2-ad21c4117139','Providences','ec81164e-1f69-47ba-95c7-e011f0a682eb','Sem nada a dizer','Foto do profile','Foto de logo','2025-10-22 15:30:00','2025-10-22 15:30:00');
@@ -59,9 +59,9 @@ INSERT INTO organizer_plans (created_at, description, features, level, name, pri
 INSERT INTO tasks (created_at, description, due_date, event_id, priority, responsible_name, responsible_phone, task_status, title, updated_at, id) VALUES ('2025-11-13T17:45:57.1584211', 'tarefa', '2025-10-22T15:30:00', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'MEDIUM', 'Nome do reponsavel', '856526698', 'IN_PROGRESS', 'tarefa', '2025-11-13T18:34:24.7599971', '2f50b8b6-8587-406b-bf0f-9004ec66d191');
 
 -- medias
-INSERT INTO medias_album (created_at, file_url, media_type, service_album_id, id) VALUES ('2025-11-13T17:45:57.1584211', 'https://firebasestorage.googleapis.com/v0/b/lojaprovidences-fotos.firebasestorage.app/o/a7e6f035-2781-4755-8427-3872c3aa8a81-20230818_172833.jpg?alt=media', 'IMAGE', '341c9554-9dd5-478b-a11e-36c6a92887d9', 'c9ec0138-9d14-4b34-b6ff-2e440b30e8fa');
+INSERT INTO medias_album (created_at, file_url, media_type, album_id, id, organizer_id, supplier_id) VALUES ('2025-11-13T17:45:57.1584211', 'https://firebasestorage.googleapis.com/v0/b/lojaprovidences-fotos.firebasestorage.app/o/a7e6f035-2781-4755-8427-3872c3aa8a81-20230818_172833.jpg?alt=media', 'IMAGE', '341c9554-9dd5-478b-a11e-36c6a92887d9', 'c9ec0138-9d14-4b34-b6ff-2e440b30e8fa', null, null);
 
-INSERT INTO medias_album (created_at, file_url, media_type, service_album_id, id) VALUES ('2025-11-13T17:45:57.1584211', 'https://firebasestorage.googleapis.com/v0/b/lojaprovidences-fotos.firebasestorage.app/o/e3899ce7-df7b-402d-863e-ddc9157ed7ff-20230818_172833.jpg?alt=media', 'IMAGE', '341c9554-9dd5-478b-a11e-36c6a92887d9', 'c9ec0138-9d14-4b34-b6ff-2e440b30e8f');
+INSERT INTO medias_album (created_at, file_url, media_type, album_id, id, organizer_id, supplier_id) VALUES ('2025-11-13T17:45:57.1584211', 'https://firebasestorage.googleapis.com/v0/b/lojaprovidences-fotos.firebasestorage.app/o/e3899ce7-df7b-402d-863e-ddc9157ed7ff-20230818_172833.jpg?alt=media', 'IMAGE', '341c9554-9dd5-478b-a11e-36c6a92887d9', 'c9ec0138-9d14-4b34-b6ff-2e440b30e8f', null, null);
 
 -- ServiceEntity(id=, supplier=SupplierEntity(), category=hfgh, description=null, priceBase=10.0, unavailability=null, createdAt=2025-10-28T02:09:44.399494900, updatedAt=2025-10-28T02:09:44.399494900, payments=null, albums=null, servicesHasEvent=null, reviews=null)
 

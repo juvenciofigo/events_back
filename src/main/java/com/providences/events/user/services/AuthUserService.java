@@ -14,19 +14,21 @@ import com.providences.events.user.UserEntity;
 import com.providences.events.user.UserRepository;
 import com.providences.events.user.dto.AuthUserDTO;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 
 @Service
-@RequiredArgsConstructor
 public class AuthUserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final TokenService tokenService;
+    private final AuthenticationConfiguration authenticationConfiguration;
 
-    @Autowired
-    private AuthenticationConfiguration authenticationConfiguration;
+    public AuthUserService(UserRepository userRepository, TokenService tokenService,
+            AuthenticationConfiguration authenticationConfiguration) {
+        this.userRepository = userRepository;
+        this.tokenService = tokenService;
+        this.authenticationConfiguration = authenticationConfiguration;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -35,6 +37,7 @@ public class AuthUserService implements UserDetailsService {
     }
 
     public AuthUserDTO.Response execute(AuthUserDTO.Request dto) {
+        System.out.println("ffffffffffffffffffffffffff" + dto.getEmail());
         try {
             AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
 

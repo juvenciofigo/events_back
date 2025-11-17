@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.guest.dto.GuestDTO;
 import com.providences.events.guest.services.CreateGuestService;
-import com.providences.events.shared.dto.ApiResponse;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -28,16 +26,16 @@ public class CreateGuestController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<GuestDTO.Response>> postGuest(
+    public ResponseEntity<GuestDTO.Response> postGuest(
             @Validated @RequestBody GuestDTO.Create data,
             Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
-        String UserId = userData.getUserId();
+        String userId = userData.getUserId();
 
-        GuestDTO.Response guest = createGuestService.execute(data, UserId);
+        GuestDTO.Response guest = createGuestService.execute(data, userId);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<GuestDTO.Response>(true, guest));
+        return ResponseEntity.ok().body(guest);
     }
 
 }

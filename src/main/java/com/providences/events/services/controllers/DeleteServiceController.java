@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.services.dto.ServiceDTO;
 import com.providences.events.services.services.DeleteServiceService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import java.util.Set;
 
@@ -27,7 +26,7 @@ public class DeleteServiceController {
 
     @DeleteMapping("/{serviceId}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<Set<ServiceDTO.Response>>> execute(
+    public ResponseEntity<Set<ServiceDTO.Response>> execute(
             @PathVariable(required = true, value = "serviceId") String serviceId,
             Authentication authentication) {
 
@@ -35,9 +34,7 @@ public class DeleteServiceController {
         String userId = userData.getUserId();
 
         return ResponseEntity.ok()
-                .body(new ApiResponse<Set<ServiceDTO.Response>>(
-                        true,
-                        deleteServiceService.execute(serviceId, userId)));
+                .body(deleteServiceService.execute(serviceId, userId));
     }
 
 }

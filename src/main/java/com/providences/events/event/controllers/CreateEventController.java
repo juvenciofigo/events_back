@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.event.dto.EventDTO;
 import com.providences.events.event.services.CreateEventService;
-import com.providences.events.shared.dto.ApiResponse;
-
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,17 +26,15 @@ public class CreateEventController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<EventDTO.Response>> createEvent(
+    public ResponseEntity<EventDTO.Response> createEvent(
             @Validated @RequestBody EventDTO.Create data, Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
         String userId = userData.getUserId();
 
-        EventDTO.Response event = createEventService.execute(data, userId);
-
         return ResponseEntity
-        .status(HttpStatus.CREATED)
-        .body(new ApiResponse<EventDTO.Response>(true, event));
+                .status(HttpStatus.CREATED)
+                .body(createEventService.execute(data, userId));
     }
 
 }

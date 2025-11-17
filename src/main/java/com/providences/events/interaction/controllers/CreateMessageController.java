@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.interaction.dto.MessageDTO;
 import com.providences.events.interaction.services.CreateMessageService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import java.util.Set;
 
@@ -27,12 +26,12 @@ public class CreateMessageController {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<Set<MessageDTO.Response>>> postMethodName(
+    public ResponseEntity<Set<MessageDTO.Response>> postMessage(
             @Validated @RequestBody MessageDTO.Request data) {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ApiResponse<Set<MessageDTO.Response>>(true, createMessageService.execute(data)));
+                .body(createMessageService.execute(data));
     }
 
 }

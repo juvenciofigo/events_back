@@ -21,8 +21,8 @@ public class CreateEventService {
         this.eventRepository = eventRepository;
     }
 
-    public EventDTO.Response execute(EventDTO.Create data, String UserId) {
-        OrganizerEntity organizer = organizerRepository.findByUserId(UserId)
+    public EventDTO.Response execute(EventDTO.Create data, String userId) {
+        OrganizerEntity organizer = organizerRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Organizador nao encontrado"));
 
         EventEntity event = new EventEntity();

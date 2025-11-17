@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.event.dto.EventDTO;
 import com.providences.events.event.services.GetEventService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +21,10 @@ public class GetEventController {
     }
 
     @GetMapping("/{eventId}")
-    public ResponseEntity<ApiResponse<EventDTO.Response>> getMethodName(@PathVariable(required = true) String eventId) {
+    public ResponseEntity<EventDTO.Response> getMethodName(@PathVariable(required = true) String eventId) {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(new ApiResponse<EventDTO.Response>(true, getEventService.execute(eventId)));
+                .body(getEventService.execute(eventId));
     }
 
 }

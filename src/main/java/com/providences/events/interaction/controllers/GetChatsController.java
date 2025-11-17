@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.interaction.dto.GetChatDTO;
 import com.providences.events.interaction.services.GetChatsService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import java.util.Set;
 
@@ -27,7 +26,7 @@ public class GetChatsController {
 
     @GetMapping("/{type}")
     // @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<Set<GetChatDTO.Response>>> getMethodName(
+    public ResponseEntity<Set<GetChatDTO.Response>> getChats(
             @PathVariable String type,
             @RequestParam(required = false) String eventId,
             @RequestParam(required = false) String supplierId,
@@ -38,12 +37,12 @@ public class GetChatsController {
 
         return ResponseEntity
                 .ok()
-                .body(new ApiResponse<Set<GetChatDTO.Response>>(true, getChatsService.execute(
+                .body(getChatsService.execute(
                         userData.getUserId(),
                         type,
                         eventId,
                         supplierId,
-                        guestId)));
+                        guestId));
 
     }
 

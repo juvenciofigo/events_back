@@ -1,18 +1,19 @@
 package com.providences.events.supplier.services;
 
-import java.util.Optional;
-
-import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
+import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.supplier.SupplierEntity;
 import com.providences.events.supplier.SupplierRepository;
-import com.providences.events.supplier.dto.RegisterSupplierDTO;
+import com.providences.events.supplier.dto.SupplierDTO;
 import com.providences.events.user.UserEntity;
 import com.providences.events.user.UserRepository;
 import com.providences.events.user.dto.AuthUserDTO;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class RegisterSupplierService {
 
     private final SupplierRepository supplierRepository;
@@ -23,26 +24,34 @@ public class RegisterSupplierService {
         this.userRepository = userRepository;
     }
 
-    public RegisterSupplierDTO.Response execute(RegisterSupplierDTO.Request data, String userId) {
+    public SupplierDTO.Response execute(SupplierDTO.Create data, String userId) {
 
-        Optional<UserEntity> user = userRepository.findById(userId);
+        UserEntity user = userRepository.findId(userId)
+                .filter(u -> !u.getIsDeleted())
+                .orElseThrow(() -> new BusinessException("Utilizador não encontrado", HttpStatus.NOT_FOUND));
 
-        if (user.isEmpty() || user.get().getIsDeleted() == true) {
-            new ResourceNotFoundException("Utilizador não encontrado");
+        boolean alreadyHasSupplier = supplierRepository.existsByUserId(userId);
+        if (alreadyHasSupplier) {
+            throw new BusinessException("Esse utilizador já possui um fornecedor!", HttpStatus.CONFLICT);
+        }
+
+        boolean companyNameExists = supplierRepository.existsByCompanyName(data.getCompanyName());
+        if (companyNameExists) {
+            throw new BusinessException("Nome da empresa existente, escolha outro!", HttpStatus.CONFLICT);
         }
 
         SupplierEntity supplier = new SupplierEntity();
-                supplier.setCompanyName(data.getCompanyName());
-                supplier.setDescription(data.getDescription());
-                supplier.setLogo(data.getLogo().isBlank() ? user.get().getProfilePicture() : data.getLogo());
-                supplier.setProfilePicture(
-                        data.getProfilePicture().isBlank() ? user.get().getProfilePicture() : data.getProfilePicture());
-                supplier.setUser(user.get());
+        supplier.setCompanyName(data.getCompanyName());
+        supplier.setDescription(data.getDescription() != null ? data.getDescription() : "");
+        supplier.setLogo("");
+        supplier.setProfilePicture("");
+        supplier.setUser(user);
 
         SupplierEntity savedSupplier = supplierRepository.save(supplier);
 
-        AuthUserDTO.Response userDTO = AuthUserDTO.Response.response(savedSupplier.getUser(), null);
+        AuthUserDTO.Response userDTO = AuthUserDTO.Response.response(user, null);
 
-        return RegisterSupplierDTO.Response.response(savedSupplier, userDTO);
+        return SupplierDTO.Response.response(savedSupplier, userDTO);
     }
+
 }

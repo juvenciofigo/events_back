@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.guest.dto.GuestDTO;
 import com.providences.events.guest.services.FetchGuestsService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import java.util.Set;
 
@@ -27,15 +26,15 @@ public class FetchGuestsController {
 
     @GetMapping("/event/{eventId}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<Set<GuestDTO.Response>>> getMethodName(@PathVariable String eventId,
+    public ResponseEntity<Set<GuestDTO.Response>> getGuestsByEventId(@PathVariable String eventId,
             Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
-        String UserId = userData.getUserId();
+        String userId = userData.getUserId();
 
         return ResponseEntity
                 .ok()
-                .body(new ApiResponse<Set<GuestDTO.Response>>(true, fetchGuestsService.execute(eventId, UserId)));
+                .body(fetchGuestsService.execute(eventId, userId));
     }
 
 }

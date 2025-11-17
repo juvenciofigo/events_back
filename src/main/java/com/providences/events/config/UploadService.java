@@ -42,6 +42,25 @@ public class UploadService {
         return urls;
     }
 
+    public String uploadSingle(MultipartFile file) throws IOException {
+
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("O ficheiro enviado está vazio ou é inválido.");
+        }
+
+        String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+
+        Bucket bucket = StorageClient.getInstance().bucket();
+        bucket.create(fileName, file.getBytes(), file.getContentType());
+
+        String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8);
+
+        return String.format(
+                "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
+                bucket.getName(),
+                encodedFileName);
+    }
+
     // Deletar arquivo por URL
     public void deleteFileByUrl(String fileUrl) {
         try {

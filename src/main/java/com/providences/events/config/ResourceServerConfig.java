@@ -30,7 +30,7 @@ public class ResourceServerConfig {
         return new BCryptPasswordEncoder();
     }
 
-   @Bean
+    @Bean
     @Profile("test")
     @Order(1)
     public SecurityFilterChain h2SecurityFilterChain(HttpSecurity http) throws Exception {
@@ -56,9 +56,11 @@ public class ResourceServerConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("*"));
+        config.setAllowedOrigins(List.of("http://localhost:3000")); // ← FRONTEND
+        config.setAllowCredentials(true); // ← NECESSÁRIO PARA COOKIES
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;

@@ -12,7 +12,6 @@ import com.providences.events.plans.dto.CreatePlanDTO;
 import com.providences.events.plans.services.CreateAddonPlanService;
 import com.providences.events.plans.services.CreateOrganizerPlanService;
 import com.providences.events.plans.services.CreateSupplierPlanService;
-import com.providences.events.shared.dto.ApiResponse;
 
 @RestController
 @RequestMapping("/plans")
@@ -30,9 +29,9 @@ public class CreatePlanController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ApiResponse<?>> createPlan(
+    public ResponseEntity<?> createPlan(
             @Validated @RequestBody CreatePlanDTO.Request data) {
-        
+
         Object response;
         switch (data.getPlanType()) {
             case "organizer":
@@ -49,6 +48,6 @@ public class CreatePlanController {
         }
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(true, response));
+                .body(response);
     }
 }

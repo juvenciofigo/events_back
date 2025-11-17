@@ -7,11 +7,9 @@ import org.springframework.security.core.Authentication;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.event.dto.SeatDTO;
 import com.providences.events.event.services.FetchSeatsService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import java.util.Set;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,15 +26,14 @@ public class FetchSeatsController {
 
     @GetMapping("/event/{eventId}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<Set<SeatDTO.Response>>> postMethodName(
+    public ResponseEntity<Set<SeatDTO.Response>> postMethodName(
             @PathVariable("eventId") String eventId,
             Authentication authentication) {
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(new ApiResponse<Set<SeatDTO.Response>>(true,
-                        fetchSeatsService.execute(eventId, userData.getUserId())));
+                .ok()
+                .body(fetchSeatsService.execute(eventId, userData.getUserId()));
     }
 
 }

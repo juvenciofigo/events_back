@@ -2,14 +2,12 @@ package com.providences.events.event.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.event.dto.TaskDTO;
 import com.providences.events.event.services.GetTaskService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,15 +23,15 @@ public class GetTaskController {
 
     @GetMapping("/{taskId}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<TaskDTO.Response>> postMethodName(
+    public ResponseEntity<TaskDTO.Response> getTask(
             @PathVariable("taskId") String taskId,
             Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
-        String UserId = userData.getUserId();
+        String userId = userData.getUserId();
 
-        TaskDTO.Response task = getTaskService.execute(taskId, UserId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<TaskDTO.Response>(true, task));
+        TaskDTO.Response task = getTaskService.execute(taskId, userId);
+        return ResponseEntity.ok().body(task);
     }
 
 }

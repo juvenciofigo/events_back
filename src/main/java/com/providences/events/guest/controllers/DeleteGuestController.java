@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.guest.dto.GuestDTO;
 import com.providences.events.guest.services.DeleteGuestService;
-import com.providences.events.shared.dto.ApiResponse;
 
 @RestController
 @RequestMapping("/guests")
@@ -26,7 +25,7 @@ public class DeleteGuestController {
 
     @DeleteMapping("/{guestId}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<Set<GuestDTO.Response>>> delete(
+    public ResponseEntity<Set<GuestDTO.Response>> delete(
             @PathVariable String guestId,
             Authentication authentication) {
 
@@ -34,7 +33,6 @@ public class DeleteGuestController {
 
         return ResponseEntity
                 .ok()
-                .body(new ApiResponse<Set<GuestDTO.Response>>(true,
-                        deleteGuestService.execute(guestId, userData.getUserId())));
+                .body(deleteGuestService.execute(guestId, userData.getUserId()));
     }
 }

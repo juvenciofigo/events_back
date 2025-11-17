@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.services.dto.ServiceDTO;
 import com.providences.events.services.services.FetchServicesService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import java.util.Set;
 
@@ -23,11 +22,11 @@ public class FetchServicesController {
     }
 
     @GetMapping("/supplier/{supplierId}")
-    public ResponseEntity<ApiResponse<Set<ServiceDTO.Response>>> execute(@PathVariable String supplierId) {
+    public ResponseEntity<Set<ServiceDTO.Response>> execute(@PathVariable String supplierId) {
 
         Set<ServiceDTO.Response> services = fetchServicesService.execute(supplierId);
 
-        return ResponseEntity.ok().body(new ApiResponse<Set<ServiceDTO.Response>>(true, services));
+        return ResponseEntity.ok().body(services);
     }
 
 }

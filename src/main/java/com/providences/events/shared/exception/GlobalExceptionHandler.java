@@ -1,6 +1,5 @@
 package com.providences.events.shared.exception;
 
-import com.providences.events.shared.dto.ApiResponse;
 import com.providences.events.shared.dto.CustomErrorDTO;
 import com.providences.events.shared.dto.ValidationErrorDTO;
 import com.providences.events.shared.exception.exceptions.*;
@@ -31,7 +30,7 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> resourceNotFound(ResourceNotFoundException e,
+    public ResponseEntity<CustomErrorDTO> resourceNotFound(ResourceNotFoundException e,
             HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         CustomErrorDTO err = new CustomErrorDTO(
@@ -39,33 +38,33 @@ public class GlobalExceptionHandler {
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(DatabaseException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> database(DatabaseException e, HttpServletRequest request) {
+    public ResponseEntity<CustomErrorDTO> database(DatabaseException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         CustomErrorDTO err = new CustomErrorDTO(
                 Instant.now(),
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> error(BusinessException e, HttpServletRequest request) {
+    public ResponseEntity<CustomErrorDTO> error(BusinessException e, HttpServletRequest request) {
         HttpStatus status = e.getStatusCode() != null ? e.getStatusCode() : HttpStatus.NOT_ACCEPTABLE;
         CustomErrorDTO err = new CustomErrorDTO(
                 Instant.now(),
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> error(NullPointerException e, HttpServletRequest request) {
+    public ResponseEntity<CustomErrorDTO> error(NullPointerException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         String message = e.getMessage();
@@ -80,11 +79,11 @@ public class GlobalExceptionHandler {
                 status.value(),
                 message,
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> error(ConstraintViolationException e,
+    public ResponseEntity<CustomErrorDTO> error(ConstraintViolationException e,
             HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_ACCEPTABLE;
         List<String> messages = new ArrayList<>();
@@ -96,11 +95,11 @@ public class GlobalExceptionHandler {
                 status.value(),
                 messages.get(1),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<ValidationErrorDTO>> methodArgumentNotValidation(
+    public ResponseEntity<ValidationErrorDTO> methodArgumentNotValidation(
             MethodArgumentNotValidException e,
             HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
@@ -114,22 +113,22 @@ public class GlobalExceptionHandler {
             err.addError(f.getField(), f.getDefaultMessage());
         }
 
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 
     @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> forbidden(ForbiddenException e, HttpServletRequest request) {
+    public ResponseEntity<CustomErrorDTO> forbidden(ForbiddenException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.FORBIDDEN;
         CustomErrorDTO err = new CustomErrorDTO(
                 Instant.now(),
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> unauthorized(UsernameNotFoundException e,
+    public ResponseEntity<CustomErrorDTO> unauthorized(UsernameNotFoundException e,
             HttpServletRequest request) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         CustomErrorDTO err = new CustomErrorDTO(
@@ -137,11 +136,11 @@ public class GlobalExceptionHandler {
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> httpMessageNotReadableException(
+    public ResponseEntity<CustomErrorDTO> httpMessageNotReadableException(
             HttpMessageNotReadableException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         CustomErrorDTO err = new CustomErrorDTO(
@@ -149,11 +148,11 @@ public class GlobalExceptionHandler {
                 status.value(),
                 "Formulario precisa ser preenchido",
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 
     @ExceptionHandler(AuthorizationDeniedException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> error(AuthorizationDeniedException e,
+    public ResponseEntity<CustomErrorDTO> error(AuthorizationDeniedException e,
             HttpServletRequest request) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
 
@@ -165,11 +164,11 @@ public class GlobalExceptionHandler {
                 status.value(),
                 "Acesso negado!",
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 
     @ExceptionHandler(InvalidDataAccessApiUsageException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> error(InvalidDataAccessApiUsageException e,
+    public ResponseEntity<CustomErrorDTO> error(InvalidDataAccessApiUsageException e,
             HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
@@ -181,11 +180,11 @@ public class GlobalExceptionHandler {
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 
     @ExceptionHandler(MpesaPaymentException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> mpesa(MpesaPaymentException e,
+    public ResponseEntity<CustomErrorDTO> mpesa(MpesaPaymentException e,
             HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
@@ -217,11 +216,11 @@ public class GlobalExceptionHandler {
                 status.value(),
                 message,
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> notFound(NoResourceFoundException e,
+    public ResponseEntity<CustomErrorDTO> notFound(NoResourceFoundException e,
             HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
 
@@ -233,7 +232,7 @@ public class GlobalExceptionHandler {
                 status.value(),
                 "Nenhum endpoint encontrado",
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -267,7 +266,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<CustomErrorDTO>> globalExceptionHandler(Exception e, HttpServletRequest request) {
+    public ResponseEntity<CustomErrorDTO> globalExceptionHandler(Exception e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         // Loga o erro no servidor (sem expor detalhes ao cliente)
@@ -280,6 +279,6 @@ public class GlobalExceptionHandler {
                 "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde.",
                 request.getRequestURI());
 
-        return ResponseEntity.status(status).body(new ApiResponse<>(false, err));
+        return ResponseEntity.status(status).body( err);
     }
 }

@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.event.dto.EventDTO;
 import com.providences.events.event.services.UpdateEventService;
-import com.providences.events.shared.dto.ApiResponse;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -28,7 +26,7 @@ public class UpdateEventController {
 
     @PutMapping("/{eventId}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<EventDTO.Response>> createEvent(
+    public ResponseEntity<EventDTO.Response> createEvent(
             @Validated @RequestBody EventDTO.Update data,
             @PathVariable(required = true) String eventId,
             Authentication authentication) {
@@ -39,8 +37,8 @@ public class UpdateEventController {
         EventDTO.Response event = updateEventService.execute(eventId, data, userId);
 
         return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(new ApiResponse<EventDTO.Response>(true, event));
+                .ok()
+                .body(event);
     }
 
 }

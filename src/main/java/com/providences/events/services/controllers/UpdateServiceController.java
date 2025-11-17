@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.services.dto.ServiceDTO;
 import com.providences.events.services.services.UpdateServiceService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +27,7 @@ public class UpdateServiceController {
 
     @PutMapping("/{serviceId}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<ServiceDTO.Response>> execute(
+    public ResponseEntity<ServiceDTO.Response> execute(
             @Validated @RequestBody ServiceDTO.Update data,
             @PathVariable("serviceId") String serviceId,
             Authentication authentication) {
@@ -39,7 +38,7 @@ public class UpdateServiceController {
         ServiceDTO.Response service = updateServiceService.execute(serviceId, data, userId);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<ServiceDTO.Response>(true, service));
+                .body(service);
     }
 
 }

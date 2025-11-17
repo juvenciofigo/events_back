@@ -33,7 +33,6 @@ public class AuthUserDTO {
         private String id;
         private String email;
         private String name;
-        private String profilePicture;
         private Set<String> roles;
         private String token;
 
@@ -42,7 +41,6 @@ public class AuthUserDTO {
                     user.getId(),
                     user.getEmail(),
                     user.getName(),
-                    user.getProfilePicture(),
                     user.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.toSet()),
                     StringUtils.hasText(token) ? token : null);
         }

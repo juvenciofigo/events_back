@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrganizerRepository extends JpaRepository<OrganizerEntity, String> {
-    Optional<OrganizerEntity> findByUserId(String UserId);
+    Optional<OrganizerEntity> findByUserId(String userId);
+
+       boolean existsByUserId(String userId);
 
     @Query("""
             SELECT  o

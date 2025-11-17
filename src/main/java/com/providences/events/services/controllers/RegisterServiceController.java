@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.services.dto.ServiceDTO;
 import com.providences.events.services.services.RegisterServiceService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,7 @@ public class RegisterServiceController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<ServiceDTO.Response>> execute(
+    public ResponseEntity<ServiceDTO.Response> execute(
             @Validated @RequestBody ServiceDTO.Request data,
             Authentication authentication) {
 
@@ -37,7 +36,7 @@ public class RegisterServiceController {
         ServiceDTO.Response service = registerServiceService.execute(data, userId);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<ServiceDTO.Response>(true, service));
+                .body(service);
     }
 
 }

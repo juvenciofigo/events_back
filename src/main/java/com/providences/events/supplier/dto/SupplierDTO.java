@@ -4,29 +4,31 @@ import com.providences.events.supplier.SupplierEntity;
 import com.providences.events.user.dto.AuthUserDTO;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class RegisterSupplierDTO {
+public class SupplierDTO {
 
     @Data
-    @NoArgsConstructor
     @AllArgsConstructor
-    public static class Request {
-        @NotNull(message = "O campo nome da empresa é obrigatário!")
+    public static class Create {
         @NotBlank(message = "Preencha o campo nome da empresa")
         private String companyName;
 
-        private String profilePicture = "";
+        private String description;
 
-        private String logo = "";
+    }
 
-        private String description = "";
+    @Data
+    @AllArgsConstructor
+    public static class Update {
+        @NotBlank(message = "Preencha o campo nome da empresa")
+        private String companyName;
 
+        private String description;
     }
 
     @Setter

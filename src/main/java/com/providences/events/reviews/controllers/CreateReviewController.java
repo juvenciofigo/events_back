@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.reviews.dto.CreateReviewDTO;
 import com.providences.events.reviews.services.CreateReviewService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +26,14 @@ public class CreateReviewController {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<CreateReviewDTO.Response>> postMethodName(
+    public ResponseEntity<CreateReviewDTO.Response> postMethodName(
             @Validated @RequestBody CreateReviewDTO.Request data,
             Authentication authentication) {
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
-        String UserId = userData.getUserId();
+        String userId = userData.getUserId();
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<CreateReviewDTO.Response>(true, createReviewService.execute(data, UserId)));
+                .body(createReviewService.execute(data, userId));
     }
 
 }

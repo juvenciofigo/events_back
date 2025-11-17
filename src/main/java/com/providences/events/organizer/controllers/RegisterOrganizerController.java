@@ -4,12 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.config.JWTUserData;
-import com.providences.events.organizer.dto.RegisterOrganizerDTO;
+import com.providences.events.organizer.dto.OrganizerDTO;
 import com.providences.events.organizer.services.RegisterOrganizerService;
-import com.providences.events.shared.dto.ApiResponse;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,22 +18,25 @@ import org.springframework.validation.annotation.Validated;
 @RestController
 @RequestMapping("/organizers")
 public class RegisterOrganizerController {
-    @Autowired
     private RegisterOrganizerService registerOrganizerService;
+
+    public RegisterOrganizerController(RegisterOrganizerService registerOrganizerService) {
+        this.registerOrganizerService = registerOrganizerService;
+    }
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<RegisterOrganizerDTO.Response>> postMethodName(
-            @Validated @RequestBody RegisterOrganizerDTO.Request dto,
+    public ResponseEntity<OrganizerDTO.Response> postOrganizer(
+            @Validated @RequestBody OrganizerDTO.Create dto,
             Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
-        String UserId = userData.getUserId();
+        String userId = userData.getUserId();
 
-        RegisterOrganizerDTO.Response organizer = registerOrganizerService.execute(dto, UserId);
+        OrganizerDTO.Response organizer = registerOrganizerService.execute(dto, userId);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<RegisterOrganizerDTO.Response>(true, organizer));
+                .body(organizer);
     }
 
 }

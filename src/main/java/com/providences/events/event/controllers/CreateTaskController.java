@@ -11,7 +11,6 @@ import org.springframework.validation.annotation.Validated;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.event.dto.TaskDTO;
 import com.providences.events.event.services.CreateTaskService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,14 +26,14 @@ public class CreateTaskController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<TaskDTO.Response>> postMethodName(
+    public ResponseEntity<TaskDTO.Response> postMethodName(
             @Validated @RequestBody TaskDTO.Create data, Authentication authentication) {
 
         JWTUserData userData = (JWTUserData) authentication.getPrincipal();
-        String UserId = userData.getUserId();
+        String userId = userData.getUserId();
 
-        TaskDTO.Response task = createTaskService.execute(data, UserId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<TaskDTO.Response>(true, task));
+        TaskDTO.Response task = createTaskService.execute(data, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(task);
     }
 
 }

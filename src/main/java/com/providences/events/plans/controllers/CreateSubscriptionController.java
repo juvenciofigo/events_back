@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.plans.dto.CreateSubscriptionDTO;
 import com.providences.events.plans.services.CreateSubscriptionService;
-import com.providences.events.shared.dto.ApiResponse;
 
 @RestController
 @RequestMapping("/plans")
@@ -24,10 +23,10 @@ public class CreateSubscriptionController {
 
     @PostMapping("/subscription")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<CreateSubscriptionDTO.Response>> execute(
+    public ResponseEntity<CreateSubscriptionDTO.Response> execute(
             @Validated @RequestBody CreateSubscriptionDTO.Request data) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ApiResponse<CreateSubscriptionDTO.Response>(true, createSubscriptionService.execute(data)));
+                .body(createSubscriptionService.execute(data));
     }
 }

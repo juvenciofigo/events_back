@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SupplierRepository extends JpaRepository<SupplierEntity, String> {
 
+    boolean existsByCompanyName(String name);
+
+    boolean existsByUserId(String userId);
+
     @Query("""
             SELECT s
             FROM SupplierEntity s

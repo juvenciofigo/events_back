@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import com.providences.events.config.JWTUserData;
 import com.providences.events.event.dto.SeatDTO;
 import com.providences.events.event.services.CreateSeatService;
-import com.providences.events.shared.dto.ApiResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +27,7 @@ public class CreateSeatController {
 
     @PostMapping()
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<ApiResponse<SeatDTO.Response>> postMethodName(
+    public ResponseEntity<SeatDTO.Response> postMethodName(
             @Validated @RequestBody SeatDTO.Create data,
             @PathVariable("eventId") String eventId,
             Authentication authentication) {
@@ -36,8 +35,7 @@ public class CreateSeatController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ApiResponse<SeatDTO.Response>(true,
-                        createSeatService.execute(eventId,data, userData.getUserId())));
+                .body(createSeatService.execute(eventId, data, userData.getUserId()));
     }
 
 }

@@ -2,6 +2,9 @@ package com.providences.events.album.entities;
 
 import java.time.LocalDateTime;
 
+import com.providences.events.organizer.OrganizerEntity;
+import com.providences.events.supplier.SupplierEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -38,8 +42,16 @@ public class MediaEntity {
     private MediaType mediaType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "service_album_id")
+    @JoinColumn(name = "album_id")
     private AlbumEntity serviceAlbum;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organizer_id")
+    private OrganizerEntity organizer;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id")
+    private SupplierEntity supplier;
 
     @Column(nullable = false, updatable = false, name = "created_at")
     private LocalDateTime createdAt;

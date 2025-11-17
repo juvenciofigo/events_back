@@ -2,6 +2,7 @@ package com.providences.events.album.controllers;
 
 import java.util.Set;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,8 @@ public class FetchMediaController {
     }
 
     @GetMapping("/album/{albumId}")
-    public Set<AddMediaAlbumDto.Response> get(@PathVariable(required = true) String albumId) {
+    public ResponseEntity<Set<AddMediaAlbumDto.Response>> get(@PathVariable(required = true) String albumId) {
 
-        return fetchMediaAlbumService.execute(albumId);
+        return ResponseEntity.ok().body(fetchMediaAlbumService.execute(albumId));
     }
 }
