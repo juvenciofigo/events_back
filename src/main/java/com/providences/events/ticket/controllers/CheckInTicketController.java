@@ -3,8 +3,7 @@ package com.providences.events.ticket.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.config.JWTUserData;
-
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.ticket.dto.CreateTicketDTO;
 import com.providences.events.ticket.services.CheckInTicketService;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,7 +27,7 @@ public class CheckInTicketController {
     public ResponseEntity<CreateTicketDTO.Response> putMethodName(@PathVariable String ticketId,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         return ResponseEntity

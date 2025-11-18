@@ -12,6 +12,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.providences.events.config.token.JWTUserDTO;
+import com.providences.events.config.token.TokenService;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,10 +40,10 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (Strings.isNotEmpty(authHeader) && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring("Bearer ".length());
 
-            Optional<JWTUserData> optUser = tokenService.validateToken(token);
+            Optional<JWTUserDTO> optUser = tokenService.validateToken(token);
 
             if (optUser.isPresent()) {
-                JWTUserData userData = optUser.get();
+                JWTUserDTO userData = optUser.get();
 
                 Set<SimpleGrantedAuthority> authorities = userData.getRoles()
                         .stream()

@@ -3,7 +3,7 @@ package com.providences.events.event.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.dto.EventDTO;
 import com.providences.events.event.services.CreateEventService;
 
@@ -29,7 +29,7 @@ public class CreateEventController {
     public ResponseEntity<EventDTO.Response> createEvent(
             @Validated @RequestBody EventDTO.Create data, Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         return ResponseEntity

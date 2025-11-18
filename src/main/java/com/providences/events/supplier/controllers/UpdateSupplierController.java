@@ -3,8 +3,7 @@ package com.providences.events.supplier.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.config.JWTUserData;
-
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.supplier.dto.SupplierDTO;
 import com.providences.events.supplier.services.UpdateSupplierService;
 
@@ -33,7 +32,7 @@ public class UpdateSupplierController {
             @PathVariable(value = "supplierId", required = true) String supplierId,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         return ResponseEntity.status(HttpStatus.CREATED)

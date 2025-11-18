@@ -3,7 +3,7 @@ package com.providences.events.organizer.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.organizer.dto.OrganizerDTO;
 import com.providences.events.organizer.services.RegisterOrganizerService;
 
@@ -30,7 +30,7 @@ public class RegisterOrganizerController {
             @Validated @RequestBody OrganizerDTO.Create dto,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         OrganizerDTO.Response organizer = registerOrganizerService.execute(dto, userId);

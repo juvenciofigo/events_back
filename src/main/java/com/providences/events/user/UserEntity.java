@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.providences.events.config.token.RefreshTokenEntity;
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.supplier.SupplierEntity;
 
@@ -59,6 +60,9 @@ public class UserEntity implements UserDetails {
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private OrganizerEntity organizer;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<RefreshTokenEntity> refreshTokens;
 
     // //////////////////
     @PrePersist

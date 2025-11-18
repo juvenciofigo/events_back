@@ -5,12 +5,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.providences.events.config.TokenService;
+import com.providences.events.config.token.TokenService;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.user.UserEntity;
 import com.providences.events.user.UserRepository;
-import com.providences.events.user.dto.AuthUserDTO;
-import com.providences.events.user.dto.RegisterUserDTO;
+import com.providences.events.user.dto.UserDTO;
 
 @Service
 @Transactional
@@ -18,16 +17,18 @@ public class CreateUserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private TokenService tokenService;
+    private final CreateRefreshToken createRefreshToken;
 
     public CreateUserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-            TokenService tokenService) {
+            TokenService tokenService, CreateRefreshToken createRefreshToken) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
+        this.createRefreshToken = createRefreshToken;
     }
 
     @Transactional
-    public AuthUserDTO.Response execute(RegisterUserDTO.Request data) {
+    public UserDTO.Response execute(UserDTO.Create data, String ip, String userAgent) {
         Boolean existUser = userRepository.findByEmail(data.getEmail()).isPresent();
         if (existUser) {
             throw new BusinessException("Email em uso! Experimento com um email diferente!", HttpStatus.CONFLICT);
@@ -39,10 +40,12 @@ public class CreateUserService {
         user.setPhone(data.getPhone());
         user.setName(data.getName());
 
-        this.userRepository.save(user);
-        String token = tokenService.generateToken(user);
+        UserEntity savedUser = this.userRepository.save(user);
 
-        return AuthUserDTO.Response.response(user, token);
+        String token = tokenService.generateToken(savedUser);
+
+        String refreshToken = createRefreshToken.execute(savedUser.getId(), ip, userAgent);
+        return UserDTO.Response.response(user, token, refreshToken);
     }
 
 }

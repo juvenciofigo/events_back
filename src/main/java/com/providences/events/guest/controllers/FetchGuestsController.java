@@ -3,7 +3,7 @@ package com.providences.events.guest.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.guest.dto.GuestDTO;
 import com.providences.events.guest.services.FetchGuestsService;
 
@@ -29,7 +29,7 @@ public class FetchGuestsController {
     public ResponseEntity<Set<GuestDTO.Response>> getGuestsByEventId(@PathVariable String eventId,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         return ResponseEntity

@@ -3,7 +3,7 @@ package com.providences.events.event.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.dto.EventDTO;
 import com.providences.events.event.services.UpdateEventService;
 
@@ -31,7 +31,7 @@ public class UpdateEventController {
             @PathVariable(required = true) String eventId,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         EventDTO.Response event = updateEventService.execute(eventId, data, userId);

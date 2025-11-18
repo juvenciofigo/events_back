@@ -1,7 +1,7 @@
 package com.providences.events.organizer.dto;
 
 import com.providences.events.organizer.OrganizerEntity;
-import com.providences.events.user.dto.AuthUserDTO;
+import com.providences.events.user.dto.UserDTO;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,9 +37,9 @@ public class OrganizerDTO {
         private String id;
         private String name;
         private String profilePicture;
-        private AuthUserDTO.Response user;
+        private UserDTO.Response user;
 
-        public static Response response(OrganizerEntity organizer, AuthUserDTO.Response user) {
+        public static Response response(OrganizerEntity organizer, UserDTO.Response user) {
             return new Response(organizer.getId(),
                     organizer.getName(),
                     organizer.getProfilePicture(),

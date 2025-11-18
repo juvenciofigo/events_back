@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.guest.dto.GuestDTO;
 import com.providences.events.guest.services.GetGuestService;
 
@@ -27,7 +27,7 @@ public class GetGuestController {
             @PathVariable(required = true) String guestId,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         GuestDTO.Response guest = getGuestService.execute(guestId, userId);

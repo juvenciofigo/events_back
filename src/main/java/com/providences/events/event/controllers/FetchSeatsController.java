@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.dto.SeatDTO;
 import com.providences.events.event.services.FetchSeatsService;
 
@@ -29,7 +29,7 @@ public class FetchSeatsController {
     public ResponseEntity<Set<SeatDTO.Response>> postMethodName(
             @PathVariable("eventId") String eventId,
             Authentication authentication) {
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
 
         return ResponseEntity
                 .ok()

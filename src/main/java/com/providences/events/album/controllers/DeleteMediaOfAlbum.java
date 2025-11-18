@@ -3,7 +3,7 @@ package com.providences.events.album.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.album.services.DeleteMediaOfAlbumService;
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,7 +25,7 @@ public class DeleteMediaOfAlbum {
             @PathVariable(value = "albumId", required = true) String albumId,
             @PathVariable(value = "mediaId", required = true) String mediaId,
             Authentication authentication) {
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         return ResponseEntity.ok().body(deleteMediaOfAlbumService.execute(albumId, mediaId, userId));

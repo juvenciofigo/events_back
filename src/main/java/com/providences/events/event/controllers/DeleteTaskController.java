@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.dto.TaskDTO;
 import com.providences.events.event.services.DeleteTaskService;
 
@@ -32,7 +32,7 @@ public class DeleteTaskController {
             @PathVariable(value = "taskId", required = true) String taskId,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         Set<TaskDTO.Response> task = deleteTaskService.execute(taskId, userId);

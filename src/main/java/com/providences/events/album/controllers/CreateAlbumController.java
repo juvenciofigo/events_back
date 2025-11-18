@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.album.dto.CreateAlbumDTO;
 import com.providences.events.album.services.CreateAlbumService;
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ public class CreateAlbumController {
     public ResponseEntity<CreateAlbumDTO.Response> postMethodName(@RequestBody CreateAlbumDTO.Request data,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         CreateAlbumDTO.Response album = createAlbumService.execute(data, userId);

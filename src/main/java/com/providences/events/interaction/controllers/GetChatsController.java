@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.interaction.dto.GetChatDTO;
 import com.providences.events.interaction.services.GetChatsService;
 
@@ -33,7 +33,7 @@ public class GetChatsController {
             @RequestParam(required = false) String guestId,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
 
         return ResponseEntity
                 .ok()

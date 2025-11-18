@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.providences.events.album.dto.AddMediaAlbumDto;
 import com.providences.events.album.services.AddMediaService;
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -32,7 +32,7 @@ public class AddMediaController {
             @RequestParam("files") MultipartFile[] files,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         return ResponseEntity.ok().body(addMediaAlbumService.execute(albumId, files, userId));

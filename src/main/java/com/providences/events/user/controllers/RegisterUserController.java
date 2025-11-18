@@ -3,9 +3,11 @@ package com.providences.events.user.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.user.dto.AuthUserDTO;
-import com.providences.events.user.dto.RegisterUserDTO;
+import com.providences.events.user.dto.UserDTO;
 import com.providences.events.user.services.CreateUserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +25,17 @@ public class RegisterUserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthUserDTO.Response> signup(
-            @Validated @RequestBody RegisterUserDTO.Request dto) {
-        AuthUserDTO.Response data = this.createUserService.execute(dto);
+    public ResponseEntity<UserDTO.Response> signup(
+            @Validated @RequestBody UserDTO.Create data,
+            HttpServletRequest req,
+            HttpServletResponse resp) {
+        String ip = req.getRemoteAddr();
+        String userAgent = req.getHeader("User-Agent");
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(data);
+        UserDTO.Response response = this.createUserService.execute(data, ip, userAgent);
+        resp.addHeader("Set-Cookie", response.getCookie());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 }

@@ -3,7 +3,7 @@ package com.providences.events.guest.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.guest.dto.GuestDTO;
 import com.providences.events.guest.services.CreateGuestService;
 
@@ -30,7 +30,7 @@ public class CreateGuestController {
             @Validated @RequestBody GuestDTO.Create data,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         GuestDTO.Response guest = createGuestService.execute(data, userId);

@@ -8,7 +8,8 @@ import java.util.Set;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import com.providences.events.config.JWTUserData;
+
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.dto.TaskDTO;
 import com.providences.events.event.services.FetchTasksService;
 
@@ -30,7 +31,7 @@ public class FetchTaskController {
             @PathVariable("eventId") String eventId,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         Set<TaskDTO.Response> task = fetchTasksService.execute(eventId, userId);

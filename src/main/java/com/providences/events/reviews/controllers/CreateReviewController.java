@@ -3,7 +3,7 @@ package com.providences.events.reviews.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.reviews.dto.CreateReviewDTO;
 import com.providences.events.reviews.services.CreateReviewService;
 
@@ -29,7 +29,7 @@ public class CreateReviewController {
     public ResponseEntity<CreateReviewDTO.Response> postMethodName(
             @Validated @RequestBody CreateReviewDTO.Request data,
             Authentication authentication) {
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         return ResponseEntity.status(HttpStatus.CREATED)

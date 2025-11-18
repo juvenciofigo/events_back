@@ -8,7 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 
-import com.providences.events.config.JWTUserData;
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.dto.TaskDTO;
 import com.providences.events.event.services.CreateTaskService;
 
@@ -29,7 +29,7 @@ public class CreateTaskController {
     public ResponseEntity<TaskDTO.Response> postMethodName(
             @Validated @RequestBody TaskDTO.Create data, Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         TaskDTO.Response task = createTaskService.execute(data, userId);

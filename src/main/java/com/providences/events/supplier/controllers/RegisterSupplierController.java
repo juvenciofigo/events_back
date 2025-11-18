@@ -3,8 +3,7 @@ package com.providences.events.supplier.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.config.JWTUserData;
-
+import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.supplier.dto.SupplierDTO;
 import com.providences.events.supplier.services.RegisterSupplierService;
 
@@ -31,7 +30,7 @@ public class RegisterSupplierController {
             @Validated @RequestBody SupplierDTO.Create data,
             Authentication authentication) {
 
-        JWTUserData userData = (JWTUserData) authentication.getPrincipal();
+        JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
         SupplierDTO.Response supplier = registerSupplierService.execute(data, userId);

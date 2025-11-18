@@ -8,7 +8,7 @@ import com.providences.events.organizer.dto.OrganizerDTO;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.user.UserEntity;
 import com.providences.events.user.UserRepository;
-import com.providences.events.user.dto.AuthUserDTO;
+import com.providences.events.user.dto.UserDTO;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +46,7 @@ public class RegisterOrganizerService {
 
                 OrganizerEntity savedOrganizer = organizerRepository.save(organizer);
 
-                AuthUserDTO.Response userDTO = AuthUserDTO.Response.response(savedOrganizer.getUser(), null);
+                UserDTO.Response userDTO = UserDTO.Response.response(savedOrganizer.getUser(), null, null);
 
                 return OrganizerDTO.Response.response(savedOrganizer, userDTO);
 
