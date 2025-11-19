@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-public class CreateTicketDTO {
+public class TicketDTO {
 
     public static class Request {
         public String EventId;
@@ -21,7 +21,8 @@ public class CreateTicketDTO {
     @Setter
     @Getter
     public static class Response {
-        private String code;
+        private String ticketCode;
+        private String accessToken;
         private Integer totalPeople;
         private String notes;
         private TicketEntity.TicketStatus ticketStatus;
@@ -31,7 +32,8 @@ public class CreateTicketDTO {
 
         public static Response response(TicketEntity ticket) {
             return new Response(
-                    ticket.getCode(),
+                    ticket.getTicketCode(),
+                    ticket.getAccessToken(),
                     ticket.getTotalPeople(),
                     ticket.getNotes(),
                     ticket.getTicketStatus(),

@@ -3,6 +3,7 @@ package com.providences.events.ticket.services;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +49,8 @@ public class CreateTicketService {
         ticket.setEvent(event);
         ticket.setTotalPeople(data.getTotalPeople());
         ticket.setNotes(data.getNotes());
-        ticket.setCode(UUID.randomUUID().toString());
+        ticket.setTicketCode(generateCode());
+        ticket.setAccessToken(UUID.randomUUID().toString());
 
         // adiconar o ticket à um assento
 
@@ -101,7 +103,11 @@ public class CreateTicketService {
             ticket.setSeat(seat);
 
         }
-
+        String publicUrl = "https://yourdomain.com/public/tickets/" + ticket.getAccessToken();
         return ticketRepository.save(ticket);
+    }
+
+    private String generateCode() {
+        return "TCKT-" + RandomStringUtils.randomAlphanumeric(8).toUpperCase();
     }
 }

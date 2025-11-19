@@ -50,8 +50,11 @@ public class TicketEntity {
     @Column(name = "responded_at")
     private LocalDateTime respondedAt;
 
-    @Column(nullable = false)
-    private String code;
+    @Column(nullable = false, name = "ticket_code", unique = true)
+    private String ticketCode;
+
+    @Column(nullable = false, unique = true, name = "access_token")
+    private String accessToken;
 
     @Column(name = "total_people", nullable = false)
     private Integer totalPeople;
@@ -95,9 +98,7 @@ public class TicketEntity {
     @Override
     public String toString() {
         return "TicketEntity [id=" + id + ", ticketStatus=" + ticketStatus + ", sentAt=" + sentAt + ", respondedAt="
-                + respondedAt
-                + ", code=" + code + ", totalPeople=" + totalPeople + ", notes=" + notes + ", createdAt=" + createdAt
-                + ", updatedAt=" + updatedAt + "]";
+                + respondedAt + ", ticketCode=" + ticketCode + ", accessToken=" + accessToken + ", totalPeople="
+                + totalPeople + ", notes=" + notes + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
-
 }

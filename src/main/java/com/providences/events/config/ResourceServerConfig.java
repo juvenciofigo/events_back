@@ -56,8 +56,8 @@ public class ResourceServerConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000")); // ← FRONTEND
-        config.setAllowCredentials(true); // ← NECESSÁRIO PARA COOKIES
+        config.setAllowedOrigins(List.of("http://localhost:3000")); 
+        config.setAllowCredentials(true); 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
 

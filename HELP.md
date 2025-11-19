@@ -6,10 +6,10 @@ api do aplicativo de eventos
 
 ### Autenticação e Usuários
 
-    [] POST /auth/register
-    [] POST /auth/login
-    [] POST /auth/logout
-    [] POST /auth/refresh-token
+    [x] POST /auth/register
+    [x] POST /auth/login
+    [x] POST /auth/logout
+    [x] POST /auth/refresh-token
     [] POST /auth/forgot-password
     [] POST /auth/reset-password
     [] GET /auth/me
@@ -69,17 +69,17 @@ api do aplicativo de eventos
 
 ### Convidados (Guests)
 
-    [] POST /guests
+    [x] POST /guests
     [] POST /guests/purchase — comprar ticket
-    [] GET /events/{id}/guests - convidados
-    [] GET /guests/{id}
+    [x] GET /events/{id}/guests - convidados
+    [x] GET /guests/{id} - organizador ver o convidado
     [] GET /guest/me/
-    [] PATCH /guests/{id}
-    [] DELETE /guests/{id}
+    [x] PATCH /guests/{id}
+    [x] DELETE /guests/{id}
 
 ### Tickets
 
-    [] POST /tickets
+    [x] POST /tickets
     [] GET /tickets/{id}
     [] GET /events/{id}/tickets — todos tickets do evento
     [] PATCH /tickets/{id}

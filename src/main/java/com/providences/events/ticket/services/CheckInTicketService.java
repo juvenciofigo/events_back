@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.providences.events.shared.exception.exceptions.BusinessException;
-import com.providences.events.ticket.dto.CreateTicketDTO;
+import com.providences.events.ticket.dto.TicketDTO;
 import com.providences.events.ticket.entities.TicketEntity;
 import com.providences.events.ticket.entities.TicketEntity.TicketStatus;
 import com.providences.events.ticket.repositories.TicketRepository;
@@ -19,7 +19,7 @@ public class CheckInTicketService {
         this.ticketRepository = ticketRepository;
     }
 
-    public CreateTicketDTO.Response execute(String ticketId, String userId) {
+    public TicketDTO.Response execute(String ticketId, String userId) {
 
         TicketEntity ticket = ticketRepository.getTicketById(ticketId)
                 .orElseThrow(() -> new BusinessException("não encontrado", HttpStatus.BAD_REQUEST));
@@ -27,7 +27,7 @@ public class CheckInTicketService {
         ticket.setTicketStatus(TicketStatus.CONFIRMED);
         TicketEntity saved = ticketRepository.save(ticket);
 
-        return CreateTicketDTO.Response.response(saved);
+        return TicketDTO.Response.response(saved);
     }
 
 }

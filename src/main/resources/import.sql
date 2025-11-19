@@ -30,7 +30,7 @@ INSERT INTO events (id,budget_estimated,budget_spent,cover_image,created_at,date
 INSERT INTO seats (created_at, description, event_id, layout_position_x, layout_position_y, name, total_seats, updated_at, id, is_paid, price, available_seats) VALUES ('2025-11-05 00:02:36.834399	', 'Descricao do assento', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', null, null, 'Mesa x', 10, '2025-11-05 00:02:36.834399', 'ed961e6d-0f99-45a0-be9a-4c87a6c80af7', false, 200,10);
 
 -- Ticket
-INSERT INTO tickets (code, created_at, event_id, notes, responded_at, send_at, ticket_status, total_people, updated_at, id, seat_id) VALUES ('013e1843-1154-40a3-9cba-d4a818f18519', '2025-10-29 23:20:22.145442', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'notas do ticket', null, '2025-10-29 23:20:22.145442', 'PENDING', 2,'2025-10-29 23:20:22.145442', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', 'ed961e6d-0f99-45a0-be9a-4c87a6c80af7');
+INSERT INTO tickets (ticket_code,access_token,created_at, event_id, notes, responded_at, send_at, ticket_status, total_people, updated_at, id, seat_id) VALUES ('013e1843-1154-40a3-9cba-d4a818f18519','1', '2025-10-29 23:20:22.145442', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'notas do ticket', null, '2025-10-29 23:20:22.145442', 'PENDING', 2,'2025-10-29 23:20:22.145442', '1c7b184c-46cd-4ef6-9ae8-86e58c588f6d', 'ed961e6d-0f99-45a0-be9a-4c87a6c80af7');
 
 -- Gests
 INSERT INTO guests (created_at, email, name, phone, ticket_id, updated_at, id) VALUES ('2025-11-07 05:07:03.493465','juvenciofigo@gmail.com','juvrncio','845678954','1c7b184c-46cd-4ef6-9ae8-86e58c588f6d','2025-11-07 05:07:03.493465','6ea20085-7477-4c98-981d-64eecc8ff0f7')

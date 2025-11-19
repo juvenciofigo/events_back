@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.config.token.JWTUserDTO;
-import com.providences.events.ticket.dto.CreateTicketDTO;
+import com.providences.events.ticket.dto.TicketDTO;
 import com.providences.events.ticket.services.CheckInTicketService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ public class CheckInTicketController {
 
     @PutMapping("/{ticketId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<CreateTicketDTO.Response> putMethodName(@PathVariable String ticketId,
+    public ResponseEntity<TicketDTO.Response> putMethodName(@PathVariable String ticketId,
             Authentication authentication) {
 
         JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
