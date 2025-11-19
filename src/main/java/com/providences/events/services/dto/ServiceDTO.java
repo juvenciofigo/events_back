@@ -1,8 +1,11 @@
 package com.providences.events.services.dto;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
+import com.providences.events.album.entities.AlbumEntity;
 import com.providences.events.services.ServiceEntity;
+import com.providences.events.services.ServiceUnavailability;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -49,13 +52,17 @@ public class ServiceDTO {
         private String category;
         private String description;
         private BigDecimal priceBase;
+        private Set<AlbumEntity> albums;
+        private Set<ServiceUnavailability> unavailability;
 
         public static Response response(ServiceEntity data) {
             return new Response(
                     data.getId(),
                     data.getCategory(),
                     data.getDescription(),
-                    data.getPriceBase());
+                    data.getPriceBase(),
+                    data.getAlbums(),
+                    data.getUnavailability());
 
         }
     }

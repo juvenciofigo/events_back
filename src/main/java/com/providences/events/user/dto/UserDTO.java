@@ -1,5 +1,7 @@
 package com.providences.events.user.dto;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,22 +58,36 @@ public class UserDTO {
         private String name;
         private Set<String> roles;
         private String token;
-        private String organizer;
-        private String supplier;
         private String cookie;
+        private Map<String, String> profiles;
 
         public static Response response(UserEntity user, String token, String cookie) {
+            Map<String, String> profiles = new HashMap<>();
+            if (user.getOrganizer() != null) {
+                profiles.put("organizer", user.getOrganizer().getId());
+            }
+            if (user.getSupplier() != null) {
+                profiles.put("supplier", user.getSupplier().getId());
+            }
+
             return new Response(
                     user.getId(),
                     user.getEmail(),
                     user.getName(),
                     user.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.toSet()),
                     token != null ? token : null,
-                    user.getOrganizer() != null ? user.getOrganizer().getId() : null,
-                    user.getSupplier() != null ? user.getSupplier().getId() : null,
-                    cookie);
+                    cookie,
+                    profiles);
         }
 
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    private class Profiles {
+        private String organizer;
+        private String supplier;
+        private String guest;
+    }
 }

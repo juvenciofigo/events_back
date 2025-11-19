@@ -28,6 +28,6 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, String> 
                   LEFT JOIN FETCH  usr.organizer org
                   WHERE ser.id = :serviceID
                   """)
-      Optional<ServiceEntity> getService(@Param("serviceID") String serviceID);
+      Optional<ServiceEntity> getId(@Param("serviceID") String serviceID);
 
 }

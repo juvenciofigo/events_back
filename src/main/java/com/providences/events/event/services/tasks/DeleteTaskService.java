@@ -1,4 +1,6 @@
-package com.providences.events.event.services;
+package com.providences.events.event.services.tasks;
+
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -6,23 +8,28 @@ import org.springframework.transaction.annotation.Transactional;
 import com.providences.events.event.dto.TaskDTO;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.entities.TaskEntity;
-import com.providences.events.event.repositories.EventRepository;
 import com.providences.events.event.repositories.TaskRepository;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
 import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 @Service
 @Transactional
-public class GetTaskService {
+public class DeleteTaskService {
     public final TaskRepository taskRepository;
-    public final EventRepository eventRepository;
+    public FetchTasksService fetchTasksService;
 
-    public GetTaskService(TaskRepository taskRepository, EventRepository eventRepository) {
+    @PersistenceContext
+    private EntityManager em;
+
+    public DeleteTaskService(TaskRepository taskRepository, FetchTasksService fetchTasksService) {
         this.taskRepository = taskRepository;
-        this.eventRepository = eventRepository;
+        this.fetchTasksService = fetchTasksService;
     }
 
-    public TaskDTO.Response execute(String taskId, String userId) {
+    public Set<TaskDTO.Response> execute(String taskId, String userId) {
 
         TaskEntity task = taskRepository.getTask(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
@@ -32,7 +39,13 @@ public class GetTaskService {
         if (!event.getOrganizer().getUser().getId().equals(userId)) {
             throw new ForbiddenException("Sem permissão!");
         }
+        taskRepository.delete(task);
 
-        return TaskDTO.Response.response(task);
+        em.flush();
+        em.clear();
+
+        Set<TaskDTO.Response> tasks = fetchTasksService.execute(event.getId(), userId);
+
+        return tasks;
     }
 }

@@ -56,5 +56,10 @@ public interface EventRepository extends JpaRepository<EventEntity, String> {
             """)
     Optional<EventEntity> createGuest(@Param("eventId") String eventId);
 
-
+    @Query("""
+                SELECT e
+                FROM EventEntity e
+                WHERE e.isPublic = true
+            """)
+    Set<EventEntity> findAllPublicEvents();
 }

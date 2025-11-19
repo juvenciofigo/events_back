@@ -23,7 +23,7 @@ public class CreateAlbumService {
         }
 
         public CreateAlbumDTO.Response execute(CreateAlbumDTO.Request data, String userId) {
-                ServiceEntity service = serviceRepository.getService(data.getServiceId())
+                ServiceEntity service = serviceRepository.getId(data.getServiceId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado!"));
 
                 if (!userId.equals(service.getSupplier().getUser().getId())) {

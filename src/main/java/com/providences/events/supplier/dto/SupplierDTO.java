@@ -1,5 +1,6 @@
 package com.providences.events.supplier.dto;
 
+import com.providences.events.location.LocationEntity;
 import com.providences.events.supplier.SupplierEntity;
 import com.providences.events.user.dto.UserDTO;
 
@@ -46,16 +47,19 @@ public class SupplierDTO {
 
         private String description;
 
+        private LocationEntity location;
+
         private UserDTO.Response user;
 
-        public static Response response(SupplierEntity supplier, UserDTO.Response user) {
+        public static Response responseMe(SupplierEntity supplier) {
             return new Response(
                     supplier.getId(),
                     supplier.getCompanyName(),
                     supplier.getProfilePicture(),
                     supplier.getLogo(),
                     supplier.getDescription(),
-                    user);
+                    supplier.getLocation(),
+                    UserDTO.Response.response(supplier.getUser(), null, null));
         }
 
         public static Response response2(SupplierEntity supplier) {

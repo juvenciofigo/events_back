@@ -1,4 +1,4 @@
-package com.providences.events.event.controllers;
+package com.providences.events.event.controllers.tasks;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 
 import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.dto.SeatDTO;
-import com.providences.events.event.services.GetSeatService;
+import com.providences.events.event.services.seats.GetSeatService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

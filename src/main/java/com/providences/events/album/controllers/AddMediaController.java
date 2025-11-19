@@ -12,6 +12,7 @@ import com.providences.events.album.services.AddMediaService;
 import com.providences.events.config.token.JWTUserDTO;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ public class AddMediaController {
     }
 
     @PostMapping("/album/{albumId}")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<List<AddMediaAlbumDto.Response>> uploadMultiple(
             @PathVariable("albumId") String albumId,
             @RequestParam("files") MultipartFile[] files,

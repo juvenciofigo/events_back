@@ -41,7 +41,7 @@ public class DeleteServiceService {
 
     public Set<ServiceDTO.Response> execute(String serviceId, String userId) {
 
-        ServiceEntity service = serviceRepository.getService(serviceId)
+        ServiceEntity service = serviceRepository.getId(serviceId)
                 .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado"));
 
         SupplierEntity supplier = service.getSupplier();

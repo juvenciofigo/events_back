@@ -1,4 +1,4 @@
-package com.providences.events.event.controllers;
+package com.providences.events.event.controllers.tasks;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

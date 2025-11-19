@@ -1,4 +1,4 @@
-package com.providences.events.event.services;
+package com.providences.events.event.services.seats;
 
 import java.math.BigDecimal;
 

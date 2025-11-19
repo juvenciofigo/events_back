@@ -25,7 +25,7 @@ public class CreateAlbumController {
     }
 
     @PostMapping
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<CreateAlbumDTO.Response> postMethodName(@RequestBody CreateAlbumDTO.Request data,
             Authentication authentication) {
 

@@ -1,4 +1,4 @@
-package com.providences.events.event.services;
+package com.providences.events.event.services.seats;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

@@ -14,11 +14,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthUserController {
+public class AuthController {
 
     private AuthUserService authUserService;
 
-    public AuthUserController(AuthUserService authUserService) {
+    public AuthController(AuthUserService authUserService) {
         this.authUserService = authUserService;
     }
 

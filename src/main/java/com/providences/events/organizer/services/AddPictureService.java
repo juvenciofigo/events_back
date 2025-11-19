@@ -31,7 +31,7 @@ public class AddPictureService {
     }
 
     public OrganizerDTO.Response execute(String organizerId, String userId, MultipartFile file) {
-        OrganizerEntity organizer = organizerRepository.findByOrganizerId(organizerId)
+        OrganizerEntity organizer = organizerRepository.findId(organizerId)
                 .orElseThrow(() -> new BusinessException("Organizador não encontrado!", HttpStatus.NOT_FOUND));
 
         if (!organizer.getUser().getId().equals(userId)) {

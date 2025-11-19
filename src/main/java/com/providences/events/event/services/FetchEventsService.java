@@ -23,7 +23,7 @@ public class FetchEventsService {
 
     public Set<EventDTO.Response> execute(String organizerId, String userId) {
 
-        OrganizerEntity organizer = organizerRepository.findByOrganizerId(organizerId)
+        OrganizerEntity organizer = organizerRepository.findId(organizerId)
                 .orElseThrow(() -> new BusinessException("Organigador" + organizerId + "não encontrado",
                         HttpStatus.NOT_FOUND));
 

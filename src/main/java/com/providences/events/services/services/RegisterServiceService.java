@@ -1,6 +1,5 @@
 package com.providences.events.services.services;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,12 +43,6 @@ public class RegisterServiceService {
         service.setPriceBase(data.getPriceBase());
         service.setSupplier(supplier);
 
-        ServiceEntity savedService = serviceRepository.save(service);
-
-        return new ServiceDTO.Response(
-                savedService.getId(),
-                savedService.getCategory(),
-                savedService.getDescription(),
-                savedService.getPriceBase());
+        return ServiceDTO.Response.response(serviceRepository.save(service));
     }
 }

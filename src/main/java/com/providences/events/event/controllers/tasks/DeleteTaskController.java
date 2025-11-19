@@ -1,4 +1,4 @@
-package com.providences.events.event.controllers;
+package com.providences.events.event.controllers.tasks;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 
 import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.dto.TaskDTO;
-import com.providences.events.event.services.DeleteTaskService;
+import com.providences.events.event.services.tasks.DeleteTaskService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;

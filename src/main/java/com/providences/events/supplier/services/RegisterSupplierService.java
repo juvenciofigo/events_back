@@ -6,7 +6,6 @@ import com.providences.events.supplier.SupplierRepository;
 import com.providences.events.supplier.dto.SupplierDTO;
 import com.providences.events.user.UserEntity;
 import com.providences.events.user.UserRepository;
-import com.providences.events.user.dto.UserDTO;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -47,11 +46,7 @@ public class RegisterSupplierService {
         supplier.setProfilePicture("");
         supplier.setUser(user);
 
-        SupplierEntity savedSupplier = supplierRepository.save(supplier);
-
-        UserDTO.Response userDTO = UserDTO.Response.response(user, null, null);
-
-        return SupplierDTO.Response.response(savedSupplier, userDTO);
+        return SupplierDTO.Response.responseMe(supplierRepository.save(supplier));
     }
 
 }

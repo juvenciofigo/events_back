@@ -18,9 +18,9 @@ public class GetServiceService {
         this.serviceRepository = serviceRepository;
     }
 
-    public ServiceDTO.Response execute(String serviceId) {
+    public ServiceDTO.Response execute(String serviceId, String userId) {
 
-        ServiceEntity service = serviceRepository.findById(serviceId)
+        ServiceEntity service = serviceRepository.getId(serviceId)
                 .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado"));
 
         return ServiceDTO.Response.response(service);

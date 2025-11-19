@@ -73,7 +73,7 @@ public class CreateReviewService {
 
         ReviewTarget target = switch (data.getTarget().toUpperCase()) {
             case "SERVICE" -> {
-                ServiceEntity service = serviceRepository.getService(data.getReceiverServiceID())
+                ServiceEntity service = serviceRepository.getId(data.getReceiverServiceID())
                         .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado!"));
 
                 if (service.getSupplier().getUser().getId().equals(userId)) {

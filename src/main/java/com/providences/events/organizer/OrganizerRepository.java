@@ -21,6 +21,6 @@ public interface OrganizerRepository extends JpaRepository<OrganizerEntity, Stri
             LEFT JOIN FETCH o.events e
             WHERE o.id = :organizerId
                     """)
-    Optional<OrganizerEntity> findByOrganizerId(@Param("organizerId") String organizerId);
+    Optional<OrganizerEntity> findId(@Param("organizerId") String organizerId);
 
 }

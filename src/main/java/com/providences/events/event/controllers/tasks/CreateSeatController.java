@@ -1,4 +1,4 @@
-package com.providences.events.event.controllers;
+package com.providences.events.event.controllers.tasks;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -6,35 +6,36 @@ import org.springframework.security.core.Authentication;
 
 import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.dto.SeatDTO;
-import com.providences.events.event.services.UpdateSeatService;
+import com.providences.events.event.services.seats.CreateSeatService;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/seats")
-public class UpdateSeatController {
-    private final UpdateSeatService updateSeatService;
+public class CreateSeatController {
+    private final CreateSeatService createSeatService;
 
-    public UpdateSeatController(UpdateSeatService updateSeatService) {
-        this.updateSeatService = updateSeatService;
+    public CreateSeatController(CreateSeatService createSeatService) {
+        this.createSeatService = createSeatService;
     }
 
-    @PutMapping("/{seatId}")
+    @PostMapping()
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<SeatDTO.Response> updateSeat(
+    public ResponseEntity<SeatDTO.Response> postMethodName(
             @Validated @RequestBody SeatDTO.Create data,
-            @PathVariable("seatId") String seatId,
+            @PathVariable("eventId") String eventId,
             Authentication authentication) {
         JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
 
         return ResponseEntity
-                .ok()
-                .body(updateSeatService.execute(seatId, data, userData.getUserId()));
+                .status(HttpStatus.CREATED)
+                .body(createSeatService.execute(eventId, data, userData.getUserId()));
     }
 
 }

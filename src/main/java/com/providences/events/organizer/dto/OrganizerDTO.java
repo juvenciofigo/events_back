@@ -7,14 +7,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class OrganizerDTO {
 
-    @Data
+    @Setter
+    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Create {
@@ -23,9 +23,7 @@ public class OrganizerDTO {
         @Size(max = 100, min = 3, message = "O nome deve ter de 3 à 100 caracteres!")
         private String name;
 
-        private String profilePicture = "";
-
-        private String phone = "";
+        private String phone;
 
     }
 
@@ -39,11 +37,11 @@ public class OrganizerDTO {
         private String profilePicture;
         private UserDTO.Response user;
 
-        public static Response response(OrganizerEntity organizer, UserDTO.Response user) {
+        public static Response responseMe(OrganizerEntity organizer) {
             return new Response(organizer.getId(),
                     organizer.getName(),
                     organizer.getProfilePicture(),
-                    user);
+                    organizer.getUser() != null ? UserDTO.Response.response(organizer.getUser(), null, null) : null);
         }
 
         public static Response response2(OrganizerEntity organizer) {
