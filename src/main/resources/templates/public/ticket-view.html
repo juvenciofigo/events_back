@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <!-- <title th:text="${ticket.event.title} + ' - Ticket'">Ticket</title> -->
+    </head>
+    <body>
+        <!-- <h1 th:text="${ticket.event.title}">Event Title</h1> -->
+        <!-- <p><strong>Nome:</strong> <span th:text="${ticket.guest.name}"></span></p> -->
+        <!-- <p><strong>Código:</strong> <span th:text="${ticket.ticketCode}"></span></p> -->
+        <!-- <p><strong>Código:</strong> <span th:text="${ticket.seat}"></span></p> -->
+        <!-- <p th:if="${ticket.seat != null}"><strong>Assento:</strong> <span th:text="${ticket.seat.name}"></span></p> -->
+        <!-- <p><a th:href="@{|/public/tickets/${ticket.accessToken}/pdf|}">Baixar PDF</a></p> -->
+
+        <!-- <img th:src="@{|/public/tickets/${ticket.accessToken}/qr|}" alt="QR Code" /> -->
+        <img
+            th:src="@{/imagens/s3.png}"
+            class="w-[500px] h-[500px] absolute bottom-0 right-0"
+            alt="Decoração" />
+    </body>
+    <script></script>
+</html>
