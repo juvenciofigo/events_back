@@ -23,7 +23,7 @@ public class GenerateTicketPdfService {
     public byte[] generateTicketPdf(TicketEntity ticket) throws Exception {
         // gerar QR code com ZXing (o QR conterá o link público ou token)
         String link = "https://yourdomain.com/public/tickets/" + ticket.getAccessToken();
-        BufferedImage qrImage = generateQrCode(link, 300, 300);
+        BufferedImage qrImage = generateQrCode(link, 200, 200);
 
         // gerar PDF com OpenPDF
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -47,7 +47,7 @@ public class GenerateTicketPdfService {
         ByteArrayOutputStream qrBaos = new ByteArrayOutputStream();
         ImageIO.write(qrImage, "PNG", qrBaos);
         com.lowagie.text.Image img = com.lowagie.text.Image.getInstance(qrBaos.toByteArray());
-        img.scaleToFit(200, 200);
+        img.scaleToFit(100, 100);
         document.add(img);
 
         document.close();

@@ -1,7 +1,8 @@
 package com.providences.events.interaction.services;
 
 import java.util.Arrays;
-import java.util.Set;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -23,79 +24,86 @@ import com.providences.events.supplier.SupplierEntity;
 @Service
 @Transactional
 public class CreateMessageService {
-    private final MessageRepository messageRepository;
+        private final MessageRepository messageRepository;
 
-    private final ChatRepository chatRepository;
+        private final ChatRepository chatRepository;
 
-    public CreateMessageService(
-            MessageRepository messageRepository,
-            ChatRepository chatRepository) {
-        this.messageRepository = messageRepository;
-        this.chatRepository = chatRepository;
-    }
-
-    public Set<MessageDTO.Response> execute(MessageDTO.Request data) {
-
-        SenderType senderType = Arrays.stream(SenderType.values())
-                .filter(type -> type.name().equalsIgnoreCase(data.getSenderRole()))
-                .findFirst()
-                .orElseThrow(() -> new BusinessException("Tipo de remetente inválido", HttpStatus.BAD_REQUEST));
-
-        ChatEntity chat = chatRepository.findByIdAndParticipants(data.getChatId())
-                .orElseThrow(() -> new ResourceNotFoundException("Conversa não encontrada!"));
-
-        MessageEntity message = new MessageEntity();
-        message.setChat(chat);
-        message.setContent(data.getContent());
-        message.setSender(senderType);
-
-        switch (senderType) {
-            case GUEST -> {
-
-                GuestEntity guestExist = chat.getParticipants().stream()
-                        .filter(participant -> participant.getGuest() != null
-                                && participant.getGuest().getId().equals(data.getSenderId()))
-                        .map(participant -> participant.getGuest())
-                        .findFirst()
-                        .orElseThrow(() -> new ResourceNotFoundException("Esse Guest não pertence a essa conversa!"));
-
-                message.setSenderGuest(guestExist);
-
-            }
-
-            case ORGANIZER -> {
-
-                OrganizerEntity organizerExist = chat.getParticipants().stream()
-                        .filter(participant -> participant.getId().equals(data.getSenderId()))
-                        .map(participant -> participant.getOrganizer())
-                        .findFirst()
-                        .orElseThrow(
-                                () -> new ResourceNotFoundException("Esse Organizer não pertence a essa conversa!"));
-
-                message.setSenderOrganizer(organizerExist);
-
-            }
-
-            case SUPPLIER -> {
-
-                SupplierEntity supplierExist = chat.getParticipants().stream()
-                        .filter(participant -> participant.getId().equals(data.getSenderId()))
-                        .map(participant -> participant.getSupplier())
-                        .findFirst()
-                        .orElseThrow(
-                                () -> new ResourceNotFoundException("Esse Fornecedor não pertence a essa conversa!"));
-
-                message.setSenderSupplier(supplierExist);
-
-            }
-            default -> throw new BusinessException("informa o remetente", HttpStatus.BAD_REQUEST);
+        public CreateMessageService(
+                        MessageRepository messageRepository,
+                        ChatRepository chatRepository) {
+                this.messageRepository = messageRepository;
+                this.chatRepository = chatRepository;
         }
-        messageRepository.save(message);
 
-        Set<MessageDTO.Response> messages = messageRepository.findByChatId(data.getChatId())
-                .stream()
-                .map(me -> MessageDTO.Response.response(me)).collect(Collectors.toSet());
+        public List<MessageDTO.Response> execute(MessageDTO.Request data) {
 
-        return messages;
-    }
+                SenderType senderType = Arrays.stream(SenderType.values())
+                                .filter(type -> type.name().equalsIgnoreCase(data.getSenderRole()))
+                                .findFirst()
+                                .orElseThrow(() -> new BusinessException("Tipo de remetente inválido",
+                                                HttpStatus.BAD_REQUEST));
+
+                ChatEntity chat = chatRepository.findByIdAndParticipants(data.getChatId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Conversa não encontrada!"));
+
+                MessageEntity message = new MessageEntity();
+                message.setChat(chat);
+                message.setContent(data.getContent());
+                message.setSender(senderType);
+
+                switch (senderType) {
+                        case GUEST -> {
+
+                                GuestEntity guestExist = chat.getParticipants().stream()
+                                                .filter(participant -> participant.getGuest() != null
+                                                                && participant.getGuest().getId()
+                                                                                .equals(data.getSenderId()))
+                                                .map(participant -> participant.getGuest())
+                                                .findFirst()
+                                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                                "Esse Guest não pertence a essa conversa!"));
+
+                                message.setSenderGuest(guestExist);
+
+                        }
+
+                        case ORGANIZER -> {
+
+                                OrganizerEntity organizerExist = chat.getParticipants().stream()
+                                                .filter(participant -> participant.getId().equals(data.getSenderId()))
+                                                .map(participant -> participant.getOrganizer())
+                                                .findFirst()
+                                                .orElseThrow(
+                                                                () -> new ResourceNotFoundException(
+                                                                                "Esse Organizer não pertence a essa conversa!"));
+
+                                message.setSenderOrganizer(organizerExist);
+
+                        }
+
+                        case SUPPLIER -> {
+
+                                SupplierEntity supplierExist = chat.getParticipants().stream()
+                                                .filter(participant -> participant.getId().equals(data.getSenderId()))
+                                                .map(participant -> participant.getSupplier())
+                                                .findFirst()
+                                                .orElseThrow(
+                                                                () -> new ResourceNotFoundException(
+                                                                                "Esse Fornecedor não pertence a essa conversa!"));
+
+                                message.setSenderSupplier(supplierExist);
+
+                        }
+                        default -> throw new BusinessException("informa o remetente", HttpStatus.BAD_REQUEST);
+                }
+                messageRepository.save(message);
+
+                List<MessageDTO.Response> messages = messageRepository.findByChatId(data.getChatId())
+                                .stream()
+                                .sorted(Comparator.comparing(m -> m.getCreatedAt()))
+                                .map(MessageDTO.Response::response)
+                                .collect(Collectors.toList());
+
+                return messages;
+        }
 }

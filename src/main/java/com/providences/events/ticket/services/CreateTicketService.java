@@ -56,10 +56,7 @@ public class CreateTicketService {
 
         if (!data.getSeatId().isBlank()) {
             SeatEntity seat = event.getSeats().stream().filter(s -> s.getId().equals(data.getSeatId())).findFirst()
-                    .get();
-            if (seat == null) {
-                throw new ResourceNotFoundException("Assento não encontrado!");
-            }
+                    .orElseThrow(() ->  new ResourceNotFoundException("Assento não encontrado!"));
 
             if (seat.getAvailableSeats() != null) {
 
@@ -103,7 +100,7 @@ public class CreateTicketService {
             ticket.setSeat(seat);
 
         }
-        String publicUrl = "https://yourdomain.com/public/tickets/" + ticket.getAccessToken();
+        // String publicUrl = "https://yourdomain.com/public/tickets/" + ticket.getAccessToken();
         return ticketRepository.save(ticket);
     }
 

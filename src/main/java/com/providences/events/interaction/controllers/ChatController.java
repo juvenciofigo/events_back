@@ -1,6 +1,6 @@
 package com.providences.events.interaction.controllers;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -19,7 +19,7 @@ public class ChatController {
 
     @MessageMapping("/new-message")
     @SendTo("/topics/livechat")
-    public Set<MessageDTO.Response> sendMessage(MessageDTO.Request message) {
+    public List<MessageDTO.Response> sendMessage(MessageDTO.Request message) {
 
         return createMessageService.execute(message);
     }

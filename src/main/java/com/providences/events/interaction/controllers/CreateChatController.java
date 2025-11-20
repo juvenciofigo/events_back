@@ -4,7 +4,7 @@ import com.providences.events.interaction.dto.CreateChatDTO;
 import com.providences.events.interaction.dto.MessageDTO;
 import com.providences.events.interaction.services.CreateChatService;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -26,7 +26,7 @@ public class CreateChatController {
     // @PreAuthorize("isAuthenticated()")
     @MessageMapping("/new-chat")
     @SendTo("/topics/livechat")
-    public Set<MessageDTO.Response> postMethodName(@Validated @RequestBody CreateChatDTO.Request data) {
+    public List<MessageDTO.Response> postMethodName(@Validated @RequestBody CreateChatDTO.Request data) {
 
         return createChatService.execute(data);
     }

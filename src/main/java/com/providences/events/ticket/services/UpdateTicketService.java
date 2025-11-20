@@ -25,32 +25,49 @@ public class UpdateTicketService {
 
     public TicketEntity execute(TicketEntity ticket, GuestDTO.Update data) {
 
-        if (ticket.getSeat() != null) {
-            SeatEntity seat = ticket.getSeat();
+        SeatEntity oldSeat = ticket.getSeat();
+        SeatEntity newSeat;
 
-            Integer availableSeats = seat.getAvailableSeats();
-            int currentSeats = (availableSeats != null) ? availableSeats : 0;
-            int ticketPeople = ticket.getTotalPeople();
-            int newPeople = data.getTotalPeople();
+        int oldPeople = ticket.getTotalPeople();
+        int newPeople = data.getTotalPeople();
 
-            int newAvailableSeats = currentSeats + ticketPeople - newPeople;
+        if (oldSeat.getId().equals(data.getSeatId())) {
+            newSeat = oldSeat;
+        } else {
+            newSeat = seatRepository.findById(data.getSeatId())
+                    .orElseThrow(() -> new BusinessException("Assento não encontrado!", HttpStatus.NOT_FOUND));
 
-            if (newAvailableSeats >= 0) {
-                seat.setAvailableSeats(newAvailableSeats);
-            } else {
+            // devolve lugares do ticket antigo ao assento antigo
+            oldSeat.setAvailableSeats(oldSeat.getAvailableSeats() + oldPeople);
+        }
+
+        // cálculo de diferença
+        int diff = newPeople - oldPeople;
+
+        if (diff > 0) {
+            // precisa de mais lugares
+            if (newSeat.getAvailableSeats() < diff) {
                 throw new BusinessException(
-                        "Assentos insuficientes! Existem apenas " + currentSeats + " assentos disponíveis.",
+                        "Assentos insuficientes! Existem apenas "
+                                + newSeat.getAvailableSeats() + " assentos disponíveis.",
                         HttpStatus.BAD_REQUEST);
             }
+            newSeat.setAvailableSeats(newSeat.getAvailableSeats() - diff);
 
-            // atualiza ticket
-            ticket.setTotalPeople(newPeople);
-            ticket.setNotes(data.getNotes());
-            ticket.setSeat(seat);
-
-            seatRepository.save(seat);
+        } else if (diff < 0) {
+            // devolve lugares
+            newSeat.setAvailableSeats(newSeat.getAvailableSeats() + Math.abs(diff));
         }
+
+        // atualiza ticket
+        ticket.setTotalPeople(newPeople);
+        ticket.setNotes(data.getNotes());
+        ticket.setSeat(newSeat);
+
+        seatRepository.save(oldSeat);
+        seatRepository.save(newSeat);
 
         return ticketRepository.save(ticket);
     }
+
 }

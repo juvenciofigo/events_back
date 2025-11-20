@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.providences.events.guest.dto.GuestDTO;
-import com.providences.events.ticket.dto.TicketDTO;
 import com.providences.events.ticket.entities.TicketEntity;
 import com.providences.events.ticket.services.GenerateTicketPdfService;
 import com.providences.events.ticket.services.GetTicketByTokenService;
@@ -49,16 +48,17 @@ public class PublicTicketController {
     }
 
     // PDF download
-    // @GetMapping("/{token}/pdf")
-    // public ResponseEntity<byte[]> downloadPdf(@PathVariable String token) throws Exception {
-    //     TicketEntity ticket = getTicketByTokenService.execute(token);
-    //     byte[] pdf = generateTicketPdfService.generateTicketPdf(ticket);
+    @GetMapping("/{token}/pdf")
+    public ResponseEntity<byte[]> downloadPdf(@PathVariable String token) throws Exception {
+        
+        TicketEntity ticket = getTicketByTokenService.execute(token);
+        byte[] pdf = generateTicketPdfService.generateTicketPdf(ticket);
 
-    //     HttpHeaders headers = new HttpHeaders();
-    //     headers.setContentType(MediaType.APPLICATION_PDF);
-    //     headers.setContentDisposition(ContentDisposition.builder("inline")
-    //             .filename(ticket.getTicketCode() + ".pdf").build());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.builder("inline")
+                .filename(ticket.getTicketCode() + ".pdf").build());
 
-    //     return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
-    // }
+        return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+    }
 }

@@ -1,5 +1,6 @@
 package com.providences.events.interaction.services;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -60,7 +61,7 @@ public class GetChatsService {
                 if (guestId == null || guestId.isBlank()) {
                     throw new BusinessException("GuestId é obrigatório", HttpStatus.BAD_REQUEST);
                 }
-                
+
                 EventEntity eventGuest = findEvent(eventId);
 
                 chats = eventGuest.getChats()
@@ -70,7 +71,6 @@ public class GetChatsService {
                                 .stream()
                                 .anyMatch(p -> p.getId().equals(guestId)))
                         .collect(Collectors.toSet());
-                ;
                 break;
 
             default:
@@ -78,6 +78,7 @@ public class GetChatsService {
         }
 
         return chats.stream()
+                .sorted(Comparator.comparing(c -> c.getUpdatedAt()))
                 .map(chat -> GetChatDTO.Response.response(chat))
                 .collect(Collectors.toSet());
 

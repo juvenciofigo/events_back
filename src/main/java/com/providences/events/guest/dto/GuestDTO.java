@@ -71,6 +71,8 @@ public class GuestDTO {
         private Integer totalPeople;
 
         private String notes;
+
+        private String seatId;
     }
 
     @Setter

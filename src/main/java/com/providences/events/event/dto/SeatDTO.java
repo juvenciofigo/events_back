@@ -23,7 +23,7 @@ public class SeatDTO {
         private String description;
 
         @NotNull(message = "Infome o número de lugares dispoíveis")
-        private Integer totalSeats;       
+        private Integer totalSeats;
 
         @NotNull(message = "Informe se o assento é pago")
         private Boolean isPaid = false;

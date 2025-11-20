@@ -1,6 +1,8 @@
 package com.providences.events.interaction.services;
 
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,7 +58,7 @@ public class CreateChatService {
         this.messageRepository = messageRepository;
     }
 
-    public Set<MessageDTO.Response> execute(CreateChatDTO.Request data) {
+    public List<MessageDTO.Response> execute(CreateChatDTO.Request data) {
 
         EventEntity event = eventRepository.findById(data.getEventId())
                 .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
@@ -81,11 +83,7 @@ public class CreateChatService {
 
                 if (existChat.isPresent()) {
 
-                    Set<MessageDTO.Response> messages = messageRepository.findByChatId(existChat.get().getId())
-                            .stream()
-                            .map(me -> MessageDTO.Response.response(me)).collect(Collectors.toSet());
-
-                    return messages;
+                    return getMessages(existChat.get().getId());
                 }
 
                 chat = chatRepository.save(chat);
@@ -109,11 +107,8 @@ public class CreateChatService {
                         ChatType.ORGANIZER, data.getOrganizerId());
 
                 if (existChat.isPresent()) {
-                    Set<MessageDTO.Response> messages = messageRepository.findByChatId(existChat.get().getId())
-                            .stream()
-                            .map(me -> MessageDTO.Response.response(me)).collect(Collectors.toSet());
 
-                    return messages;
+                    return getMessages(existChat.get().getId());
                 }
 
                 OrganizerEntity organizer = organizerRepository.findById(data.getOrganizerId())
@@ -134,11 +129,7 @@ public class CreateChatService {
                         ChatType.SUPPLIER, data.getSupplierId());
 
                 if (existChat.isPresent()) {
-                    Set<MessageDTO.Response> messages = messageRepository.findByChatId(existChat.get().getId())
-                            .stream()
-                            .map(me -> MessageDTO.Response.response(me)).collect(Collectors.toSet());
-
-                    return messages;
+                    return getMessages(existChat.get().getId());
                 }
 
                 SupplierEntity supplier = supplierRepository.findById(data.getSupplierId())
@@ -155,11 +146,15 @@ public class CreateChatService {
         addParticipantToChat.addParticipant(chat, ParticipantType.ORGANIZER, null,
                 event.getOrganizer(), null);
 
-        Set<MessageDTO.Response> messages = messageRepository.findByChatId(chat.getId())
-                .stream()
-                .map(me -> MessageDTO.Response.response(me)).collect(Collectors.toSet());
+        return getMessages(chat.getId());
+    }
 
-        return messages;
+    private List<MessageDTO.Response> getMessages(String chatId) {
+        return messageRepository.findByChatId(chatId)
+                .stream()
+                .sorted(Comparator.comparing(m -> m.getCreatedAt()))
+                .map(MessageDTO.Response::response)
+                .collect(Collectors.toList());
 
     }
 

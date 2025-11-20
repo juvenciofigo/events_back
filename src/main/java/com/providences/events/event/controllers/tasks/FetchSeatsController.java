@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 
 import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.dto.SeatDTO;
-import com.providences.events.event.services.FetchSeatsService;
+import com.providences.events.event.services.seats.FetchSeatsService;
 
 import java.util.Set;
 

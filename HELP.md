@@ -80,10 +80,12 @@ api do aplicativo de eventos
 ### Tickets
 
     [x] POST /tickets
-    [] GET /tickets/{id}
-    [] GET /events/{id}/tickets — todos tickets do evento
-    [] PATCH /tickets/{id}
-    [] DELETE /tickets/{id}
+    [x] GET /tickets/{id}
+    [x] GET /events/{id}/tickets — todos tickets do evento
+    [x] PATCH /tickets/{id}
+    [x] DELETE /tickets/{id}
+    [x] PATCH /ticket/{id}/response (aceitar/recusar)
+    [] GET /ticket/my
 
 #### Ticket Types
 
@@ -91,13 +93,6 @@ api do aplicativo de eventos
     [] GET /events/{id}/ticket-types
     [] PATCH /ticket-types/{id}
     [] DELETE /ticket-types/{id}
-
-### Convites & RSVP
-
-    [] POST /events/{id}/invite
-    [] GET /events/{id}/invites
-    [] PATCH /invites/{id}/status (aceitar/recusar)
-    [] GET /invites/my
 
 ### Seat Types
 
@@ -108,23 +103,23 @@ api do aplicativo de eventos
 
 #### Assentos (Seats)
 
-        [] POST /seats — criar tipo de assento
-        [] PATCH /seats/{id}
-        [] DELETE /seats/{id}
-        [] GET /events/{id}/seats
+        [x] POST /seats — criar tipo de assento
+        [x] PATCH /seats/{id}
+        [x] DELETE /seats/{id}
+        [x] GET /events/{id}/seats
         [] POST /seats/{id}/reserve — reservar assentos
         [] POST /seats/{id}/release — liberar assentos
 
 ### Chat
 
     [] POST /chats/ — iniciar conversa(organizer, supplier, guest)
-    [] GET /chats/{id}
-    [] GET /chats/my/{id} — listar chats do usuário (guest/supplier/organizer)
+    [x] GET /chats/{id}
+    [x] GET /chats/my/{id} — listar chats do usuário (guest/supplier/organizer)
 
 #### Mensagens
 
-    [] GET /chats/{chatId}/messages
-    [] POST /chats/{chatId}/messages
+    [x] GET /chats/{chatId}/messages
+    [x] POST /chats/{chatId}/messages
 
 ### Pagamentos
 

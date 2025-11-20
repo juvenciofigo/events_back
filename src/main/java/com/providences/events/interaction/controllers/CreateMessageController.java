@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.interaction.dto.MessageDTO;
 import com.providences.events.interaction.services.CreateMessageService;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class CreateMessageController {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Set<MessageDTO.Response>> postMessage(
+    public ResponseEntity<List<MessageDTO.Response>> postMessage(
             @Validated @RequestBody MessageDTO.Request data) {
 
         return ResponseEntity

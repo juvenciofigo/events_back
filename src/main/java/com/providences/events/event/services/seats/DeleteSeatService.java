@@ -10,7 +10,6 @@ import com.providences.events.event.dto.SeatDTO;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.event.repositories.SeatRepository;
-import com.providences.events.event.services.FetchSeatsService;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
 import com.providences.events.ticket.entities.TicketEntity;
@@ -51,8 +50,8 @@ public class DeleteSeatService {
         if (tickets.size() > 0) {
             for (TicketEntity ticket : tickets) {
                 ticket.setSeat(null);
-                ticketRepository.save(ticket);
             }
+            em.flush();
         }
 
         seatRepository.delete(seat);

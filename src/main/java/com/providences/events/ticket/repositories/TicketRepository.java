@@ -24,6 +24,7 @@ public interface TicketRepository extends JpaRepository<TicketEntity, String> {
     @Query("""
                 SELECT t
                 FROM TicketEntity t
+                LEFT JOIN FETCH  t.event
                 LEFT JOIN FETCH  t.guest
                 LEFT JOIN FETCH  t.seat
                 WHERE t.accessToken = :token

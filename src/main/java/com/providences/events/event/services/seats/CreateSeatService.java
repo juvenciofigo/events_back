@@ -27,9 +27,15 @@ public class CreateSeatService {
         this.eventRepository = eventRepository;
     }
 
-    public SeatDTO.Response execute(String eventId,SeatDTO.Create data, String userId) {
-        EventEntity event = eventRepository.createGuest(eventId)
+    public SeatDTO.Response execute(String eventId, SeatDTO.Create data, String userId) {
+
+        if (data.getIsPaid() == true && (data.getPrice() == null || data.getPrice().compareTo(BigDecimal.ZERO) <= 0)) {
+            throw new BusinessException("Um assento pago deve ter o preço maior que zero.", HttpStatus.BAD_REQUEST);
+        }
+
+        EventEntity event = eventRepository.findId(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
+
 
         if (!event.getOrganizer().getUser().getId().equals(userId)) {
             throw new ForbiddenException("Sem permissão!");
@@ -59,10 +65,10 @@ public class CreateSeatService {
         seat.setName(data.getName());
         seat.setDescription(data.getDescription());
         seat.setIsPaid(data.getIsPaid());
-        seat.setPrice(data.getPrice());
+        seat.setPrice(data.getPrice() != null ? data.getPrice() : BigDecimal.ZERO);
         seat.setEvent(event);
-        seat.setLayoutPositionY(data.getLayoutPositionY());
-        seat.setLayoutPositionX(data.getLayoutPositionX());
+        seat.setLayoutPositionY(data.getLayoutPositionY() != null ? data.getLayoutPositionY() : null);
+        seat.setLayoutPositionX(data.getLayoutPositionX() != null ? data.getLayoutPositionX() : null);
 
         SeatEntity savedSeats = seatRepository.save(seat);
 

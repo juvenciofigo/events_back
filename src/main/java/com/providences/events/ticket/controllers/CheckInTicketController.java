@@ -23,7 +23,7 @@ public class CheckInTicketController {
     }
 
     @PutMapping("/{ticketId}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<TicketDTO.Response> putMethodName(@PathVariable String ticketId,
             Authentication authentication) {
 
