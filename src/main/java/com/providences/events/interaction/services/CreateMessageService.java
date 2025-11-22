@@ -1,5 +1,6 @@
 package com.providences.events.interaction.services;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -96,6 +97,8 @@ public class CreateMessageService {
                         }
                         default -> throw new BusinessException("informa o remetente", HttpStatus.BAD_REQUEST);
                 }
+                chat.setUpdatedAt(LocalDateTime.now());
+                chatRepository.save(chat);
                 messageRepository.save(message);
 
                 List<MessageDTO.Response> messages = messageRepository.findByChatId(data.getChatId())

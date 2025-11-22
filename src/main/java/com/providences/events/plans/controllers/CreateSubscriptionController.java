@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.providences.events.plans.dto.CreateSubscriptionDTO;
+import com.providences.events.plans.dto.SubscriptionDTO;
 import com.providences.events.plans.services.CreateSubscriptionService;
 
 @RestController
-@RequestMapping("/plans")
+@RequestMapping("/subscriptions")
 public class CreateSubscriptionController {
     private CreateSubscriptionService createSubscriptionService;
 
@@ -21,10 +21,10 @@ public class CreateSubscriptionController {
         this.createSubscriptionService = createSubscriptionService;
     }
 
-    @PostMapping("/subscription")
+    @PostMapping
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<CreateSubscriptionDTO.Response> execute(
-            @Validated @RequestBody CreateSubscriptionDTO.Request data) {
+    public ResponseEntity<SubscriptionDTO.Response> execute(
+            @Validated @RequestBody SubscriptionDTO.Create data) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(createSubscriptionService.execute(data));

@@ -13,7 +13,6 @@ import com.providences.events.event.repositories.SeatRepository;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
 import com.providences.events.ticket.entities.TicketEntity;
-import com.providences.events.ticket.repositories.TicketRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -22,13 +21,11 @@ import jakarta.persistence.PersistenceContext;
 @Transactional
 public class DeleteSeatService {
     private final SeatRepository seatRepository;
-    private final TicketRepository ticketRepository;
     private final FetchSeatsService fetchSeatsService;
 
-    public DeleteSeatService(SeatRepository seatRepository, TicketRepository ticketRepository,
+    public DeleteSeatService(SeatRepository seatRepository,
             FetchSeatsService fetchSeatsService) {
         this.seatRepository = seatRepository;
-        this.ticketRepository = ticketRepository;
         this.fetchSeatsService = fetchSeatsService;
     }
 

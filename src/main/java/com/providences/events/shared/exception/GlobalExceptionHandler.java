@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
         String message = e.getMessage();
 
         if (e.getMessage().contains("core.Authentication.getPrincipal")) {
-            message = "Sem accesso";
+            message = "Sem acesso";
             status = HttpStatus.FORBIDDEN;
         }
 
@@ -195,10 +195,10 @@ public class GlobalExceptionHandler {
 
         switch (e.getStatusCode()) {
             case 422:
-                message = "Saldo insuficiemte";
+                message = "Saldo insuficiente";
                 break;
             case 408:
-                message = "Tempo limite da requisição excedido";
+                message = "Tempo limite da requisição excedido Mpesa";
                 status = HttpStatus.REQUEST_TIMEOUT;
                 break;
             case 500:
@@ -242,9 +242,9 @@ public class GlobalExceptionHandler {
         String message = "Violação de integridade dos dados.";
 
         if (e.getMessage() != null && e.getMessage().toLowerCase().contains("unique")) {
-            message = "Registro duplicado: um valor único já existe no sistema.";
+            message = "Registo duplicado: um valor único já existe no sistema.";
         } else if (e.getMessage() != null && e.getMessage().toLowerCase().contains("foreign")) {
-            message = "Não é possível excluir ou alterar este registro, pois há dados relacionados.";
+            message = "Não é possível excluir ou alterar este registo, pois há dados relacionados.";
         } else if (e.getMessage() != null && e.getMessage().toLowerCase().contains("Value too long for column")) {
             message = "Valor muito longo para um campo do banco de dados.";
         }
@@ -269,7 +269,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CustomErrorDTO> globalExceptionHandler(Exception e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-        // Loga o erro no servidor (sem expor detalhes ao cliente)
+        // Log o erro no servidor (sem expor detalhes ao cliente)
         System.err.println("Erro inesperado: " + e);
         e.printStackTrace();
 

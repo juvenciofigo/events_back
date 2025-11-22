@@ -1,5 +1,8 @@
 package com.providences.events.plans.dto;
 
+import com.providences.events.plans.entities.PlanEntity;
+import com.providences.events.plans.entities.PlanEntity.PlanType;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,12 +11,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class CreatePlanDTO {
+public class PlanDTO {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Request {
+    public static class Create {
 
         @NotBlank(message = "Informe o nome do plano")
         private String name;
@@ -47,6 +50,22 @@ public class CreatePlanDTO {
         private Double priceYearly;
         private String features;
         private Integer level;
+        private PlanType planType;
+
+        public static Response response(PlanEntity plan) {
+            return new Response(
+                    plan.getId(),
+                    plan.getName(),
+                    plan.getDescription(),
+                    plan.getResources(),
+                    plan.getPriceMonthly(),
+                    plan.getPriceYearly(),
+                    plan.getFeatures(),
+                    plan.getLevel(),
+                    plan.getPlanType());
+
+        }
+
     }
 
 }

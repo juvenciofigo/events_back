@@ -1,12 +1,13 @@
 package com.providences.events.supplier;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import com.providences.events.interaction.entities.MessageEntity;
 import com.providences.events.interaction.entities.ParticipantChatEntity;
 import com.providences.events.location.LocationEntity;
-import com.providences.events.payment.PaymentEntity;
+import com.providences.events.payment.entities.PaymentEntity;
 import com.providences.events.reviews.ReviewEntity;
 import com.providences.events.services.ServiceEntity;
 import com.providences.events.user.UserEntity;
@@ -45,7 +46,7 @@ public class SupplierEntity {
 
     @Column(name = "profile_picture")
     private String profilePicture;
-    
+
     private String logo;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -63,27 +64,27 @@ public class SupplierEntity {
     @Column(nullable = false, name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Relecionamento no caso de fazer pagamento
+    // Relacionamento caso de fazer pagamento
     @OneToMany(mappedBy = "payerSupplier", fetch = FetchType.LAZY)
     private Set<PaymentEntity> payments;
 
-    // Relecionamento no caso de receber pagamento
+    // Relacionamento caso de receber pagamento
     @OneToMany(mappedBy = "receiverSupplier", fetch = FetchType.LAZY)
     private Set<PaymentEntity> receivers;
 
-    // Relecionamento com serviços
+    // Relacionamento serviços
     @OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY)
     private Set<ServiceEntity> services;
 
-    // relacionameto com participacoes em conversas
+    // relacionamento com participacoes em conversas
     @OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY)
     private Set<ParticipantChatEntity> participantChat;
 
     // Relacionamento como mensagem
     @OneToMany(mappedBy = "senderSupplier", fetch = FetchType.LAZY)
-    private Set<MessageEntity> chats;
+    private List<MessageEntity> messages;
 
-    // Relacionemnto com comentarios
+    // Relacionamento com comentarios
     @OneToMany(mappedBy = "senderSupplier", fetch = FetchType.LAZY)
     private Set<ReviewEntity> senderReviews;
 

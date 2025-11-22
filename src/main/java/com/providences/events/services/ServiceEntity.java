@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.providences.events.album.entities.AlbumEntity;
 import com.providences.events.event.entities.ServicesHasEventEntity;
-import com.providences.events.payment.PaymentEntity;
+import com.providences.events.payment.entities.PaymentEntity;
 import com.providences.events.reviews.ReviewEntity;
 import com.providences.events.supplier.SupplierEntity;
 
@@ -61,7 +61,7 @@ public class ServiceEntity {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     // relaciomanto com pagamentos
-    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "targetService", fetch = FetchType.LAZY)
     private Set<PaymentEntity> payments;
 
     // relacionamento com algum de midia

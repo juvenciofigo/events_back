@@ -6,11 +6,8 @@ import java.time.LocalDateTime;
 import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.organizer.OrganizerEntity;
-import com.providences.events.payment.PaymentEntity;
-import com.providences.events.payment.PaymentEntity.Currency;
-import com.providences.events.payment.PaymentEntity.PayerType;
-import com.providences.events.payment.PaymentEntity.ReceiverType;
-import com.providences.events.payment.PaymentEntity.Target;
+import com.providences.events.payment.entities.PaymentEntity;
+import com.providences.events.payment.entities.PaymentEntity.*;
 import com.providences.events.plans.entities.SubscriptionEntity;
 import com.providences.events.services.ServiceEntity;
 import com.providences.events.supplier.SupplierEntity;
@@ -23,7 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class CreatePaymentDTO {
+public class PaymentDTO {
 
     @NoArgsConstructor
     @Getter

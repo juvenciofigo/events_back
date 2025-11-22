@@ -2,7 +2,7 @@ package com.providences.events.plans.dto;
 
 import java.time.LocalDateTime;
 
-import com.providences.events.payment.dto.CreatePaymentDTO;
+import com.providences.events.payment.dto.PaymentDTO;
 import com.providences.events.plans.entities.SubscriptionEntity;
 
 import jakarta.validation.constraints.NotBlank;
@@ -10,12 +10,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-public class CreateSubscriptionDTO {
+public class SubscriptionDTO {
 
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class Request {
+    public static class Create {
 
         public String paymentMethod;
 
@@ -28,20 +28,17 @@ public class CreateSubscriptionDTO {
         @NotBlank(message = "Indique o tipo de plano")
         public String planType;
 
-        public String supplierPlanId;
-
-        public String addonPlanId;
-
-        public String organizerPlanId;
+        @NotBlank(message = "Indique o plano")
+        public String planId;
 
         ////////// End which ones plan pay
 
         @NotBlank(message = "Indique o tipo o pagador")
         public String payerType;
 
-        public String supplierId;
+        public String payerId;
 
-        public String organizerId;
+        private String billingCycle; // MONTHLY / YEARLY
 
     }
 
@@ -57,9 +54,10 @@ public class CreateSubscriptionDTO {
         public LocalDateTime endDate;
         public String payerType;
         public String payerId;
-        public CreatePaymentDTO.Response payment;
+        private String billingCycle;
+        public PaymentDTO.Response payment;
 
-        public static Response response(SubscriptionEntity subscription, CreatePaymentDTO.Response payment) {
+        public static Response response(SubscriptionEntity subscription) {
             return new Response(
                     subscription.getId(),
                     subscription.getStatus().name(),
@@ -68,8 +66,10 @@ public class CreateSubscriptionDTO {
                     subscription.getStartDate(),
                     subscription.getEndDate(),
                     subscription.getPayerType().name(),
-                    subscription.getOrganizer().getId(),
-                    payment);
+                    subscription.getOrganizer() != null ? subscription.getOrganizer().getId()
+                            : subscription.getSupplier() != null ? subscription.getSupplier().getId() : null,
+                    subscription.getBillingCycle() != null ? subscription.getBillingCycle().toString() : null,
+                    PaymentDTO.Response.response(subscription.getPayment()));
         }
 
     }

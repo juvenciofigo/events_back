@@ -52,8 +52,9 @@ INSERT INTO participant_chat (chat_id, created_at, guest_id, organizer_id, suppl
 -- Album
  INSERT INTO albums (created_at, description, service_id, title, updated_at, id) VALUES ('2025-10-30 02:35:51.156768', 'Descricao do algum', 'ce6f991a-2343-49b3-aa06-a27c9f9183dc', 'Título do album', '2025-10-30 02:35:51.156768', '341c9554-9dd5-478b-a11e-36c6a92887d9')
 
--- Organizer plan
-INSERT INTO organizer_plans (created_at, description, features, level, name, price_monthly, price_yearly, resources, updated_at, id) VALUES ('2025-10-30 18:49:04.672495', 'Acesso completo a todas as funcionalidades','{"maxEvents": "ilimitado", "analytics": true}', 3, 'Plano Premium', 199.99, 1999.0, 'Eventos ilimitados, suporte 24h','2025-10-30 18:49:04.672495','7c7cf4b1-0cd0-4b9e-ae26-22f0c96be8f5');
+-- plan
+INSERT INTO plans (created_at, description, features, level, name, price_monthly, price_yearly, resources, updated_at, id,plan_type) VALUES ('2025-10-30 18:49:04.672495', 'Acesso completo a todas as funcionalidades','{"maxEvents": "ilimitado", "analytics": true}', 3, 'Plano Premium', 199.99, 1999.0, 'Eventos ilimitados, suporte 24h','2025-10-30 18:49:04.672495','7c7cf4b1-0cd0-4b9e-ae26-22f0c96be8f5','ORGANIZER');
+INSERT INTO plans (created_at, description, features, level, name, price_monthly, price_yearly, resources, updated_at, id,plan_type) VALUES ('2025-10-30 18:49:04.672495', 'Acesso completo a todas as funcionalidades','{"maxEvents": "ilimitado", "analytics": true}', 3, 'Plano Ouro', 199.99, 1999.0, 'Eventos ilimitados, suporte 24h','2025-10-30 18:49:04.672495','7c7cf4b1-0cd0-4b9e-ae26-22f0c96be8f','SUPPLIER');
 
 -- Task
 INSERT INTO tasks (created_at, description, due_date, event_id, priority, responsible_name, responsible_phone, task_status, title, updated_at, id) VALUES ('2025-11-13T17:45:57.1584211', 'tarefa', '2025-10-22T15:30:00', 'fe3c85b9-5ee5-4e88-b17c-38d65d7afc8c', 'MEDIUM', 'Nome do reponsavel', '856526698', 'IN_PROGRESS', 'tarefa', '2025-11-13T18:34:24.7599971', '2f50b8b6-8587-406b-bf0f-9004ec66d191');

@@ -6,7 +6,7 @@ import java.util.Set;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.interaction.entities.MessageEntity;
 import com.providences.events.interaction.entities.ParticipantChatEntity;
-import com.providences.events.payment.PaymentEntity;
+import com.providences.events.payment.entities.PaymentEntity;
 import com.providences.events.reviews.ReviewEntity;
 import com.providences.events.user.UserEntity;
 

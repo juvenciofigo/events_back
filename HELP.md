@@ -103,12 +103,12 @@ api do aplicativo de eventos
 
 #### Assentos (Seats)
 
-        [x] POST /seats — criar tipo de assento
-        [x] PATCH /seats/{id}
-        [x] DELETE /seats/{id}
-        [x] GET /events/{id}/seats
-        [] POST /seats/{id}/reserve — reservar assentos
-        [] POST /seats/{id}/release — liberar assentos
+    [x] POST /seats — criar tipo de assento
+    [x] PATCH /seats/{id}
+    [x] DELETE /seats/{id}
+    [x] GET /events/{id}/seats
+    [] POST /seats/{id}/reserve — reservar assentos
+    [] POST /seats/{id}/release — liberar assentos
 
 ### Chat
 
@@ -124,12 +124,11 @@ api do aplicativo de eventos
 ### Pagamentos
 
     [] POST /payments/initiate — iniciar pagamento
-    [] POST /payments/callback — webhook M-Pesa/Paypal/Evolution
+    [x] POST /payments/callback — webhook M-Pesa/Paypal/Evolution
     [] GET /payments
     [] GET /payments/{id}
     [] PATCH /payments/{id}
-    [] GET /payments/{supplierId}
-    [] GET /payments/{organizerId}
+    [x] GET /payments/{payerId}/{payerType} - organizer/supplier/guest
     [] GET /payments/{id}/refund
 
 #### Referências de pagamento
@@ -140,23 +139,36 @@ api do aplicativo de eventos
 
 ### Planos, Subscrições e Add-ons
 
-    [] GET /plans?type=organizer
-    [] GET /plans?type=supplier
-    [] GET /plans?type=addon
-    [] POST /plans?type=?
-    [] PATCH /plans/{id}/?type=?
+    [x] GET /plans?type=organizer
+    [x] GET /plans?type=supplier
+    [x] GET /plans?type=addon
+    [x] POST /plans?type=?
+    [x] PATCH /plans/{id}/?type=?
     [] DELETE /plans/{id}/?type=?
     [] GET /plans/{id}
 
 ### Subscrições
 
-    [] POST /subscriptions — assinar plano (organizer / supplier / addon)
-    [] GET /subscriptions/{id}
-    [] GET /subscriptions/my
+    [x] POST /subscriptions — assinar plano (organizer / supplier / addon)
+    [x] GET /subscriptions/{id}
+    [x] GET /subscriptions/{subscriptionId}
+    [x] GET /subscriptions/{payerId}/{payerType} - varias de um pagador
     [] GET /subscriptions
-    [] PATCH /subscriptions/{id}
+    [x] PATCH /subscriptions/{id}
     [] PATCH /subscriptions/{id}/cancel
     [] PATCH /subscriptions/{id}/renew
+
+
+### Convites (WhatsApp / Evolution API)
+
+    [] POST /invites/send — enviar convite via Evolution
+    [] POST /invites/bulk — enviar em massa
+    [] GET /invites/{eventId} — listar convites enviados
+
+### Upload de Arquivos (Fotos / Banners / Álbuns)
+
+    [x] POST /upload/image
+    [x] POST /upload/album/{id}
 
 ### Relatórios
 
@@ -164,12 +176,6 @@ api do aplicativo de eventos
     [] GET /reports/events/{id}/attendance
     [] GET /reports/suppliers/{id}/services
     [] GET /reports/platform/finance
-
-### Convites (WhatsApp / Evolution API)
-
-    [] POST /invites/send — enviar convite via Evolution
-    [] POST /invites/bulk — enviar em massa
-    [] GET /invites/{eventId} — listar convites enviados
 
 ### Notificações
 
@@ -183,12 +189,7 @@ api do aplicativo de eventos
     [] PATCH /platform/settings
     [] GET /platform/integrations
 
-### Upload de Arquivos (Fotos / Banners / Álbuns)
-
-    [] POST /upload/image
-    [] POST /upload/album/{id}
-
-### 16. Dashboard & Relatórios
+### Dashboard & Relatórios
 
     [] GET /dashboard/organizer/{id}
     [] GET /dashboard/supplier/{id}

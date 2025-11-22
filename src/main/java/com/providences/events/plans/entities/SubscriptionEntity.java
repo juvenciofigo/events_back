@@ -3,7 +3,8 @@ package com.providences.events.plans.entities;
 import java.time.LocalDateTime;
 
 import com.providences.events.organizer.OrganizerEntity;
-import com.providences.events.payment.PaymentEntity;
+import com.providences.events.payment.entities.PaymentEntity;
+import com.providences.events.plans.entities.PlanEntity.PlanType;
 import com.providences.events.supplier.SupplierEntity;
 
 import jakarta.persistence.Column;
@@ -51,7 +52,7 @@ public class SubscriptionEntity {
     private Boolean autoRenew = false;
 
     // Relacionamento como pagamentos
-    @OneToOne(mappedBy = "subscription", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "targetSubscription", fetch = FetchType.LAZY)
     private PaymentEntity payment;
 
     // relacionamentos com potencias planos
@@ -59,32 +60,26 @@ public class SubscriptionEntity {
     @Column(nullable = false, name = "plan_type")
     private PlanType planType;
 
-    // relacionamento com os planos de fornecedores de serviços
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplier_plan_id")
-    private SupplierPlanEntity supplierPlan;
-
-    // relacionamento como Addons
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "addon_plan_id")
-    private AddonPlanEntity addonPlan;
-
     // relacionamento com os planos de organizadores
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organizer_plan_id")
-    private OrganizerPlanEntity organizerPlan;
+    @JoinColumn(name = "plan_id")
+    private PlanEntity plan;
 
     // relacionamentos com potencias pagadores
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "payer_type")
     private PayerType payerType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "billing_cycle")
+    private BillingCycle billingCycle;
+
     // `relacionamento como provedor de serviços,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id")
     private SupplierEntity supplier;
 
-    // ralacionamento com organizador
+    // relacionamento com organizador
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organizer_id")
     private OrganizerEntity organizer;
@@ -114,7 +109,7 @@ public class SubscriptionEntity {
         EXPIRED
     }
 
-    public enum PlanType {
+    public enum PlanSubscripted {
         ORGANIZER,
         SUPPLIER,
         ADDON
@@ -123,6 +118,11 @@ public class SubscriptionEntity {
     public enum PayerType {
         ORGANIZER,
         SUPPLIER,
+    }
+
+    public enum BillingCycle {
+        MONTHLY,
+        YEARLY
     }
 
     @Override

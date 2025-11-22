@@ -13,10 +13,10 @@ import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.event.repositories.SeatRepository;
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.guest.dto.GuestDTO;
-import com.providences.events.payment.PaymentEntity.PayerType;
-import com.providences.events.payment.PaymentEntity.ReceiverType;
-import com.providences.events.payment.PaymentEntity.Target;
-import com.providences.events.payment.dto.CreatePaymentDTO;
+import com.providences.events.payment.dto.PaymentDTO;
+import com.providences.events.payment.entities.PaymentEntity.PayerType;
+import com.providences.events.payment.entities.PaymentEntity.ReceiverType;
+import com.providences.events.payment.entities.PaymentEntity.Target;
 import com.providences.events.payment.services.CreatePaymentService;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
@@ -56,7 +56,7 @@ public class CreateTicketService {
 
         if (!data.getSeatId().isBlank()) {
             SeatEntity seat = event.getSeats().stream().filter(s -> s.getId().equals(data.getSeatId())).findFirst()
-                    .orElseThrow(() ->  new ResourceNotFoundException("Assento não encontrado!"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Assento não encontrado!"));
 
             if (seat.getAvailableSeats() != null) {
 
@@ -77,7 +77,7 @@ public class CreateTicketService {
                 ticket.setTicketStatus(TicketStatus.CONFIRMED);
                 ticket.setRespondedAt(LocalDateTime.now());
 
-                CreatePaymentDTO.Request paymentData = new CreatePaymentDTO.Request();
+                PaymentDTO.Request paymentData = new PaymentDTO.Request();
 
                 paymentData.setPaymentMethod(data.getPaymentMethod());
                 paymentData.setPayerNum(data.getPayerNum());
@@ -100,7 +100,8 @@ public class CreateTicketService {
             ticket.setSeat(seat);
 
         }
-        // String publicUrl = "https://yourdomain.com/public/tickets/" + ticket.getAccessToken();
+        // String publicUrl = "https://yourdomain.com/public/tickets/" +
+        // ticket.getAccessToken();
         return ticketRepository.save(ticket);
     }
 

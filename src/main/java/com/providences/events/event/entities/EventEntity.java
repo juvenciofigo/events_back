@@ -2,6 +2,7 @@ package com.providences.events.event.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import com.providences.events.interaction.entities.ChatEntity;
@@ -105,7 +106,7 @@ public class EventEntity {
 
     // relacionamento como chats
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
-    private Set<ChatEntity> chats;
+    private List<ChatEntity> chats;
 
     // relacionamento como tipos de convites
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)

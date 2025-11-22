@@ -5,6 +5,8 @@ import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,17 +21,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "supplier_plans")
+@Table(name = "plans")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SupplierPlanEntity {
+public class PlanEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     //////
-    @Column(length = 30)
+    @Column(length = 30, unique = true)
     private String name;
 
     @Column(length = 45)
@@ -49,8 +51,13 @@ public class SupplierPlanEntity {
 
     private Integer level;
 
-    @OneToMany(mappedBy = "supplierPlan", fetch = FetchType.LAZY)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "plan_type")
+    private PlanType planType;
+
+    @OneToMany(mappedBy = "plan", fetch = FetchType.LAZY)
     private Set<SubscriptionEntity> subscriptions;
+
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -69,11 +76,20 @@ public class SupplierPlanEntity {
         updatedAt = LocalDateTime.now();
     }
 
+    public enum PlanType {
+        ORGANIZER,
+        SUPPLIER,
+        ADDON
+    }
+
     @Override
     public String toString() {
-        return "SupplierPlanEntity [id=" + id + ", name=" + name + ", description=" + description + ", resources="
-                + resources + ", priceMonthly=" + priceMonthly + ", priceYearly=" + priceYearly + ", features="
-                + features + ", level=" + level + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+        return "PlanEntity [id=" + id + ", name=" + name + ", description=" + description + ", resources=" + resources
+                + ", priceMonthly=" + priceMonthly + ", priceYearly=" + priceYearly + ", features=" + features
+                + ", level=" + level + ", planType=" + planType + ", createdAt=" + createdAt + ", updatedAt="
+                + updatedAt + "]";
     }
+
+    
 
 }

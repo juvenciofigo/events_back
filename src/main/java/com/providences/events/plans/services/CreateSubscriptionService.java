@@ -3,26 +3,26 @@ package com.providences.events.plans.services;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.organizer.OrganizerRepository;
-import com.providences.events.payment.PaymentEntity.ReceiverType;
-import com.providences.events.payment.PaymentEntity.Target;
-import com.providences.events.payment.dto.CreatePaymentDTO;
+import com.providences.events.payment.dto.PaymentDTO;
+import com.providences.events.payment.entities.PaymentEntity;
+import com.providences.events.payment.entities.PaymentEntity.ReceiverType;
+import com.providences.events.payment.entities.PaymentEntity.Target;
 import com.providences.events.payment.services.CreatePaymentService;
-import com.providences.events.plans.dto.CreateSubscriptionDTO;
-import com.providences.events.plans.entities.AddonPlanEntity;
-import com.providences.events.plans.entities.OrganizerPlanEntity;
+import com.providences.events.plans.dto.SubscriptionDTO;
+import com.providences.events.plans.entities.PlanEntity;
 import com.providences.events.plans.entities.SubscriptionEntity;
-import com.providences.events.plans.entities.SupplierPlanEntity;
+import com.providences.events.plans.entities.PlanEntity.PlanType;
+import com.providences.events.plans.entities.SubscriptionEntity.BillingCycle;
 import com.providences.events.plans.entities.SubscriptionEntity.PayerType;
-import com.providences.events.plans.entities.SubscriptionEntity.PlanType;
-import com.providences.events.plans.repositories.AddonPlanRepository;
-import com.providences.events.plans.repositories.OrganizerPlanRepository;
+import com.providences.events.plans.repositories.PlanRepository;
 import com.providences.events.plans.repositories.SubscriptionRepository;
-import com.providences.events.plans.repositories.SupplierPlanRepository;
+import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
 import com.providences.events.supplier.SupplierEntity;
 import com.providences.events.supplier.SupplierRepository;
@@ -38,35 +38,60 @@ public class CreateSubscriptionService {
         private final SupplierRepository supplierRepository;
 
         // paid plan
-        private final SupplierPlanRepository supplierPlanRepository;
-        private final OrganizerPlanRepository organizerPlanRepository;
-        private final AddonPlanRepository addonPlanRepository;
+        private final PlanRepository planRepository;
 
         // payment
         private CreatePaymentService createPaymentService;
 
         public CreateSubscriptionService(SubscriptionRepository subscriptionRepository,
-                        OrganizerRepository organizerRepository, SupplierRepository supplierRepository,
-                        SupplierPlanRepository supplierPlanRepository, OrganizerPlanRepository organizerPlanRepository,
-                        AddonPlanRepository addonPlanRepository, CreatePaymentService createPaymentService) {
+                        OrganizerRepository organizerRepository,
+                        SupplierRepository supplierRepository,
+                        PlanRepository planRepository,
+                        CreatePaymentService createPaymentService) {
                 this.subscriptionRepository = subscriptionRepository;
                 this.organizerRepository = organizerRepository;
                 this.supplierRepository = supplierRepository;
-                this.supplierPlanRepository = supplierPlanRepository;
-                this.organizerPlanRepository = organizerPlanRepository;
-                this.addonPlanRepository = addonPlanRepository;
+                this.planRepository = planRepository;
                 this.createPaymentService = createPaymentService;
         }
 
-        public CreateSubscriptionDTO.Response execute(CreateSubscriptionDTO.Request data) {
+        public SubscriptionDTO.Response execute(SubscriptionDTO.Create data) {
 
+                // Validar o plano
+                PlanType planType;
+                try {
+                        planType = PlanType.valueOf(data.getPlanType().toUpperCase());
+                } catch (Exception e) {
+                        throw new BusinessException("Tipo de plano inválido", HttpStatus.BAD_REQUEST);
+                }
+
+                PayerType payerType;
+                try {
+                        payerType = PayerType.valueOf(data.getPayerType().toUpperCase());
+                } catch (Exception e) {
+                        throw new BusinessException("Tipo de pagador inválido", HttpStatus.BAD_REQUEST);
+                }
+
+                BillingCycle billingCycle;
+                try {
+                        billingCycle = data.getBillingCycle() != null
+                                        ? BillingCycle.valueOf(data.getBillingCycle().toUpperCase())
+                                        : null;
+                } catch (Exception e) {
+                        throw new BusinessException("Tipo de ciclo de pagamento inválido", HttpStatus.BAD_REQUEST);
+                }
+
+                // Criar a subscricao
                 SubscriptionEntity subscription = new SubscriptionEntity();
                 subscription.setStartDate(LocalDateTime.now());
-                subscription.setEndDate(LocalDateTime.now().plusDays(30));
+                subscription.setEndDate(LocalDateTime.now().plusMonths(1));
                 subscription.setAutoRenew(false);
-                subscription.setPlanType(PlanType.valueOf(data.getPlanType()));
+                subscription.setPlanType(planType);
+                subscription.setPayerType(payerType);
+                subscription.setBillingCycle(billingCycle);
 
-                CreatePaymentDTO.Request paymentData = new CreatePaymentDTO.Request();
+                // criar pagamento
+                PaymentDTO.Request paymentData = new PaymentDTO.Request();
                 paymentData.setReceiverType(ReceiverType.PLATFORM);
                 paymentData.setReceiverPlatform(true);
                 paymentData.setTarget(Target.SUBSCRIPTION);
@@ -75,67 +100,54 @@ public class CreateSubscriptionService {
 
                 // Begin Who will pay
 
-                if (data.getPayerType().equals(PayerType.ORGANIZER.toString())) {
-                        OrganizerEntity organizer = organizerRepository.findById(data.getOrganizerId())
-                                        .orElseThrow(() -> new ResourceNotFoundException(
-                                                        "Organizador nao encontrado!"));
+                switch (payerType) {
+                        case ORGANIZER -> {
+                                OrganizerEntity org = organizerRepository.findId(data.getPayerId())
+                                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                                "Organizador não encontrado!"));
 
-                        paymentData.setPayerType(com.providences.events.payment.PaymentEntity.PayerType.ORGANIZER);
-                        paymentData.setPayerOrganizer(organizer);
-                        subscription.setPayerType(PayerType.ORGANIZER);
-                        subscription.setOrganizer(organizer);
-                }
+                                paymentData.setPayerType(
+                                                com.providences.events.payment.entities.PaymentEntity.PayerType.ORGANIZER);
+                                paymentData.setPayerOrganizer(org);
 
-                if (data.getPayerType().equals(PayerType.SUPPLIER.name())) {
-                        SupplierEntity supplier = supplierRepository.findById(data.getSupplierId())
-                                        .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
+                                subscription.setOrganizer(org);
+                        }
 
-                        paymentData.setPayerType(com.providences.events.payment.PaymentEntity.PayerType.SUPPLIER);
-                        paymentData.setPayerSupplier(supplier);
-                        subscription.setPayerType(PayerType.SUPPLIER);
-                        subscription.setSupplier(supplier);
+                        case SUPPLIER -> {
+                                SupplierEntity sup = supplierRepository.findId(data.getPayerId())
+                                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                                "Fornecedor não encontrado!"));
+
+                                paymentData.setPayerType(
+                                                com.providences.events.payment.entities.PaymentEntity.PayerType.SUPPLIER);
+                                paymentData.setPayerSupplier(sup);
+
+                                subscription.setSupplier(sup);
+                        }
                 }
 
                 ////////// End Who will pay
 
                 ///////// Begin which ones plan pay
 
-                if (data.getPlanType().equals(PlanType.ADDON.name())) {
-                        AddonPlanEntity addonPlan = addonPlanRepository.findById(data.getAddonPlanId())
-                                        .orElseThrow(() -> new ResourceNotFoundException("Plano não encontrado!"));
+                PlanEntity plan = planRepository
+                                .getByIdAndType(data.getPlanId(), planType)
+                                .orElseThrow(() -> new ResourceNotFoundException("Plano não encontrado!"));
 
-                        paymentData.setAmount(new BigDecimal(addonPlan.getPriceMonthly()));
-                        subscription.setAddonPlan(addonPlan);
-                }
-
-                if (data.getPlanType().equals(PlanType.ORGANIZER.name())) {
-                        OrganizerPlanEntity organizerPlan = organizerPlanRepository
-                                        .fetchById("7c7cf4b1-0cd0-4b9e-ae26-22f0c96be8f5")
-                                        .orElseThrow(() -> new ResourceNotFoundException("Plano não encontrado!"));
-
-                        paymentData.setAmount(new BigDecimal(organizerPlan.getPriceMonthly()));
-                        subscription.setOrganizerPlan(organizerPlan);
-                }
-
-                if (data.getPlanType().equals(PlanType.SUPPLIER.name())) {
-                        SupplierPlanEntity supplierPlan = supplierPlanRepository.findById(data.getSupplierPlanId())
-                                        .orElseThrow(() -> new ResourceNotFoundException("Plano não encontrado!"));
-
-                        paymentData.setAmount(new BigDecimal(supplierPlan.getPriceMonthly()));
-                        subscription.setSupplierPlan(supplierPlan);
-                }
+                paymentData.setAmount(BigDecimal.valueOf(plan.getPriceMonthly()));
+                subscription.setPlan(plan);
 
                 //////// End which ones plan pay
 
                 // fazer o pagamento por ultimo
                 paymentData.setSubscription(subscription);
 
-                CreatePaymentDTO.Response paymentResponse = createPaymentService.execute(paymentData);
+                PaymentEntity paymentResponse = createPaymentService.execute(paymentData);
 
+                subscription.setPayment(paymentResponse);
                 SubscriptionEntity savedSubscription = subscriptionRepository.save(subscription);
 
-                CreateSubscriptionDTO.Response responseDTO =  CreateSubscriptionDTO.Response.response(savedSubscription,
-                                paymentResponse);
+                SubscriptionDTO.Response responseDTO = SubscriptionDTO.Response.response(savedSubscription);
 
                 return responseDTO;
 

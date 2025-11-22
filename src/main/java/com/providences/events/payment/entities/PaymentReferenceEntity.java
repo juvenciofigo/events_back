@@ -1,4 +1,4 @@
-package com.providences.events.payment;
+package com.providences.events.payment.entities;
 
 import java.time.LocalDateTime;
 

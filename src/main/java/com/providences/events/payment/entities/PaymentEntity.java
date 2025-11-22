@@ -1,4 +1,4 @@
-package com.providences.events.payment;
+package com.providences.events.payment.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -104,15 +104,15 @@ public class PaymentEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "services_id")
-    private ServiceEntity service;
+    private ServiceEntity targetService;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subscription_id")
-    private SubscriptionEntity subscription;
+    private SubscriptionEntity targetSubscription;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seat_id")
-    private SeatEntity seat;
+    private SeatEntity targetSeat;
 
     @OneToOne(mappedBy = "payment", fetch = FetchType.LAZY)
     private PaymentReferenceEntity reference;
@@ -125,6 +125,17 @@ public class PaymentEntity {
             return "Organizador: " + payerOrganizer.getName();
         } else if (payerGuest != null) {
             return "Convidado: " + payerGuest.getName();
+        }
+        return "Não identificado";
+    }
+
+    public String getPayerId() {
+        if (payerSupplier != null) {
+            return payerSupplier.getUser().getId();
+        } else if (payerOrganizer != null) {
+            return payerOrganizer.getUser().getId();
+        } else if (payerGuest != null) {
+            return payerGuest.getId();
         }
         return "Não identificado";
     }

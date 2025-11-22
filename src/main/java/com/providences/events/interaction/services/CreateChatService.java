@@ -17,6 +17,7 @@ import com.providences.events.guest.GuestEntity;
 import com.providences.events.guest.GuestRepository;
 import com.providences.events.interaction.dto.CreateChatDTO;
 import com.providences.events.interaction.dto.MessageDTO;
+import com.providences.events.interaction.ChatValidations;
 import com.providences.events.interaction.entities.ChatEntity;
 import com.providences.events.interaction.entities.ChatEntity.ChatType;
 import com.providences.events.interaction.entities.ParticipantChatEntity.ParticipantType;
@@ -63,12 +64,7 @@ public class CreateChatService {
         EventEntity event = eventRepository.findById(data.getEventId())
                 .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
 
-        ChatType chatType;
-        try {
-            chatType = ChatType.valueOf(data.getType().toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new BusinessException("Tipo de chat inválido", HttpStatus.BAD_REQUEST);
-        }
+        ChatType chatType = ChatValidations.parseChatType(data.getType());
 
         ChatEntity chat = new ChatEntity();
         chat.setTitle(data.getTitle());

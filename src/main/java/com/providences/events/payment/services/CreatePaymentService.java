@@ -8,11 +8,12 @@ import org.springframework.validation.annotation.Validated;
 
 import com.fc.sdk.APIResponse;
 import com.providences.events.config.MpesaService;
-import com.providences.events.payment.PaymentEntity;
-import com.providences.events.payment.PaymentRepository;
-import com.providences.events.payment.PaymentEntity.PaymentMethod;
-import com.providences.events.payment.PaymentReferenceEntity;
-import com.providences.events.payment.dto.CreatePaymentDTO;
+import com.providences.events.payment.dto.PaymentDTO;
+import com.providences.events.payment.entities.PaymentEntity;
+import com.providences.events.payment.entities.PaymentReferenceEntity;
+import com.providences.events.payment.entities.PaymentEntity.PaymentMethod;
+import com.providences.events.payment.repository.PaymentReferenceRepository;
+import com.providences.events.payment.repository.PaymentRepository;
 import com.providences.events.shared.exception.exceptions.MpesaPaymentException;
 
 import jakarta.validation.Valid;
@@ -48,7 +49,7 @@ public class CreatePaymentService {
         return ref.toUpperCase();
     }
 
-    public CreatePaymentDTO.Response execute(@Valid CreatePaymentDTO.Request data) {
+    public PaymentEntity execute(@Valid PaymentDTO.Request data) {
 
         PaymentEntity payment = new PaymentEntity();
 
@@ -68,9 +69,9 @@ public class CreatePaymentService {
         payment.setReceiverPlatform(data.getReceiverPlatform());
 
         payment.setTarget(data.getTarget());
-        payment.setService(data.getService());
-        payment.setSubscription(data.getSubscription());
-        payment.setSeat(data.getSeat());
+        payment.setTargetService(data.getService());
+        payment.setTargetSubscription(data.getSubscription());
+        payment.setTargetSeat(data.getSeat());
 
         String transactionRef = generateTransactionReference();
         String thirdPartyRef = generateThirdPartyReference();
@@ -97,6 +98,6 @@ public class CreatePaymentService {
         reference.setPayment(payment);
         paymentReferenceRepository.save(reference);
 
-        return CreatePaymentDTO.Response.response(createdPayment);
+        return createdPayment;
     }
 }

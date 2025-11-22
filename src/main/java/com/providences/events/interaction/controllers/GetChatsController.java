@@ -8,7 +8,7 @@ import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.interaction.dto.GetChatDTO;
 import com.providences.events.interaction.services.GetChatsService;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -26,7 +26,7 @@ public class GetChatsController {
 
     @GetMapping("/{type}")
     // @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Set<GetChatDTO.Response>> getChats(
+    public ResponseEntity<List<GetChatDTO.Response>> getChats(
             @PathVariable String type,
             @RequestParam(required = false) String eventId,
             @RequestParam(required = false) String supplierId,

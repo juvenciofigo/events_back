@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import com.providences.events.payment.PaymentEntity;
+import com.providences.events.payment.entities.PaymentEntity;
 import com.providences.events.ticket.entities.TicketEntity;
 
 import jakarta.persistence.Column;
@@ -74,7 +74,7 @@ public class SeatEntity {
     @OneToMany(mappedBy = "seat", fetch = FetchType.LAZY)
     private Set<TicketEntity> tickets;
 
-    @OneToMany(mappedBy = "seat", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "targetSeat", fetch = FetchType.LAZY)
     private Set<PaymentEntity> payment;
 
     @PrePersist
