@@ -32,7 +32,7 @@ public class ParticipantChatDTO {
                 case "GUEST":
                     return participant.getGuest().getName();
                 case "ORGANIZER":
-                    return participant.getOrganizer().getName();
+                    return participant.getOrganizer().getCompanyName();
                 case "ADMIN":
                     return "ADMIN";
                 default:
