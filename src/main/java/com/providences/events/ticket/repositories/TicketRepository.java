@@ -31,6 +31,12 @@ public interface TicketRepository extends JpaRepository<TicketEntity, String> {
             """)
     Optional<TicketEntity> findByAccessToken(String token);
 
-    Optional<TicketEntity> findByTicketCode(String code);
+    boolean existsByAccessToken(String accessToken);
 
+    @Query("""
+                SELECT t
+                FROM TicketEntity t
+                WHERE t.ticketCode = :code
+            """)
+    Optional<TicketEntity> findByTicketCode(String code);
 }

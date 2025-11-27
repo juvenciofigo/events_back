@@ -1,7 +1,5 @@
 package com.providences.events.ticket.services;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -14,11 +12,6 @@ import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.event.repositories.SeatRepository;
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.guest.dto.GuestDTO;
-import com.providences.events.payment.dto.PaymentDTO;
-import com.providences.events.payment.entities.PaymentEntity.PayerType;
-import com.providences.events.payment.entities.PaymentEntity.ReceiverType;
-import com.providences.events.payment.entities.PaymentEntity.Target;
-import com.providences.events.payment.services.CreatePaymentService;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
 import com.providences.events.ticket.entities.TicketEntity;
@@ -30,18 +23,11 @@ import com.providences.events.ticket.repositories.TicketRepository;
 public class CreateTicketService {
 
     private final TicketRepository ticketRepository;
-
-    // seat
     private final SeatRepository seatRepository;
 
-    // payment
-    private CreatePaymentService createPaymentService;
-
-    public CreateTicketService(TicketRepository ticketRepository, SeatRepository seatRepository,
-            CreatePaymentService createPaymentService) {
+    public CreateTicketService(TicketRepository ticketRepository, SeatRepository seatRepository) {
         this.ticketRepository = ticketRepository;
         this.seatRepository = seatRepository;
-        this.createPaymentService = createPaymentService;
     }
 
     public TicketEntity execute(EventEntity event, GuestDTO.Create data, GuestEntity guest) {
@@ -53,18 +39,21 @@ public class CreateTicketService {
         ticket.setTicketCode(generateCode());
         ticket.setAccessToken(generateAccessToken());
 
-        // adiconar o ticket à um assento
+        // Status inicial padrão
+        ticket.setTicketStatus(TicketStatus.PENDING);
 
-        if (!data.getSeatId().isBlank()) {
-            SeatEntity seat = event.getSeats().stream().filter(s -> s.getId().equals(data.getSeatId())).findFirst()
+        // adicionar o ticket a um assento
+        if (data.getSeatId() != null && !data.getSeatId().isBlank()) {
+            SeatEntity seat = event.getSeats().stream()
+                    .filter(s -> s.getId().equals(data.getSeatId()))
+                    .findFirst()
                     .orElseThrow(() -> new ResourceNotFoundException("Assento não encontrado!"));
 
             if (seat.getAvailableSeats() != null) {
                 int available = seat.getAvailableSeats();
                 int people = data.getTotalPeople();
 
-                if (available >= people && available - people >= 0) {
-
+                if (available >= people) {
                     seat.setAvailableSeats(available - people);
                 } else {
                     throw new BusinessException(
@@ -73,36 +62,11 @@ public class CreateTicketService {
                 }
             }
 
-            // quando o seat for pago, fazer pagamento
-            if (Boolean.TRUE.equals(seat.getIsPaid())) {
-                ticket.setTicketStatus(TicketStatus.CONFIRMED);
-                ticket.setRespondedAt(LocalDateTime.now());
-
-                PaymentDTO.Request paymentData = new PaymentDTO.Request();
-
-                paymentData.setPaymentMethod(data.getPaymentMethod());
-                paymentData.setPayerNum(data.getPayerNum());
-                paymentData.setAmount(seat.getPrice().multiply(BigDecimal.valueOf(data.getTotalPeople())));
-
-                paymentData.setPayerType(PayerType.GUEST);
-                paymentData.setPayerGuest(guest);
-
-                paymentData.setReceiverType(ReceiverType.ORGANIZER);
-                paymentData.setReceiverOrganizer(event.getOrganizer());
-
-                paymentData.setTarget(Target.SEAT);
-                paymentData.setSeat(seat);
-
-                createPaymentService.execute(paymentData);
-            }
-
-            // graval alterações no seat
+            // gravar alterações no seat
             seatRepository.save(seat);
             ticket.setSeat(seat);
-
         }
-        // String publicUrl = "https://yourdomain.com/public/tickets/" +
-        // ticket.getAccessToken();
+
         return ticketRepository.save(ticket);
     }
 
@@ -112,11 +76,9 @@ public class CreateTicketService {
 
     private String generateAccessToken() {
         String access;
-
         do {
             access = UUID.randomUUID().toString();
         } while (ticketRepository.existsByAccessToken(access));
-
         return access;
     }
 }

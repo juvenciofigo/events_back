@@ -42,8 +42,24 @@ public class GuestDTO {
         private String seatId;
 
         // pagamento
-        public String payerNum;
-        public String paymentMethod;
+        private String payerNum;
+        private String paymentMethod;
+
+        public String getPayerNum() {
+            return payerNum;
+        }
+
+        public void setPayerNum(String payerNum) {
+            this.payerNum = payerNum;
+        }
+
+        public String getPaymentMethod() {
+            return paymentMethod;
+        }
+
+        public void setPaymentMethod(String paymentMethod) {
+            this.paymentMethod = paymentMethod;
+        }
 
     }
 
