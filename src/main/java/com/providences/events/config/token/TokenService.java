@@ -2,12 +2,14 @@ package com.providences.events.config.token;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.user.UserEntity;
 import com.providences.events.user.UserRepository;
 
@@ -25,17 +29,20 @@ public class TokenService {
     private final String secret;
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
-    private final long accessExpirationMillis;
+    private final long accessExpMinutes;
+    private final long refreshExpDays;
 
     public TokenService(
             RefreshTokenRepository refreshTokenRepository,
             UserRepository userRepository,
             @Value("${app.jwt.secret}") String secret,
-            @Value("${app.jwt.access-expiration-minutes}") long accessExpMinutes) {
+            @Value("${app.jwt.access-expiration-minutes}") long accessExpMinutes,
+            @Value("${app.jwt.refresh-expiration-days}") long refreshExpDays) {
         this.refreshTokenRepository = refreshTokenRepository;
         this.userRepository = userRepository;
         this.secret = secret;
-        this.accessExpirationMillis = accessExpMinutes * 60 * 1000;
+        this.accessExpMinutes = accessExpMinutes;
+        this.refreshExpDays = refreshExpDays;
     }
 
     public String generateToken(UserEntity user) {
@@ -47,7 +54,7 @@ public class TokenService {
                         .map(GrantedAuthority::getAuthority)
                         .toList())
                 .withSubject(user.getEmail())
-                .withExpiresAt(Instant.now().plusMillis(accessExpirationMillis))
+                .withExpiresAt(Instant.now().plus(accessExpMinutes, ChronoUnit.MINUTES))
                 .withIssuedAt(Instant.now())
                 .sign(algorithm);
     }
@@ -60,16 +67,13 @@ public class TokenService {
                     .verify(token);
 
             Set<String> roles = new HashSet<>(decoded.getClaim("roles").asList(String.class));
-
-            // decoded.getClaim("userId").asString(),
-            // decoded.getSubject(),
-            // roles
             JWTUserDTO userData = new JWTUserDTO(decoded.getClaim("userId").asString(), decoded.getSubject(), roles);
 
             return Optional.of(userData);
-
+        } catch (TokenExpiredException ex) {
+            throw new BusinessException("Token expired", HttpStatus.valueOf(401));
         } catch (JWTVerificationException e) {
-            return Optional.empty();
+            throw new BusinessException("Invalid token", HttpStatus.valueOf(401));
         }
     }
 
@@ -82,7 +86,7 @@ public class TokenService {
         RefreshTokenEntity token = new RefreshTokenEntity();
         token.setUser(user);
         token.setToken(UUID.randomUUID().toString() + "-" + UUID.randomUUID().toString());
-        token.setExpiryDate(LocalDateTime.now().plusDays(30));
+        token.setExpiryDate(LocalDateTime.now().plusDays(refreshExpDays));
         token.setRevoked(false);
         token.setIp(ip);
         token.setUserAgent(userAgent);
@@ -115,7 +119,7 @@ public class TokenService {
     }
 
     public long getRefreshExpirationSeconds() {
-        return accessExpirationMillis / 1000;
+        return refreshExpDays * 24 * 60 * 60; // dias -> segundos
     }
 
 }

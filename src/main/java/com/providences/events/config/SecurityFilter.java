@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.config.token.TokenService;
+import com.providences.events.shared.exception.exceptions.BusinessException;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,13 +31,14 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain)
-            throws ServletException, IOException {
+protected void doFilterInternal(HttpServletRequest request,
+        HttpServletResponse response,
+        FilterChain filterChain)
+        throws ServletException, IOException {
 
-        String authHeader = request.getHeader("Authorization");
+    String authHeader = request.getHeader("Authorization");
 
+    try {
         if (Strings.isNotEmpty(authHeader) && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring("Bearer ".length());
 
@@ -58,5 +60,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+
+    } catch (BusinessException ex) {
+        response.setStatus(ex.getStatusCode().value());
+        response.setContentType("application/json");
+        response.getWriter().write("{\"error\": \"" + ex.getMessage() + "\"}");
     }
+}
+
 }
