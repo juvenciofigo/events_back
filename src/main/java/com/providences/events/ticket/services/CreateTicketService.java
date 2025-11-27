@@ -1,5 +1,6 @@
 package com.providences.events.ticket.services;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -50,7 +51,7 @@ public class CreateTicketService {
         ticket.setTotalPeople(data.getTotalPeople());
         ticket.setNotes(data.getNotes());
         ticket.setTicketCode(generateCode());
-        ticket.setAccessToken(UUID.randomUUID().toString());
+        ticket.setAccessToken(generateAccessToken());
 
         // adiconar o ticket à um assento
 
@@ -59,15 +60,15 @@ public class CreateTicketService {
                     .orElseThrow(() -> new ResourceNotFoundException("Assento não encontrado!"));
 
             if (seat.getAvailableSeats() != null) {
+                int available = seat.getAvailableSeats();
+                int people = data.getTotalPeople();
 
-                if (seat.getAvailableSeats() >= data.getTotalPeople()
-                        && seat.getAvailableSeats() - data.getTotalPeople() >= 0) {
+                if (available >= people && available - people >= 0) {
 
-                    seat.setAvailableSeats(seat.getAvailableSeats() - data.getTotalPeople());
+                    seat.setAvailableSeats(available - people);
                 } else {
                     throw new BusinessException(
-                            "Assentos insuficientes! Existem apenas "
-                                    + seat.getAvailableSeats() + " assentos disponíveis.",
+                            "Assentos insuficientes! Existem apenas " + available + " assentos disponíveis.",
                             HttpStatus.BAD_REQUEST);
                 }
             }
@@ -81,7 +82,7 @@ public class CreateTicketService {
 
                 paymentData.setPaymentMethod(data.getPaymentMethod());
                 paymentData.setPayerNum(data.getPayerNum());
-                paymentData.setAmount(seat.getPrice());
+                paymentData.setAmount(seat.getPrice().multiply(BigDecimal.valueOf(data.getTotalPeople())));
 
                 paymentData.setPayerType(PayerType.GUEST);
                 paymentData.setPayerGuest(guest);
@@ -107,5 +108,15 @@ public class CreateTicketService {
 
     private String generateCode() {
         return "TCKT-" + RandomStringUtils.randomAlphanumeric(8).toUpperCase();
+    }
+
+    private String generateAccessToken() {
+        String access;
+
+        do {
+            access = UUID.randomUUID().toString();
+        } while (ticketRepository.existsByAccessToken(access));
+
+        return access;
     }
 }
