@@ -52,7 +52,7 @@ public class AuthUserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Credenciais inválidas!"));
     }
 
-    public UserDTO.Response login(UserDTO.Auth dto, String ip, String userAgent) {
+    public UserDTO.Response login(UserDTO.Auth dto, String ip, String userAgent, HttpServletResponse resp) {
         try {
             AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
 
@@ -64,8 +64,9 @@ public class AuthUserService implements UserDetailsService {
 
             // Criar RefreshToken
             String refreshToken = createRefreshToken.execute(user.getId(), ip, userAgent);
+            resp.addHeader("Set-Cookie", refreshToken);
 
-            return UserDTO.Response.response(user, token, refreshToken);
+            return UserDTO.Response.response(user, token);
 
         } catch (AuthenticationException ex) {
             throw new UsernameNotFoundException("Credenciais inválidas!");
@@ -96,13 +97,12 @@ public class AuthUserService implements UserDetailsService {
         tokenService.revoke(stored);
 
         UserEntity user = stored.getUser();
-
         String refreshToken = createRefreshToken.execute(user.getId(), req.getRemoteAddr(),
                 req.getHeader("User-Agent"));
+        resp.addHeader("Set-Cookie", refreshToken);
 
         String token = tokenService.generateToken(user);
-
-        return UserDTO.Response.response(user, token, refreshToken);
+        return UserDTO.Response.response(user, token);
     }
 
     public void logOut(String cookieToken, HttpServletResponse resp) {

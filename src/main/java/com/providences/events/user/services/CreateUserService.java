@@ -11,6 +11,8 @@ import com.providences.events.user.UserEntity;
 import com.providences.events.user.UserRepository;
 import com.providences.events.user.dto.UserDTO;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @Service
 @Transactional
 public class CreateUserService {
@@ -28,7 +30,7 @@ public class CreateUserService {
     }
 
     @Transactional
-    public UserDTO.Response execute(UserDTO.Create data, String ip, String userAgent) {
+    public UserDTO.Response execute(UserDTO.Create data, String ip, String userAgent, HttpServletResponse resp) {
         Boolean existUser = userRepository.findByEmail(data.getEmail()).isPresent();
         if (existUser) {
             throw new BusinessException("Email em uso! Experimento com um email diferente!", HttpStatus.CONFLICT);
@@ -45,7 +47,8 @@ public class CreateUserService {
         String token = tokenService.generateToken(savedUser);
 
         String refreshToken = createRefreshToken.execute(savedUser.getId(), ip, userAgent);
-        return UserDTO.Response.response(user, token, refreshToken);
+        resp.addHeader("Set-Cookie", refreshToken);
+        return UserDTO.Response.response(user, token);
     }
 
 }

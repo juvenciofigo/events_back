@@ -2,10 +2,12 @@ package com.providences.events.user.controllers;
 
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.user.dto.UserDTO;
 import com.providences.events.user.services.AuthUserService;
 
@@ -33,9 +35,7 @@ public class AuthController {
         String ip = req.getRemoteAddr();
         String userAgent = req.getHeader("User-Agent");
 
-        UserDTO.Response response = authUserService.login(request, ip, userAgent);
-
-        resp.addHeader("Set-Cookie", response.getCookie());
+        UserDTO.Response response = authUserService.login(request, ip, userAgent, resp);
 
         return ResponseEntity.ok().body(response);
     }
@@ -46,19 +46,21 @@ public class AuthController {
     public ResponseEntity<?> refresh(
             HttpServletRequest req,
             HttpServletResponse resp,
-            @CookieValue(value = "refreshToken", required = false) String cookieToken) {
+            @CookieValue(value = "refreshToken", required = false) String cookieRefreshToken) {
 
-        if (cookieToken == null) {
-            return ResponseEntity.status(401).body("No refresh token");
+        if (cookieRefreshToken == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Refresh token missing"));
         }
 
-        UserDTO.Response response = authUserService.refreshToken(cookieToken, resp, req);
+        try {
+            UserDTO.Response response = authUserService.refreshToken(cookieRefreshToken, resp, req);
+            return ResponseEntity.ok(Map.of("accessToken", response.getToken()));
 
-        resp.addHeader("Set-Cookie", response.getCookie());
-
-        return ResponseEntity.ok(Map.of("accessToken", response.getToken()));
+        } catch (BusinessException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(Map.of("error", e.getMessage()));
+        }
     }
-
     // Logout
 
     @PostMapping("/logout")
@@ -66,7 +68,7 @@ public class AuthController {
             @CookieValue(value = "refreshToken", required = false) String cookieToken) {
 
         authUserService.logOut(cookieToken, resp);
-        
+
         return ResponseEntity.ok().build();
     }
 

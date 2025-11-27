@@ -30,9 +30,9 @@ public class CreateRefreshToken {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getToken())
                 .httpOnly(true)
                 .secure(cookieSecure) // em dev pode ser false, em produção true
-                .path("/auth/refresh") // só será enviado para endpoint /auth/refresh (opcional)
+                .path("/") // disponível em todas as rotas
                 .maxAge(tokenService.getRefreshExpirationSeconds()) // expira no cliente
-                .sameSite("None") // None para cross-site, ou Lax/Strict
+                .sameSite(cookieSecure ? "None" : "Lax") // Lax para dev, None para produção com HTTPS
                 .build();
 
         return cookie.toString();
@@ -42,9 +42,9 @@ public class CreateRefreshToken {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)
                 .secure(cookieSecure)
-                .path("/auth/refresh")
+                .path("/")
                 .maxAge(0)
-                .sameSite("None")
+                .sameSite(cookieSecure ? "None" : "Lax")
                 .build();
         resp.addHeader("Set-Cookie", cookie.toString());
     }

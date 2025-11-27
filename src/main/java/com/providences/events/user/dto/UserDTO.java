@@ -58,10 +58,10 @@ public class UserDTO {
         private String name;
         private Set<String> roles;
         private String token;
-        private String cookie;
+        // private String cookie;
         private Map<String, String> profiles;
 
-        public static Response response(UserEntity user, String token, String cookie) {
+        public static Response response(UserEntity user, String token) {
             Map<String, String> profiles = new HashMap<>();
             if (user.getOrganizer() != null) {
                 profiles.put("organizer", user.getOrganizer().getId());
@@ -76,7 +76,7 @@ public class UserDTO {
                     user.getName(),
                     user.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.toSet()),
                     token != null ? token : null,
-                    cookie,
+                    // cookie,
                     profiles);
         }
 

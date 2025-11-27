@@ -32,9 +32,7 @@ public class RegisterUserController {
         String ip = req.getRemoteAddr();
         String userAgent = req.getHeader("User-Agent");
 
-        UserDTO.Response response = this.createUserService.execute(data, ip, userAgent);
-        resp.addHeader("Set-Cookie", response.getCookie());
-
+        UserDTO.Response response = this.createUserService.execute(data, ip, userAgent, resp);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
