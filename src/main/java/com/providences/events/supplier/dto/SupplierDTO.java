@@ -59,7 +59,7 @@ public class SupplierDTO {
                     supplier.getLogo(),
                     supplier.getDescription(),
                     supplier.getLocation(),
-                    UserDTO.Response.response(supplier.getUser(), null, null));
+                    UserDTO.Response.response(supplier.getUser(), null));
         }
 
         public static Response response2(SupplierEntity supplier) {

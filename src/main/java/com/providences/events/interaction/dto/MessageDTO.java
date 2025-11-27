@@ -67,7 +67,7 @@ public class MessageDTO {
 
                 case ORGANIZER:
                     res.setSenderId(message.getSenderOrganizer().getId());
-                    res.setSenderName(message.getSenderOrganizer().getName());
+                    res.setSenderName(message.getSenderOrganizer().getCompanyName());
                     res.setSenderRole("organizer");
                     break;
 

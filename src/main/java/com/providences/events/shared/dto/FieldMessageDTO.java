@@ -1,7 +1,7 @@
 package com.providences.events.shared.dto;
 
 public class FieldMessageDTO {
-      private String fieldName;
+    private String fieldName;
     private String message;
 
     public FieldMessageDTO(String fieldName, String message) {

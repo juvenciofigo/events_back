@@ -15,6 +15,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,18 +50,30 @@ public class GlobalExceptionHandler {
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body( err);
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<CustomErrorDTO> error(BusinessException e, HttpServletRequest request) {
-        HttpStatus status = e.getStatusCode() != null ? e.getStatusCode() : HttpStatus.NOT_ACCEPTABLE;
+        HttpStatus status = e.getStatusCode();
         CustomErrorDTO err = new CustomErrorDTO(
                 Instant.now(),
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body( err);
+
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<CustomErrorDTO> error(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
+        CustomErrorDTO err = new CustomErrorDTO(
+                Instant.now(),
+                404,
+                e.getMessage(),
+                request.getRequestURI());
+
+        return ResponseEntity.status(404).body(err);
     }
 
     @ExceptionHandler(NullPointerException.class)
@@ -79,7 +92,7 @@ public class GlobalExceptionHandler {
                 status.value(),
                 message,
                 request.getRequestURI());
-        return ResponseEntity.status(status).body( err);
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -95,7 +108,7 @@ public class GlobalExceptionHandler {
                 status.value(),
                 messages.get(1),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body( err);
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -106,14 +119,14 @@ public class GlobalExceptionHandler {
         ValidationErrorDTO err = new ValidationErrorDTO(
                 Instant.now(),
                 status.value(),
-                "Dados inválidos",
+                "",
                 request.getRequestURI());
 
         for (FieldError f : e.getBindingResult().getFieldErrors()) {
             err.addError(f.getField(), f.getDefaultMessage());
         }
 
-        return ResponseEntity.status(status).body( err);
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(ForbiddenException.class)
@@ -124,7 +137,7 @@ public class GlobalExceptionHandler {
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body( err);
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
@@ -136,7 +149,7 @@ public class GlobalExceptionHandler {
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body( err);
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -148,7 +161,7 @@ public class GlobalExceptionHandler {
                 status.value(),
                 "Formulario precisa ser preenchido",
                 request.getRequestURI());
-        return ResponseEntity.status(status).body( err);
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(AuthorizationDeniedException.class)
@@ -164,7 +177,7 @@ public class GlobalExceptionHandler {
                 status.value(),
                 "Acesso negado!",
                 request.getRequestURI());
-        return ResponseEntity.status(status).body( err);
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(InvalidDataAccessApiUsageException.class)
@@ -180,7 +193,7 @@ public class GlobalExceptionHandler {
                 status.value(),
                 e.getMessage(),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body( err);
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(MpesaPaymentException.class)
@@ -216,7 +229,7 @@ public class GlobalExceptionHandler {
                 status.value(),
                 message,
                 request.getRequestURI());
-        return ResponseEntity.status(status).body( err);
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
@@ -232,7 +245,7 @@ public class GlobalExceptionHandler {
                 status.value(),
                 "Nenhum endpoint encontrado",
                 request.getRequestURI());
-        return ResponseEntity.status(status).body( err);
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -279,6 +292,6 @@ public class GlobalExceptionHandler {
                 "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde.",
                 request.getRequestURI());
 
-        return ResponseEntity.status(status).body( err);
+        return ResponseEntity.status(status).body(err);
     }
 }

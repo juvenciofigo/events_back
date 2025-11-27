@@ -4,7 +4,6 @@ import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.user.dto.UserDTO;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,13 +17,13 @@ public class OrganizerDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Create {
-        @NotNull(message = "O campo nome é obrigatário!")
         @NotBlank(message = "Preencha o campo nome")
         @Size(max = 100, min = 3, message = "O nome deve ter de 3 à 100 caracteres!")
-        private String name;
+        private String companyName;
 
         private String phone;
 
+        private String description;
     }
 
     @Setter
@@ -33,23 +32,26 @@ public class OrganizerDTO {
     @NoArgsConstructor
     public static class Response {
         private String id;
-        private String name;
+        private String companyName;
         private String profilePicture;
+        private String description;
         private UserDTO.Response user;
 
         public static Response responseMe(OrganizerEntity organizer) {
             return new Response(organizer.getId(),
-                    organizer.getName(),
+                    organizer.getCompanyName(),
                     organizer.getProfilePicture(),
-                    organizer.getUser() != null ? UserDTO.Response.response(organizer.getUser(), null, null) : null);
+                    organizer.getDescription(),
+                    organizer.getUser() != null ? UserDTO.Response.response(organizer.getUser(), null) : null);
         }
 
-        public static Response response2(OrganizerEntity organizer) {
+        public static Response response(OrganizerEntity organizer) {
 
             Response res = new Response();
             res.setId(organizer.getId());
-            res.setName(organizer.getName());
+            res.setCompanyName(organizer.getCompanyName());
             res.setProfilePicture(organizer.getProfilePicture());
+            res.setDescription(organizer.getDescription());
             return res;
         }
     }

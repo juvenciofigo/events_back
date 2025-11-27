@@ -26,8 +26,9 @@ public class UpdateOrganizerService {
             throw new BusinessException("Não autoridado", HttpStatus.FORBIDDEN);
         }
 
-        organizer.setName(data.getName());
+        organizer.setCompanyName(data.getCompanyName());
         organizer.setPhone(data.getPhone());
+        organizer.setDescription(data.getDescription() != null ? data.getDescription() : "");
         organizerRepository.save(organizer);
 
         return null;

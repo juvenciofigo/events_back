@@ -23,6 +23,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +32,7 @@ import lombok.Setter;
 @Table(name = "organizers")
 @Setter
 @Getter
+@EqualsAndHashCode(of = { "id" })
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrganizerEntity {
@@ -42,11 +44,13 @@ public class OrganizerEntity {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private UserEntity user;
 
-    @Column(nullable = false, length = 100)
-    private String name;
+    @Column(nullable = false, length = 100, name = "company_name")
+    private String companyName;
 
     @Column(length = 15, nullable = false)
     private String phone;
+
+    private String description;
 
     @Column(name = "profile_picture")
     private String profilePicture;
@@ -97,8 +101,10 @@ public class OrganizerEntity {
 
     @Override
     public String toString() {
-        return "OrganizerEntity [id=" + id + ", name=" + name + ", phone=" + phone + ", profilePicture="
-                + profilePicture + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+        return "OrganizerEntity [id=" + id + ", companyName=" + companyName + ", phone=" + phone + ", description=" + description
+                + ", profilePicture=" + profilePicture + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
+
+   
 
 }

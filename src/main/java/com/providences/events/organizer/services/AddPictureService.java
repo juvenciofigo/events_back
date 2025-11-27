@@ -65,7 +65,7 @@ public class AddPictureService {
 
         organizer.setProfilePicture(url);
 
-        return OrganizerDTO.Response.response2(organizerRepository.save(organizer));
+        return OrganizerDTO.Response.response(organizerRepository.save(organizer));
 
     }
 }

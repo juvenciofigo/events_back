@@ -9,21 +9,24 @@ import com.providences.events.supplier.SupplierEntity;
 import com.providences.events.supplier.SupplierRepository;
 import com.providences.events.supplier.dto.SupplierDTO;
 
-
 @Service
 @Transactional(readOnly = true)
-public class GetSupplierService {
+public class GetSupplierServiceMe {
     private final SupplierRepository supplierRepository;
 
-    public GetSupplierService(SupplierRepository supplierRepository) {
+    public GetSupplierServiceMe(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
     }
 
-    public SupplierDTO.Response execute(String supplierId) {
+    public SupplierDTO.Response execute(String supplierId, String userId) {
         SupplierEntity supplier = supplierRepository.findId(supplierId)
                 .orElseThrow(() -> new BusinessException("Fornecedor não encontrado", HttpStatus.NOT_FOUND));
 
-        return SupplierDTO.Response.response2(supplier);
+        if (userId != null && supplier.getUser().getId().equals(userId)) {
+            return SupplierDTO.Response.responseMe(supplier);
+        }
+
+        throw new BusinessException("Você não tem permissão para visualizar este fornecedor", HttpStatus.FORBIDDEN);
 
     }
 }

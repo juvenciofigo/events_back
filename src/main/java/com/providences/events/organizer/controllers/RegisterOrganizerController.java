@@ -25,7 +25,7 @@ public class RegisterOrganizerController {
     }
 
     @PostMapping
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<OrganizerDTO.Response> postOrganizer(
             @Validated @RequestBody OrganizerDTO.Create dto,
             Authentication authentication) {

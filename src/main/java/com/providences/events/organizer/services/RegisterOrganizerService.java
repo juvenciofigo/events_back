@@ -38,9 +38,10 @@ public class RegisterOrganizerService {
                 }
 
                 OrganizerEntity organizer = new OrganizerEntity();
-                organizer.setName(data.getName());
+                organizer.setCompanyName(data.getCompanyName());
                 organizer.setPhone(data.getPhone() != null ? data.getPhone() : "");
                 organizer.setProfilePicture("");
+                organizer.setDescription(data.getDescription() != null ? data.getDescription() : "");
                 organizer.setUser(user);
 
                 OrganizerEntity savedOrganizer = organizerRepository.save(organizer);
