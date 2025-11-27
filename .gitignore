@@ -31,3 +31,5 @@ build/
 ### VS Code ###
 .vscode/
 fotos.json
+hs_err_pid31236.log
+replay_pid31236.log
