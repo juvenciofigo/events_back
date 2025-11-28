@@ -1,13 +1,12 @@
 package com.providences.events.event.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.config.token.JWTUserDTO;
-import com.providences.events.event.dto.EventDTO;
 import com.providences.events.event.services.FetchEventsService;
-
-import java.util.Set;
+import com.providences.events.event.services.GetUpcomingEventsService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,20 +18,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/events")
 public class FetchEventsController {
     private FetchEventsService fetchEventsService;
+    private GetUpcomingEventsService getUpcomingEventsService;
 
-    public FetchEventsController(FetchEventsService fetchEventsService) {
+    public FetchEventsController(FetchEventsService fetchEventsService,
+            GetUpcomingEventsService getUpcomingEventsService) {
         this.fetchEventsService = fetchEventsService;
+        this.getUpcomingEventsService = getUpcomingEventsService;
     }
 
     @GetMapping("/organizer/{organizerId}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<Set<EventDTO.Response>> getMethodName(
+    public ResponseEntity<?> getEventsByOrganizer(
             @PathVariable(required = true) String organizerId,
+            @RequestParam(required = false, defaultValue = "false") boolean upcoming,
             Authentication authentication) {
 
         JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
 
+        if (upcoming) {
+            return ResponseEntity
+                    .ok()
+                    .body(getUpcomingEventsService.execute(organizerId, userId));
+        }
         return ResponseEntity
                 .ok()
                 .body(fetchEventsService.execute(organizerId, userId));

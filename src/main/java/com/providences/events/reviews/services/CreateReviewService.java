@@ -41,9 +41,9 @@ public class CreateReviewService {
         review.setComment(data.getComment());
         review.setRating(data.getRating());
 
-        if (!StringUtils.hasText(data.getReceiverOrganizerID()) && !StringUtils.hasText(data.getReceiverServiceID())
-                && !StringUtils.hasText(data.getReceiverSupplierId())) {
-            throw new BusinessException("Receiver desconhecido", HttpStatus.BAD_REQUEST);
+        if (!StringUtils.hasText(data.getTargetOrganizerID()) && !StringUtils.hasText(data.getTargetServiceID())
+                && !StringUtils.hasText(data.getTargetSupplierId())) {
+            throw new BusinessException("Target desconhecido", HttpStatus.BAD_REQUEST);
         }
 
         if (!StringUtils.hasText(data.getSenderOrganizerID()) && !StringUtils.hasText(data.getSenderSupplierID())) {
@@ -73,14 +73,14 @@ public class CreateReviewService {
 
         ReviewTarget target = switch (data.getTarget().toUpperCase()) {
             case "SERVICE" -> {
-                ServiceEntity service = serviceRepository.getId(data.getReceiverServiceID())
+                ServiceEntity service = serviceRepository.getId(data.getTargetServiceID())
                         .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado!"));
 
                 if (service.getSupplier().getUser().getId().equals(userId)) {
                     throw new ForbiddenException("Não tem permissao para fazer comentário para seu perfil!");
                 }
 
-                review.setReceiverService(service);
+                review.setTargetService(service);
                 yield ReviewTarget.SERVICE;
             }
 
@@ -90,7 +90,7 @@ public class CreateReviewService {
                 if (organizer.getUser().getId().equals(userId)) {
                     throw new ForbiddenException("Não tem permissao para fazer comentário para seu perfil!");
                 }
-                review.setReceiverOrganizer(organizer);
+                review.setTargetOrganizer(organizer);
                 yield ReviewTarget.ORGANIZER;
             }
 
@@ -100,7 +100,7 @@ public class CreateReviewService {
                 if (supplier.getUser().getId().equals(userId)) {
                     throw new ForbiddenException("Não tem permissao para fazer comentário para seu perfil!");
                 }
-                review.setReceiverSupplier(supplier);
+                review.setTargetSupplier(supplier);
                 yield ReviewTarget.SUPPLIER;
             }
 

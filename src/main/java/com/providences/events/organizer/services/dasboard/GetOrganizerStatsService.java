@@ -1,4 +1,4 @@
-package com.providences.events.organizer.services;
+package com.providences.events.organizer.services.dasboard;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.organizer.OrganizerRepository;
-import com.providences.events.organizer.dto.OrganizerStatsDTO;
+import com.providences.events.organizer.dto.DashboardOrganizerDTO;
 import com.providences.events.payment.entities.PaymentEntity;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.ticket.entities.TicketEntity;
@@ -25,8 +25,8 @@ public class GetOrganizerStatsService {
                 this.organizerRepository = organizerRepository;
         }
 
-        public OrganizerStatsDTO execute(String organizerId, String userId) {
-                OrganizerEntity organizer = organizerRepository.findId(organizerId)
+        public DashboardOrganizerDTO.stats execute(String organizerId, String userId) {
+                OrganizerEntity organizer = organizerRepository.statsOrganizer(organizerId)
                                 .orElseThrow(() -> new BusinessException("Organizer not found", HttpStatus.NOT_FOUND));
 
                 // Validation
@@ -48,8 +48,8 @@ public class GetOrganizerStatsService {
                 BigDecimal revenue = events.stream()
                                 .flatMap(e -> e.getSeats().stream())
                                 .filter(s -> Boolean.TRUE.equals(s.getIsPaid())) // Apenas assentos pagos
-                                .filter(s -> s.getPayment() != null) // Evitar NPE
-                                .flatMap(s -> s.getPayment().stream())
+                                .filter(s -> s.getPayments() != null) // Evitar NPE
+                                .flatMap(s -> s.getPayments().stream())
                                 .map(PaymentEntity::getAmount)
                                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -57,6 +57,6 @@ public class GetOrganizerStatsService {
                                 .mapToInt(TicketEntity::getTotalPeople)
                                 .sum();
 
-                return new OrganizerStatsDTO(totalEvents, ticketsSold, revenue, guests);
+                return new DashboardOrganizerDTO.stats(totalEvents, ticketsSold, revenue, guests);
         }
 }

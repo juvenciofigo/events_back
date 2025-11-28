@@ -59,23 +59,23 @@ public class ReviewEntity {
     private ReviewTarget target;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver_supplier_id")
-    private SupplierEntity receiverSupplier;
+    @JoinColumn(name = "target_supplier_id")
+    private SupplierEntity targetSupplier;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver_organizer_id")
-    private OrganizerEntity receiverOrganizer;
+    @JoinColumn(name = "target_organizer_id")
+    private OrganizerEntity targetOrganizer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver_service_id")
-    private ServiceEntity receiverService;
+    @JoinColumn(name = "target_service_id")
+    private ServiceEntity targetService;
 
     // ///////////
     @Column(nullable = false, updatable = false, name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(nullable = false, name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {

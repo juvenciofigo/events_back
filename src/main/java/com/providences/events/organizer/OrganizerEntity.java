@@ -76,7 +76,7 @@ public class OrganizerEntity {
     @OneToMany(mappedBy = "senderOrganizer", fetch = FetchType.LAZY)
     private Set<ReviewEntity> senderReviews;
 
-    @OneToMany(mappedBy = "receiverOrganizer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "targetOrganizer", fetch = FetchType.LAZY)
     private Set<ReviewEntity> receiverReviews;
 
     // relacionameto com participacoes em conversas

@@ -88,7 +88,7 @@ public class SupplierEntity {
     @OneToMany(mappedBy = "senderSupplier", fetch = FetchType.LAZY)
     private Set<ReviewEntity> senderReviews;
 
-    @OneToMany(mappedBy = "receiverSupplier", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "targetSupplier", fetch = FetchType.LAZY)
     private Set<ReviewEntity> receiverReviews;
 
     // ///////////

@@ -73,7 +73,7 @@ public class ServiceEntity {
     private Set<ServicesHasEventEntity> servicesHasEvent;
 
     // relacionameto com comentarios
-    @OneToMany(mappedBy = "receiverService", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "targetService", fetch = FetchType.LAZY)
     private Set<ReviewEntity> receiverReviews;
 
     // ///////////

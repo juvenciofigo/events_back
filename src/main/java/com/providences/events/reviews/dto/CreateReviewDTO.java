@@ -34,9 +34,9 @@ public class CreateReviewDTO {
         @NotBlank(message = "Informe para quem é o comentário!")
         private String target;
 
-        private String receiverSupplierId;
-        private String receiverOrganizerID;
-        private String receiverServiceID;
+        private String targetSupplierId;
+        private String targetOrganizerID;
+        private String targetServiceID;
     }
 
 
@@ -56,10 +56,9 @@ public class CreateReviewDTO {
 
         // Target
         private String target;
-        // private String target;
-        // private String receiverSupplierId;
-        // private String receiverOrganizerID;
-        // private String receiverServiceID;
+        // private String targetSupplierId;
+        // private String targetOrganizerID;
+        // private String targetServiceID;
 
         public static Response response(ReviewEntity review) {
             return new Response(

@@ -43,17 +43,17 @@ public class ParticipantChatEntity {
     @JoinColumn(name = "chat_id", nullable = false)
     private ChatEntity chat;
 
-    // relacionameto com organizador
+    // relacionamento com organizador
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organizer_id", referencedColumnName = "id")
     private OrganizerEntity organizer;
 
-    // relacionameto com fornecedor de servicos
+    // relacionamento com fornecedor de servicos
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id", referencedColumnName = "id")
     private SupplierEntity supplier;
 
-    // relacionameto com fornecedor de servicos
+    // relacionamento com convidado
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest_id", referencedColumnName = "id")
     private GuestEntity guest;

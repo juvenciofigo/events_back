@@ -1,5 +1,7 @@
 package com.providences.events.interaction.dto;
 
+import java.time.LocalDateTime;
+
 import com.providences.events.interaction.entities.MessageEntity;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -22,7 +24,7 @@ public class MessageDTO {
 
         @NotBlank(message = "Quem envia mensagem!")
         private String senderRole;
-        
+
         @NotBlank(message = "Informe o remetente!")
         private String senderId;
 
@@ -76,5 +78,14 @@ public class MessageDTO {
             }
             return res;
         }
+    }
+
+    public static record LastMessageDTO(
+            String id,
+            String from,
+            String content,
+            String event,
+            LocalDateTime sendAt,
+            Boolean isRead) {
     }
 }

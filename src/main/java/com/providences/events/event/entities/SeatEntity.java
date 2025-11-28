@@ -75,7 +75,7 @@ public class SeatEntity {
     private Set<TicketEntity> tickets;
 
     @OneToMany(mappedBy = "targetSeat", fetch = FetchType.LAZY)
-    private Set<PaymentEntity> payment;
+    private Set<PaymentEntity> payments;
 
     @PrePersist
     protected void onCreate() {
