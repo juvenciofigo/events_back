@@ -11,17 +11,19 @@ public class DashboardOrganizerDTO {
         }
 
         public static record ItemWithPage<T>(
-                List<T> items,
-                int page,
-                int totalPages,
-                long totalItems) {
+                        List<T> items,
+                        int page,
+                        int totalPages,
+                        long totalItems) {
         }
 
         public static record stats(
                         int totalEvents,
                         int ticketsSold,
                         BigDecimal revenue,
-                        int guests) {
+                        int guests,
+                        boolean hasEvents,
+                        boolean hasPaidEvents) {
         }
 
         public static record sales(String day, BigDecimal sales) {
@@ -40,7 +42,8 @@ public class DashboardOrganizerDTO {
                         String id,
                         String title,
                         String date,
-                        Integer estimatedGuest) {
+                        Integer estimatedGuest,
+                        String location) {
         }
 
         public static record reviews(

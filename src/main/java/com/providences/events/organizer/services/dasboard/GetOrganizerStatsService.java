@@ -57,6 +57,15 @@ public class GetOrganizerStatsService {
                                 .mapToInt(TicketEntity::getTotalPeople)
                                 .sum();
 
-                return new DashboardOrganizerDTO.stats(totalEvents, ticketsSold, revenue, guests);
+                // se existem eventos
+                boolean hasEvents = events.size() > 0 ? true : false;
+
+                // se existem eventos pagos
+                boolean hasPaidEvents = events.stream()
+                                .anyMatch(e -> e.getSeats().stream()
+                                                .anyMatch(s -> Boolean.TRUE.equals(s.getIsPaid())));
+
+                return new DashboardOrganizerDTO.stats(totalEvents, ticketsSold, revenue, guests, hasEvents,
+                                hasPaidEvents);
         }
 }

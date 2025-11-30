@@ -31,7 +31,8 @@ public class GetUpcomingEventsService {
                         e.getId(),
                         e.getTitle(),
                         e.getDateStart().toLocalDate().toString(),
-                        e.getEstimatedGuest()))
+                        e.getEstimatedGuest(),
+                        null))
                 .collect(Collectors.toList());
 
     }
