@@ -35,9 +35,8 @@ public class FetchEventsController {
             @RequestParam(required = false, defaultValue = "false") boolean upcoming,
             @RequestParam(required = false, defaultValue = "10") int limit,
             @RequestParam(required = false, defaultValue = "1") int pageNumber,
-            @RequestParam(required = false, defaultValue = "createdAt,desc") String sort,
+            @RequestParam(required = false, defaultValue = "createdAt") String sort,
             Authentication authentication) {
-        // limit: number = 10, pageNumber: number = 1, sort: string = "createdAt,desc"
 
         JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
@@ -45,11 +44,11 @@ public class FetchEventsController {
         if (upcoming) {
             return ResponseEntity
                     .ok()
-                    .body(getUpcomingEventsService.execute(organizerId, userId, limit, pageNumber, sort));
+                    .body(getUpcomingEventsService.execute(organizerId, userId));
         }
         return ResponseEntity
                 .ok()
-                .body(fetchEventsService.execute(organizerId, userId));
+                .body(fetchEventsService.execute(organizerId, userId, limit, pageNumber, sort));
     }
 
 }

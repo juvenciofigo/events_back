@@ -13,10 +13,10 @@ import com.providences.events.interaction.services.FetchMessagesService;
 
 @RestController
 @RequestMapping("/chats")
-public class GetMessagesController {
+public class FetchMessagesController {
     private final FetchMessagesService fetchMessagesService;
 
-    public GetMessagesController(FetchMessagesService fetchMessagesService) {
+    public FetchMessagesController(FetchMessagesService fetchMessagesService) {
         this.fetchMessagesService = fetchMessagesService;
     }
 
