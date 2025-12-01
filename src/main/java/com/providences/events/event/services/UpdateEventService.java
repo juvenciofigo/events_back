@@ -30,7 +30,7 @@ public class UpdateEventService {
             throw new ForbiddenException("Sem permissão!");
         }
 
-        event.setType(data.getType() != null ? data.getType() : null);
+        event.setCategory(data.getCategory() != null ? data.getCategory() : null);
         event.setIsPublic(data.getIsPublic() != null ? data.getIsPublic() : null);
         event.setTitle(data.getTitle() != null ? data.getTitle() : null);
         event.setDateStart(data.getDateStart() != null ? data.getDateStart() : null);

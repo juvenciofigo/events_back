@@ -35,14 +35,14 @@ public class AddPictureService {
                 .orElseThrow(() -> new BusinessException("Organizador não encontrado!", HttpStatus.NOT_FOUND));
 
         if (!organizer.getUser().getId().equals(userId)) {
-            throw new BusinessException("Não autoridado!", HttpStatus.FORBIDDEN);
+            throw new BusinessException("Não autorizado!", HttpStatus.FORBIDDEN);
         }
 
         String oldProfilePictureUrl = organizer.getProfilePicture();
         if (oldProfilePictureUrl != null && !oldProfilePictureUrl.isBlank()) {
             try {
                 uploadService.deleteFileByUrl(oldProfilePictureUrl);
-                
+
             } catch (Exception e) {
                 System.err.println("Erro ao deletar arquivo antigo do Firebase: " + e.getMessage());
             }

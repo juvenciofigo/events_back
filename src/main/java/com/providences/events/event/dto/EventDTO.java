@@ -22,21 +22,19 @@ public class EventDTO {
     @AllArgsConstructor
     public static class Create {
 
-        @NotBlank(message = "Informe o tipo de evento")
-        private String type;
-
-        private Boolean isPublic = false;
-
         private String title;
 
+        @NotBlank(message = "Informe o tipo de evento")
+        private String category;
+
+        private Boolean isPublic;
+
         @NotNull(message = "Informe a data de início do evento")
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // ✅ permite usar espaço em vez de "T"
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         private LocalDateTime dateStart;
 
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         private LocalDateTime dateEnd;
-
-        private String coverImage;
 
         private String description;
 
@@ -55,11 +53,9 @@ public class EventDTO {
     @AllArgsConstructor
     public static class Update {
 
-        private String type;
-
-        private Boolean isPublic;
-
         private String title;
+        private String category;
+        private Boolean isPublic;
 
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime dateStart;
@@ -68,7 +64,6 @@ public class EventDTO {
         private LocalDateTime dateEnd;
 
         private String coverImage;
-
         private String description;
 
         @PositiveOrZero(message = "O numero de convidados deve ser zero ou mais")
@@ -86,9 +81,9 @@ public class EventDTO {
     @AllArgsConstructor
     public static class Response {
         private String id;
+        private String title;
         private String type;
         private Boolean isPublic;
-        private String title;
         private LocalDateTime dateStart;
         private LocalDateTime dateEnd;
         private String coverImage;
@@ -100,9 +95,9 @@ public class EventDTO {
         public static Response response(EventEntity event) {
             return new Response(
                     event.getId(),
-                    event.getType(),
-                    event.getIsPublic(),
                     event.getTitle(),
+                    event.getCategory(),
+                    event.getIsPublic(),
                     event.getDateStart(),
                     event.getDateEnd(),
                     event.getCoverImage(),

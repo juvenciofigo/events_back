@@ -8,6 +8,8 @@ import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.services.FetchEventsService;
 import com.providences.events.event.services.GetUpcomingEventsService;
 
+import jakarta.websocket.server.PathParam;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -31,7 +33,11 @@ public class FetchEventsController {
     public ResponseEntity<?> getEventsByOrganizer(
             @PathVariable(required = true) String organizerId,
             @RequestParam(required = false, defaultValue = "false") boolean upcoming,
+            @RequestParam(required = false, defaultValue = "10") int limit,
+            @RequestParam(required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(required = false, defaultValue = "createdAt,desc") String sort,
             Authentication authentication) {
+        // limit: number = 10, pageNumber: number = 1, sort: string = "createdAt,desc"
 
         JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         String userId = userData.getUserId();
@@ -39,7 +45,7 @@ public class FetchEventsController {
         if (upcoming) {
             return ResponseEntity
                     .ok()
-                    .body(getUpcomingEventsService.execute(organizerId, userId));
+                    .body(getUpcomingEventsService.execute(organizerId, userId, limit, pageNumber, sort));
         }
         return ResponseEntity
                 .ok()

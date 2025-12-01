@@ -40,8 +40,11 @@ public class EventEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(nullable = false, length = 150)
+    private String title;
+
     @Column(nullable = false, length = 50)
-    private String type;
+    private String category;
 
     // relacionamento com o organizador/criador do evento
     @ManyToOne(fetch = FetchType.LAZY)
@@ -54,9 +57,6 @@ public class EventEntity {
 
     @Column(name = "is_public", nullable = false)
     private Boolean isPublic = false;
-
-    @Column(nullable = false, length = 150)
-    private String title;
 
     private String description;
 
@@ -134,7 +134,7 @@ public class EventEntity {
 
     @Override
     public String toString() {
-        return "EventEntity [id=" + id + ", type=" + type + ", isPublic=" + isPublic + ", title=" + title
+        return "EventEntity [id=" + id + ", category=" + category + ", isPublic=" + isPublic + ", title=" + title
                 + ", description=" + description + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd
                 + ", eventStatus=" + eventStatus + ", coverImage=" + coverImage + ", estimatedGuest=" + estimatedGuest
                 + ", budgetEstimated=" + budgetEstimated + ", budgetSpent=" + budgetSpent + ", createdAt=" + createdAt

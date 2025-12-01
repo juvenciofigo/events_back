@@ -21,7 +21,8 @@ public class GetUpcomingEventsService {
         this.fetchEventsService = fetchEventsService;
     }
 
-    public List<DashboardOrganizerDTO.upcomingEvent> execute(String organizerId, String userId) {
+    public List<DashboardOrganizerDTO.upcomingEvent> execute(String organizerId, String userId, int limit, int pageNumber,
+            String sort) {
         Set<EventDTO.Response> events = fetchEventsService.execute(organizerId, userId);
 
         return events.stream()
