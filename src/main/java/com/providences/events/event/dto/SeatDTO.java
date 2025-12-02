@@ -2,6 +2,7 @@ package com.providences.events.event.dto;
 
 import java.math.BigDecimal;
 
+import java.time.LocalDateTime;
 import com.providences.events.event.entities.SeatEntity;
 
 import jakarta.validation.constraints.NotBlank;
@@ -74,6 +75,10 @@ public class SeatDTO {
 
         private Double layoutPositionY;
 
+        private LocalDateTime createdAt;
+
+        private LocalDateTime updatedAt;
+
         public static SeatDTO.Response response(SeatEntity seat) {
             return new SeatDTO.Response(
                     seat.getId(),
@@ -82,7 +87,9 @@ public class SeatDTO {
                     seat.getTotalSeats(),
                     seat.getAvailableSeats(),
                     seat.getLayoutPositionX(),
-                    seat.getLayoutPositionY());
+                    seat.getLayoutPositionY(),
+                    seat.getCreatedAt(),
+                    seat.getUpdatedAt());
         }
     }
 }

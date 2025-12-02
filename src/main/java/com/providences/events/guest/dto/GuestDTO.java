@@ -1,5 +1,7 @@
 package com.providences.events.guest.dto;
 
+import java.time.LocalDateTime;
+
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.ticket.dto.TicketDTO;
 
@@ -100,6 +102,8 @@ public class GuestDTO {
         private String name;
         private String email;
         private String phone;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
         private TicketDTO.Response ticket;
 
         public static Response response(GuestEntity guest) {
@@ -108,6 +112,8 @@ public class GuestDTO {
                     guest.getName(),
                     guest.getEmail(),
                     guest.getPhone(),
+                    guest.getCreatedAt(),
+                    guest.getUpdatedAt(),
                     TicketDTO.Response.response(guest.getTicket()));
         }
     }

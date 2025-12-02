@@ -28,6 +28,8 @@ public class TicketDTO {
         private TicketEntity.TicketStatus ticketStatus;
         private LocalDateTime sentAt;
         private LocalDateTime respondedAt;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
         private SeatDTO.Response seat;
 
         public static Response response(TicketEntity ticket) {
@@ -39,6 +41,8 @@ public class TicketDTO {
                     ticket.getTicketStatus(),
                     ticket.getSentAt(),
                     ticket.getRespondedAt(),
+                    ticket.getCreatedAt(),
+                    ticket.getUpdatedAt(),
                     SeatDTO.Response.response(ticket.getSeat()));
         }
     }
