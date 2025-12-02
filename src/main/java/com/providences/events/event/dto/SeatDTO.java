@@ -23,7 +23,7 @@ public class SeatDTO {
 
         private String description;
 
-        @NotNull(message = "Infome o número de lugares dispoíveis")
+        @NotNull(message = "Informe o número de lugares disponíveis")
         private Integer totalSeats;
 
         @NotNull(message = "Informe se o assento é pago")
@@ -45,7 +45,7 @@ public class SeatDTO {
 
         private String description;
 
-        @NotNull(message = "Infome o número de lugares dispoíveis")
+        @NotNull(message = "Informe o número de lugares disponíveis")
         private Integer totalSeats;
 
         @NotNull(message = "Informe se o assento é pago")
@@ -62,21 +62,13 @@ public class SeatDTO {
     public static class Response {
 
         private String id;
-
         private String name;
-
         private String description;
-
         private Integer totalSeats;
-
         private Integer availableSeats;
-
         private Double layoutPositionX;
-
         private Double layoutPositionY;
-
         private LocalDateTime createdAt;
-
         private LocalDateTime updatedAt;
 
         public static SeatDTO.Response response(SeatEntity seat) {
