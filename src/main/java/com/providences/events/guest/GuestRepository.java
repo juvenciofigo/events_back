@@ -3,6 +3,8 @@ package com.providences.events.guest;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,11 +14,21 @@ public interface GuestRepository extends JpaRepository<GuestEntity, String> {
     @Query("""
                 Select g
                 FROM  GuestEntity g
-                LEFT JOIN FETCH g.ticket tic
-                WHERE tic.event.id = :eventId
+                LEFT JOIN FETCH g.ticket t
+                WHERE t.event.id = :eventId
             """)
 
     Set<GuestEntity> findGuestEvent(@Param("eventId") String eventId);
+
+    @Query("""
+                Select g
+                FROM  GuestEntity g
+                LEFT JOIN FETCH g.ticket t
+                LEFT JOIN FETCH t.seat s
+                WHERE t.event.id = :eventId
+            """)
+
+    Page<GuestEntity> fetchByEventId(@Param("eventId") String eventId, Pageable pageable);
 
     @Query("""
                 Select g

@@ -1,8 +1,6 @@
 package com.providences.events.event.services;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,8 +14,8 @@ import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.repositories.EventRepository;
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.organizer.OrganizerRepository;
-import com.providences.events.organizer.dto.DashboardOrganizerDTO;
-import com.providences.events.organizer.dto.DashboardOrganizerDTO.ItemWithPage;
+import com.providences.events.shared.dto.SystemDTO;
+import com.providences.events.shared.dto.SystemDTO.ItemWithPage;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 
 @Service
@@ -54,7 +52,7 @@ public class FetchEventsService {
                 .map(e -> EventDTO.Response.response(e))
                 .toList();
 
-        return new DashboardOrganizerDTO.ItemWithPage<>(
+        return new SystemDTO.ItemWithPage<>(
                 list,
                 events.getNumber() + 1,
                 events.getTotalPages(),

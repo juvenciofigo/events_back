@@ -2,19 +2,11 @@ package com.providences.events.organizer.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class DashboardOrganizerDTO {
 
         public DashboardOrganizerDTO() {
 
-        }
-
-        public static record ItemWithPage<T>(
-                        List<T> items,
-                        int page,
-                        int totalPages,
-                        long totalItems) {
         }
 
         public static record stats(

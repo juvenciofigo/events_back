@@ -10,6 +10,7 @@ import com.providences.events.event.dto.SeatDTO;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.event.repositories.SeatRepository;
+import com.providences.events.shared.dto.SystemDTO;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
 import com.providences.events.ticket.entities.TicketEntity;
@@ -32,7 +33,7 @@ public class DeleteSeatService {
     @PersistenceContext
     private EntityManager em;
 
-    public Set<SeatDTO.Response> execute(String seatId, String userId) {
+    public SystemDTO.ItemWithPage<SeatDTO.Response> execute(String seatId, String userId) {
 
         SeatEntity seat = seatRepository.getSeat(seatId)
                 .orElseThrow(() -> new BusinessException("Assento não encontrado!", HttpStatus.BAD_REQUEST));
@@ -56,7 +57,11 @@ public class DeleteSeatService {
         em.flush();
         em.clear();
 
-        Set<SeatDTO.Response> seats = fetchSeatsService.execute(event.getId(), userId);
+        int pageNumber = 1;
+        int limit = 10;
+        String sort = "createdAt";
+
+        SystemDTO.ItemWithPage<SeatDTO.Response>  seats = fetchSeatsService.execute(event.getId(), userId, pageNumber, limit, sort);
 
         return seats;
 

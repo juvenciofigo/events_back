@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.organizer.dto.DashboardOrganizerDTO;
-import com.providences.events.organizer.dto.DashboardOrganizerDTO.ItemWithPage;
 import com.providences.events.reviews.services.FetchReviewsService;
+import com.providences.events.shared.dto.SystemDTO.ItemWithPage;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController

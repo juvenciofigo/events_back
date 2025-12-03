@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.providences.events.event.entities.EventEntity;
-import com.providences.events.organizer.OrganizerEntity;
 
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, String> {

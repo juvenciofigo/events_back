@@ -65,6 +65,8 @@ public class SeatDTO {
         private String name;
         private String description;
         private Integer totalSeats;
+        private Boolean isPaid;
+        private BigDecimal price;
         private Integer availableSeats;
         private Double layoutPositionX;
         private Double layoutPositionY;
@@ -77,6 +79,8 @@ public class SeatDTO {
                     seat.getName(),
                     seat.getDescription(),
                     seat.getTotalSeats(),
+                    seat.getIsPaid(),
+                    seat.getPrice() != null ? seat.getPrice() : null,
                     seat.getAvailableSeats(),
                     seat.getLayoutPositionX(),
                     seat.getLayoutPositionY(),

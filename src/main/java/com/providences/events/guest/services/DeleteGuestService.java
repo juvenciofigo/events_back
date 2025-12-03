@@ -1,7 +1,5 @@
 package com.providences.events.guest.services;
 
-import java.util.Set;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +9,7 @@ import com.providences.events.event.entities.SeatEntity;
 import com.providences.events.guest.GuestEntity;
 import com.providences.events.guest.GuestRepository;
 import com.providences.events.guest.dto.GuestDTO;
+import com.providences.events.shared.dto.SystemDTO;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 import com.providences.events.shared.exception.exceptions.ForbiddenException;
 
@@ -30,7 +29,7 @@ public class DeleteGuestService {
         this.fetchGuestsService = fetchGuestsService;
     }
 
-    public Set<GuestDTO.Response> execute(String guestId, String userId) {
+    public SystemDTO.ItemWithPage<GuestDTO.Response> execute(String guestId, String userId) {
 
         GuestEntity guest = guestRepository.guestById(guestId)
                 .orElseThrow(() -> new BusinessException("Guest não encontrado", HttpStatus.NOT_FOUND));
@@ -49,7 +48,10 @@ public class DeleteGuestService {
         em.flush();
         em.clear();
 
-        return fetchGuestsService.execute(event.getId(), userId);
+        int pageNumber = 1;
+        int limit = 10;
+        String sort = "createdAt";
+        return fetchGuestsService.execute(event.getId(), userId, pageNumber, limit, sort);
     }
 
 }

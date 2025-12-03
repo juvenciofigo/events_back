@@ -1,7 +1,5 @@
 package com.providences.events.guest.controllers;
 
-import java.util.Set;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.guest.dto.GuestDTO;
 import com.providences.events.guest.services.DeleteGuestService;
+import com.providences.events.shared.dto.SystemDTO;
 
 @RestController
 @RequestMapping("/guests")
@@ -25,7 +24,7 @@ public class DeleteGuestController {
 
     @DeleteMapping("/{guestId}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<Set<GuestDTO.Response>> delete(
+    public ResponseEntity<SystemDTO.ItemWithPage<GuestDTO.Response>> delete(
             @PathVariable String guestId,
             Authentication authentication) {
 

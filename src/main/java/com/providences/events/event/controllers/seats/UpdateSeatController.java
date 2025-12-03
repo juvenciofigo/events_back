@@ -1,4 +1,4 @@
-package com.providences.events.event.controllers.tasks;
+package com.providences.events.event.controllers.seats;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -6,32 +6,35 @@ import org.springframework.security.core.Authentication;
 
 import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.dto.SeatDTO;
-import com.providences.events.event.services.seats.GetSeatService;
+import com.providences.events.event.services.seats.UpdateSeatService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/seats")
-public class GetSeatController {
-    private final GetSeatService getSeatService;
+public class UpdateSeatController {
+    private final UpdateSeatService updateSeatService;
 
-    public GetSeatController(GetSeatService getSeatService) {
-        this.getSeatService = getSeatService;
+    public UpdateSeatController(UpdateSeatService updateSeatService) {
+        this.updateSeatService = updateSeatService;
     }
 
-    @GetMapping("/{seatId}")
+    @PutMapping("/{seatId}")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<SeatDTO.Response> postMethodName(
+    public ResponseEntity<SeatDTO.Response> updateSeat(
+            @Validated @RequestBody SeatDTO.Create data,
             @PathVariable("seatId") String seatId,
             Authentication authentication) {
         JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
 
         return ResponseEntity
                 .ok()
-                .body(getSeatService.execute(seatId, userData.getUserId()));
+                .body(updateSeatService.execute(seatId, data, userData.getUserId()));
     }
 
 }

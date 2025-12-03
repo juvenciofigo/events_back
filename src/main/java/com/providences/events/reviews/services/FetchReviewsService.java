@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.providences.events.organizer.dto.DashboardOrganizerDTO;
-import com.providences.events.organizer.dto.DashboardOrganizerDTO.ItemWithPage;
 import com.providences.events.reviews.ReviewEntity;
 import com.providences.events.reviews.ReviewsRepository;
 import com.providences.events.reviews.ReviewEntity.ReviewTarget;
+import com.providences.events.shared.dto.SystemDTO;
+import com.providences.events.shared.dto.SystemDTO.ItemWithPage;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 
 @Service
@@ -61,7 +62,7 @@ public class FetchReviewsService {
                         r.getCreatedAt()))
                 .toList();
 
-        return new DashboardOrganizerDTO.ItemWithPage<>(
+        return new SystemDTO.ItemWithPage<>(
                 list,
                 reviews.getNumber() + 1,
                 reviews.getTotalPages(),

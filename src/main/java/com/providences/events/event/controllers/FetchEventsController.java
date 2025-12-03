@@ -8,8 +8,6 @@ import com.providences.events.config.token.JWTUserDTO;
 import com.providences.events.event.services.FetchEventsService;
 import com.providences.events.event.services.GetUpcomingEventsService;
 
-import jakarta.websocket.server.PathParam;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
