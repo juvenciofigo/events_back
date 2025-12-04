@@ -33,6 +33,7 @@ public interface EventRepository extends JpaRepository<EventEntity, String> {
                 LEFT JOIN FETCH e.tickets t
                 LEFT JOIN FETCH t.guest g
                 LEFT JOIN FETCH c.participants
+                LEFT JOIN FETCH e.seats se
                 LEFT JOIN FETCH  u.supplier s
                 WHERE e.id = :eventId
             """)

@@ -25,7 +25,7 @@ public class CreateSeatController {
         this.createSeatService = createSeatService;
     }
 
-    @PostMapping()
+    @PostMapping("/event/{eventId}")
     @PreAuthorize("hasAuthority('CLIENT')")
     public ResponseEntity<SeatDTO.Response> postMethodName(
             @Validated @RequestBody SeatDTO.Create data,

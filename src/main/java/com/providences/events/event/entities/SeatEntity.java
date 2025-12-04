@@ -50,7 +50,7 @@ public class SeatEntity {
 
     @PositiveOrZero
     @Column(precision = 10, scale = 2, name = "price")
-    private BigDecimal price = BigDecimal.ZERO;
+    private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)

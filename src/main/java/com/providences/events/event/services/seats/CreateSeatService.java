@@ -36,26 +36,21 @@ public class CreateSeatService {
         EventEntity event = eventRepository.findId(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
 
-
         if (!event.getOrganizer().getUser().getId().equals(userId)) {
             throw new ForbiddenException("Sem permissão!");
         }
 
-        for (SeatEntity seat : event.getSeats()) {
-            if (seat.getName().equals(data.getName())) {
-
-                throw new BusinessException(
-                        "Nome de assento existente! Crie com um nome diferente de " + data.getName(),
-                        HttpStatus.CONFLICT);
+        if (event.getSeats() != null) {
+            for (SeatEntity seat : event.getSeats()) {
+                if (seat.getName().trim().equalsIgnoreCase(data.getName().trim())) {
+                    throw new BusinessException(
+                            "Nome de assento existente! Crie com um nome diferente de " + data.getName(),
+                            HttpStatus.CONFLICT);
+                }
             }
         }
 
         SeatEntity seat = new SeatEntity();
-
-        if (Boolean.TRUE.equals(data.getIsPaid())
-                && (data.getPrice() == null || data.getPrice().compareTo(BigDecimal.ZERO) <= 0)) {
-            throw new BusinessException("O preço deve ser maior que zero para assentos pagos.", HttpStatus.BAD_REQUEST);
-        }
 
         if (data.getTotalSeats() != null) {
             seat.setTotalSeats(data.getTotalSeats());
@@ -63,7 +58,7 @@ public class CreateSeatService {
         }
 
         seat.setName(data.getName());
-        seat.setDescription(data.getDescription());
+        seat.setDescription(data.getDescription() != null ? data.getDescription() : "");
         seat.setIsPaid(data.getIsPaid());
         seat.setPrice(data.getPrice() != null ? data.getPrice() : BigDecimal.ZERO);
         seat.setEvent(event);

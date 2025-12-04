@@ -33,9 +33,9 @@ public class UpdateSeatService {
         throw new ForbiddenException("Sem permissão!");
         }
 
-        if (!seat.getName().equals(data.getName())) {
+        if (!seat.getName().trim().equalsIgnoreCase(data.getName().trim())) {
             boolean nameExists = event.getSeats().stream()
-                    .anyMatch(s -> s.getName().equals(data.getName()));
+                    .anyMatch(s -> s.getName().trim().equalsIgnoreCase(data.getName().trim()));
 
             if (nameExists) {
                 throw new BusinessException(

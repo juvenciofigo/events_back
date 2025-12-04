@@ -49,4 +49,6 @@ public interface SeatRepository extends JpaRepository<SeatEntity, String> {
                         WHERE s.event.id = :eventId
                         """)
         List<SeatEntity> fetchByEvent(@Param("eventId") String eventId);
+
+        boolean existsByEventIdAndNameIgnoreCase(String eventId, String name);
 }
