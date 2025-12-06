@@ -12,6 +12,7 @@ import com.providences.events.payment.dto.PaymentDTO;
 import com.providences.events.payment.entities.PaymentEntity;
 import com.providences.events.payment.entities.PaymentReferenceEntity;
 import com.providences.events.payment.entities.PaymentEntity.PaymentMethod;
+import com.providences.events.payment.entities.PaymentEntity.Status;
 import com.providences.events.payment.repository.PaymentReferenceRepository;
 import com.providences.events.payment.repository.PaymentRepository;
 import com.providences.events.shared.exception.exceptions.MpesaPaymentException;
@@ -88,6 +89,7 @@ public class CreatePaymentService {
 
         }
 
+        payment.setStatus(Status.COMPLETED);
         PaymentEntity createdPayment = paymentRepository.save(payment);
 
         // Armazenar referencia do pagamento

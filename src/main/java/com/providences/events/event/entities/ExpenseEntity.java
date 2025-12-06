@@ -81,7 +81,7 @@ public class ExpenseEntity {
         DONE
     }
 
-    enum ExpensePaymentStatus {
+    public enum ExpensePaymentStatus {
         PAID,
         PENDING
     }
@@ -92,7 +92,5 @@ public class ExpenseEntity {
                 + description + ", amount=" + amount + ", paymentStatus=" + paymentStatus + ", dueDate=" + dueDate
                 + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
-
-  
 
 }
