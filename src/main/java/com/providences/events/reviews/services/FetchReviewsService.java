@@ -49,8 +49,6 @@ public class FetchReviewsService {
             case ORGANIZER -> reviewsRepository.findByOrganizer(targetId, pageRequest);
         };
 
-        System.out.println(reviews);
-
         List<DashboardOrganizerDTO.reviews> list = reviews.stream()
                 .map(r -> new DashboardOrganizerDTO.reviews(
                         r.getId(),

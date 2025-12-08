@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.entities.ExpenseEntity;
@@ -18,7 +19,7 @@ import com.providences.events.payment.repository.PaymentRepository;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 
 @Service
-
+@Transactional(readOnly = true)
 public class GetEventFinancialStatsServices {
         private EventRepository eventRepository;
         private PaymentRepository paymentRepository;

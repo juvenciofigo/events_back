@@ -57,10 +57,10 @@ public class EventDTO {
         private String category;
         private Boolean isPublic;
 
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         private LocalDateTime dateStart;
 
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         private LocalDateTime dateEnd;
 
         private String coverImage;

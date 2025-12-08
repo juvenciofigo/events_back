@@ -41,6 +41,12 @@ public class ExpenseEntity {
     private String category;
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
+
+    @Enumerated(EnumType.STRING)
+    private ExpenseStatus status;
+
     @Column(precision = 10, scale = 2)
     private BigDecimal amount;
 
@@ -69,13 +75,13 @@ public class ExpenseEntity {
         updatedAt = LocalDateTime.now();
     }
 
-    enum ExpensePriority {
+    public enum Priority {
         LOW,
         MEDIUM,
         HIGH
     }
 
-    enum ExpenseStatus {
+    public enum ExpenseStatus {
         PENDING,
         IN_PROGRESS,
         DONE
