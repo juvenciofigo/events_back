@@ -66,4 +66,7 @@ public class ExpenseDTO {
                     expense.getUpdatedAt());
         }
     }
+
+    public static record Summary(int totalExpenses, int pendingExpenses, BigDecimal totalAmount) {
+    }
 }

@@ -28,8 +28,12 @@ public class FetchExpensesService {
         this.eventRepository = eventRepository;
     }
 
-    public SystemDTO.ItemWithPage<ExpenseDTO.Response> fetchExpenses(String eventId, String userId, int pageNumber,
-            int limit, String sort) {
+    public SystemDTO.ItemWithPage<ExpenseDTO.Response> fetchExpenses(
+            String eventId, 
+            String userId, 
+            int pageNumber,
+            int limit, 
+            String sort) {
 
         EventEntity event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new BusinessException("Event not found", HttpStatus.NOT_FOUND));

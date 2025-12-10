@@ -1,8 +1,10 @@
 package com.providences.events.event.services.tasks;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,28 +12,47 @@ import com.providences.events.event.dto.TaskDTO;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.event.entities.TaskEntity;
 import com.providences.events.event.repositories.EventRepository;
-import com.providences.events.shared.exception.exceptions.ForbiddenException;
-import com.providences.events.shared.exception.exceptions.ResourceNotFoundException;
+import com.providences.events.event.repositories.TaskRepository;
+import com.providences.events.shared.dto.SystemDTO;
+import com.providences.events.shared.exception.exceptions.BusinessException;
 
 @Service
 @Transactional
 public class FetchTasksService {
-    public final EventRepository eventRepository;
+    public EventRepository eventRepository;
+    public TaskRepository taskRepository;
 
-    public FetchTasksService(EventRepository eventRepository) {
+    public FetchTasksService(
+            EventRepository eventRepository,
+            TaskRepository taskRepository) {
         this.eventRepository = eventRepository;
+        this.taskRepository = taskRepository;
     }
 
-    public Set<TaskDTO.Response> execute(String eventId, String userId) {
-        EventEntity event = eventRepository.findId(eventId)
-                .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
+    public SystemDTO.ItemWithPage<TaskDTO.Response> execute(String eventId,
+            String userId,
+            int pageNumber,
+            int limit,
+            String sort) {
+
+        EventEntity event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new BusinessException("Event not found", HttpStatus.NOT_FOUND));
 
         if (!event.getOrganizer().getUser().getId().equals(userId)) {
-            throw new ForbiddenException("Sem permissão!");
+            throw new BusinessException("User is not authorized to access this event", HttpStatus.FORBIDDEN);
         }
 
-        Set<TaskEntity> tasks = event.getTasks();
+        int validPage = Math.max(pageNumber - 1, 0);
+        PageRequest pageRequest = PageRequest.of(validPage, limit, Sort.by(sort).descending());
 
-        return tasks.stream().map(TaskDTO.Response::response).collect(Collectors.toSet());
+        Page<TaskEntity> tasks = taskRepository.findByEventIdPageable(eventId, pageRequest);
+
+        List<TaskDTO.Response> list = tasks.stream().map(TaskDTO.Response::response).toList();
+
+        return new SystemDTO.ItemWithPage<>(
+                list,
+                tasks.getNumber(),
+                tasks.getTotalPages(),
+                tasks.getTotalElements());
     }
 }

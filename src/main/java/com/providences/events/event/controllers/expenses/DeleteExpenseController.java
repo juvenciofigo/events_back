@@ -23,6 +23,6 @@ public class DeleteExpenseController {
     public ResponseEntity<?> delete(@PathVariable String expenseId, Authentication authentication) {
         JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
         deleteExpenseService.delete(expenseId, userData.getUserId());
-        return ResponseEntity.ofNullable(null);
+        return ResponseEntity.ok().build();
     }
 }

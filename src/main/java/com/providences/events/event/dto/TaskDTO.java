@@ -29,7 +29,7 @@ public class TaskDTO {
         @NotBlank(message = "Informa a descricao da tarefa")
         private String description;
 
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         private LocalDateTime dueDate;
 
         @JsonProperty(defaultValue = "MEDIUM")
@@ -59,7 +59,7 @@ public class TaskDTO {
         @NotBlank(message = "Informa a descricao da tarefa")
         private String description;
 
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         private LocalDateTime dueDate;
 
     }

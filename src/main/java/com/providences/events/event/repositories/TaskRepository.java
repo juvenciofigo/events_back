@@ -2,6 +2,8 @@ package com.providences.events.event.repositories;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +24,11 @@ public interface TaskRepository extends JpaRepository<TaskEntity, String> {
             WHERE t.id = :taskId
             """)
     Optional<TaskEntity> getTask(@Param("taskId") String taskId);
+
+    @Query("""
+            SELECT t
+            FROM TaskEntity t
+            WHERE t.event.id = :eventId
+            """)
+    Page<TaskEntity> findByEventIdPageable(@Param("eventId") String eventId, Pageable pageable);
 }
