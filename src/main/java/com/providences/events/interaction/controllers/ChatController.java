@@ -18,7 +18,7 @@ public class ChatController {
     }
 
     @MessageMapping("/new-message")
-    @SendTo("/topics/livechat")
+    @SendTo("/topic/livechat")
     public List<MessageDTO.Response> sendMessage(MessageDTO.Request message) {
 
         return createMessageService.execute(message);

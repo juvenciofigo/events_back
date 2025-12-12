@@ -82,7 +82,7 @@ public class EventDTO {
     public static class Response {
         private String id;
         private String title;
-        private String type;
+        private String category;
         private Boolean isPublic;
         private LocalDateTime dateStart;
         private LocalDateTime dateEnd;

@@ -72,6 +72,7 @@ public class TaskDTO {
         private String responsibleName;
         private String responsiblePhone;
         private String title;
+        private String eventTitle;
         private String description;
         private String priority;
         private String taskStatus;
@@ -85,6 +86,7 @@ public class TaskDTO {
                     task.getResponsibleName(),
                     task.getResponsiblePhone(),
                     task.getTitle(),
+                    task.getEvent().getTitle(),
                     task.getDescription(),
                     task.getPriority().name(),
                     task.getTaskStatus().name(),

@@ -13,7 +13,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // Endpoint WebSocket (onde o frontend se conecta)
-        registry.addEndpoint("/events-livechat").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/events-livechat")
+                .setAllowedOriginPatterns("*")
+                .withSockJS(); // fallback
     }
 
     // @Override
@@ -23,9 +25,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        // "/app" = destino para mensagens enviadas
-        // "/topic" = destino para mensagens recebidas (broadcast)
-        registry.setApplicationDestinationPrefixes("/app");
-        registry.enableSimpleBroker("/topic");
+        registry.setApplicationDestinationPrefixes("/app"); // onde o cliente ENVIA mensagens
+        registry.enableSimpleBroker("/topic"); // onde o cliente OUVIRÁ mensagens
     }
 }

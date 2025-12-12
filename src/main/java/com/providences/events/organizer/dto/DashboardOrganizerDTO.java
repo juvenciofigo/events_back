@@ -21,14 +21,14 @@ public class DashboardOrganizerDTO {
         public static record sales(String day, BigDecimal sales) {
         }
 
-        public static record tasks(
-                        String id,
-                        String title,
-                        String event,
-                        String description,
-                        String priority,
-                        String taskStatus) {
-        }
+        // public static record tasks(
+        //                 String id,
+        //                 String title,
+        //                 String event,
+        //                 String description,
+        //                 String priority,
+        //                 String taskStatus) {
+        // }
 
         public static record upcomingEvent(
                         String id,

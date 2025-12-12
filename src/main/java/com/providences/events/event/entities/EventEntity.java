@@ -43,7 +43,7 @@ public class EventEntity {
     @Column(nullable = false, length = 150)
     private String title;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 20)
     private String category;
 
     // relacionamento com o organizador/criador do evento

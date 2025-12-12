@@ -28,9 +28,8 @@ public class GetChatsController {
     // @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<GetChatDTO.Response>> getChats(
             @PathVariable String type,
-            @RequestParam(required = false) String eventId,
-            @RequestParam(required = false) String supplierId,
-            @RequestParam(required = false) String guestId,
+            @RequestParam(required = false, value = "eventId") String eventId,
+            @RequestParam(required = true, value = "profileId") String profileId,
             Authentication authentication) {
 
         JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
@@ -41,8 +40,7 @@ public class GetChatsController {
                         userData.getUserId(),
                         type,
                         eventId,
-                        supplierId,
-                        guestId));
+                        profileId));
 
     }
 

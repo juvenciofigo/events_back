@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.providences.events.config.token.JWTUserDTO;
+import com.providences.events.event.dto.TaskDTO;
 import com.providences.events.organizer.dto.DashboardOrganizerDTO;
 import com.providences.events.organizer.services.dasboard.GetOrganizerStatsService;
 import com.providences.events.organizer.services.dasboard.GetSalesOrganizerService;
@@ -58,7 +59,7 @@ public class DashboardOrganizerController {
 
     @GetMapping("/tasks")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<List<DashboardOrganizerDTO.tasks>> getTasks(
+    public ResponseEntity<List<TaskDTO.Response>> getTasks(
             @PathVariable("organizerId") String organizerId,
             Authentication authentication) {
 

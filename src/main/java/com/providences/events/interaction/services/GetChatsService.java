@@ -41,19 +41,18 @@ public class GetChatsService {
             String userId,
             String type,
             String eventId,
-            String supplierId,
-            String guestId) {
+            String profileId) {
 
         ChatType chatType = ChatValidations.parseChatType(type);
 
         List<ChatEntity> chats = switch (chatType) {
-            case SUPPLIER -> getSupplierChats(userId, supplierId);
-            case ORGANIZER -> getOrganizerChats(eventId);
-            case GUESTS -> getGuestChats(eventId, guestId);
+            case SUPPLIER -> getSupplierChats(userId, profileId);
+            case ORGANIZER -> getOrganizerChats(eventId, profileId);
+            case GUESTS -> getGuestChats(eventId, profileId);
             default -> throw new BusinessException("Tipo inválido: " + type, HttpStatus.BAD_REQUEST);
         };
 
-        return toSortedDtoList(chats);
+        return toSortedDtoList(chats, profileId);
     }
 
     // VALIDATIONS
@@ -67,12 +66,12 @@ public class GetChatsService {
                 .orElseThrow(() -> new ResourceNotFoundException("Evento não encontrado!"));
     }
 
-    private SupplierEntity findAndValidateSupplier(String supplierId, String userId) {
-        if (supplierId == null || supplierId.isBlank()) {
+    private SupplierEntity findAndValidateSupplier(String profileId, String userId) {
+        if (profileId == null || profileId.isBlank()) {
             throw new BusinessException("SupplierId é obrigatório", HttpStatus.BAD_REQUEST);
         }
 
-        SupplierEntity supplier = supplierRepository.findById(supplierId)
+        SupplierEntity supplier = supplierRepository.findById(profileId)
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
 
         if (!supplier.getId().equals(userId)) {
@@ -86,28 +85,27 @@ public class GetChatsService {
 
     // CHAT LOADERS
 
-    private List<ChatEntity> getSupplierChats(String userId, String supplierId) {
-        SupplierEntity supplier = findAndValidateSupplier(supplierId, userId);
+    private List<ChatEntity> getSupplierChats(String userId, String profileId) {
+        SupplierEntity supplier = findAndValidateSupplier(profileId, userId);
         return chatRepository.findSupplierChats(supplier.getId());
     }
 
-    private List<ChatEntity> getOrganizerChats(String eventId) {
+    private List<ChatEntity> getOrganizerChats(String eventId, String profileId) {
+        if (eventId == null || eventId.isBlank()) {
+            return chatRepository.findAllOrganizerChats(profileId);
+        }
         EventEntity event = findEvent(eventId);
         return event.getChats();
     }
 
-    private List<ChatEntity> getGuestChats(String eventId, String guestId) {
-        if (guestId == null || guestId.isBlank()) {
+    private List<ChatEntity> getGuestChats(String eventId, String profileId) {
+        if (profileId == null || profileId.isBlank()) {
             throw new BusinessException("GuestId é obrigatório", HttpStatus.BAD_REQUEST);
         }
 
-        EventEntity event = findEvent(eventId);
+        findEvent(eventId);
 
-        return event.getChats().stream()
-                .filter(chat -> chat.getType() == ChatType.GUESTS)
-                .filter(chat -> chat.getParticipants().stream()
-                        .anyMatch(p -> p.getId().equals(guestId)))
-                .collect(Collectors.toList());
+        return chatRepository.findGuestChats(eventId, profileId, ChatType.GUESTS);
     }
 
     /*
@@ -116,10 +114,10 @@ public class GetChatsService {
      * ---------------------------------------------------
      */
 
-    private List<GetChatDTO.Response> toSortedDtoList(List<ChatEntity> chats) {
+    private List<GetChatDTO.Response> toSortedDtoList(List<ChatEntity> chats, String viewerId) {
         return chats.stream()
                 .sorted(Comparator.comparing(ChatEntity::getUpdatedAt))
-                .map(GetChatDTO.Response::response)
+                .map(chat -> GetChatDTO.Response.response(chat, viewerId))
                 .collect(Collectors.toList());
     }
 }

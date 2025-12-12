@@ -12,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
-// @RestController
-// @RequestMapping("/chats")
 @Controller
 public class CreateChatController {
     private final CreateChatService createChatService;
@@ -22,10 +20,8 @@ public class CreateChatController {
         this.createChatService = createChatService;
     }
 
-    // @PostMapping()
-    // @PreAuthorize("isAuthenticated()")
     @MessageMapping("/new-chat")
-    @SendTo("/topics/livechat")
+    @SendTo("/topic/livechat")
     public List<MessageDTO.Response> postMethodName(@Validated @RequestBody CreateChatDTO.Request data) {
 
         return createChatService.execute(data);

@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.providences.events.event.dto.TaskDTO;
 import com.providences.events.event.entities.EventEntity;
 import com.providences.events.organizer.OrganizerEntity;
 import com.providences.events.organizer.OrganizerRepository;
-import com.providences.events.organizer.dto.DashboardOrganizerDTO;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 
 @Service
@@ -23,7 +23,7 @@ public class GetTasksOrganizerService {
         this.organizerRepository = organizerRepository;
     }
 
-    public List<DashboardOrganizerDTO.tasks> execute(String organizerId, String userId) {
+    public List<TaskDTO.Response> execute(String organizerId, String userId) {
         OrganizerEntity organizer = organizerRepository.statsOrganizer(organizerId)
                 .orElseThrow(() -> new BusinessException("Organizer not found", HttpStatus.NOT_FOUND));
 
@@ -33,15 +33,9 @@ public class GetTasksOrganizerService {
 
         Set<EventEntity> events = organizer.getEvents();
 
-        List<DashboardOrganizerDTO.tasks> tasks = events.stream()
+        List<TaskDTO.Response> tasks = events.stream()
                 .flatMap(e -> e.getTasks().stream())
-                .map(task -> new DashboardOrganizerDTO.tasks(
-                        task.getId(),
-                        task.getTitle(),
-                        task.getEvent().getTitle(),
-                        task.getDescription(),
-                        task.getPriority().name(),
-                        task.getTaskStatus().name()))
+                .map(task -> TaskDTO.Response.response(task))
                 .collect(Collectors.toList());
 
         return tasks;
