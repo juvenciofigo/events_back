@@ -33,7 +33,6 @@ public class UpdateExpenseService {
 
         ExpensePaymentStatus paymentStatus;
         try {
-            System.out.println(data.getPaymentStatus());
             paymentStatus = ExpensePaymentStatus.valueOf(data.getPaymentStatus().toUpperCase());
         } catch (Exception e) {
             throw new BusinessException("Tipo de status de pagamento invalido!", HttpStatus.BAD_REQUEST);
@@ -41,7 +40,6 @@ public class UpdateExpenseService {
 
         Priority priority;
         try {
-            System.out.println(data.getPriority());
             priority = Priority.valueOf(data.getPriority().toUpperCase());
         } catch (Exception e) {
             throw new BusinessException("Tipo de prioridade invalido!", HttpStatus.BAD_REQUEST);
@@ -49,7 +47,6 @@ public class UpdateExpenseService {
 
         ExpenseStatus status;
         try {
-            System.out.println(data.getStatus());
             status = ExpenseStatus.valueOf(data.getStatus().toUpperCase());
         } catch (Exception e) {
             throw new BusinessException("Tipo de status invalido!", HttpStatus.BAD_REQUEST);

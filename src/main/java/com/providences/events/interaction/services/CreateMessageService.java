@@ -1,10 +1,7 @@
 package com.providences.events.interaction.services;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -38,11 +35,16 @@ public class CreateMessageService {
 
         public List<MessageDTO.Response> execute(MessageDTO.Request data) {
 
-                SenderType senderType = Arrays.stream(SenderType.values())
-                                .filter(type -> type.name().equalsIgnoreCase(data.getSenderRole()))
-                                .findFirst()
-                                .orElseThrow(() -> new BusinessException("Tipo de remetente inválido",
-                                                HttpStatus.BAD_REQUEST));
+                if (data.getSenderRole() == null || data.getSenderRole().isBlank()) {
+                        throw new BusinessException("Sender Role é obrigatório", HttpStatus.BAD_REQUEST);
+                }
+
+                SenderType senderType;
+                try {
+                        senderType = SenderType.valueOf(data.getSenderRole().toUpperCase());
+                } catch (Exception e) {
+                        throw new BusinessException("Tipo de remetente inválido", HttpStatus.BAD_REQUEST);
+                }
 
                 ChatEntity chat = chatRepository.findByIdAndParticipants(data.getChatId())
                                 .orElseThrow(() -> new ResourceNotFoundException("Conversa não encontrada!"));
@@ -69,9 +71,10 @@ public class CreateMessageService {
                         }
 
                         case ORGANIZER -> {
-
                                 OrganizerEntity organizerExist = chat.getParticipants().stream()
-                                                .filter(participant -> participant.getId().equals(data.getSenderId()))
+                                                .filter(participant -> participant.getOrganizer() != null
+                                                                && participant.getOrganizer().getId()
+                                                                                .equals(data.getSenderId()))
                                                 .map(participant -> participant.getOrganizer())
                                                 .findFirst()
                                                 .orElseThrow(
@@ -85,7 +88,7 @@ public class CreateMessageService {
                         case SUPPLIER -> {
 
                                 SupplierEntity supplierExist = chat.getParticipants().stream()
-                                                .filter(participant -> participant.getId().equals(data.getSenderId()))
+                                                .filter(participant -> participant.getSupplier().getId().equals(data.getSenderId()))
                                                 .map(participant -> participant.getSupplier())
                                                 .findFirst()
                                                 .orElseThrow(
@@ -101,12 +104,6 @@ public class CreateMessageService {
                 chatRepository.save(chat);
                 messageRepository.save(message);
 
-                List<MessageDTO.Response> messages = messageRepository.findByChatId(data.getChatId())
-                                .stream()
-                                .sorted(Comparator.comparing(m -> m.getCreatedAt()))
-                                .map(MessageDTO.Response::response)
-                                .collect(Collectors.toList());
-
-                return messages;
+                return List.of(MessageDTO.Response.response(message));
         }
 }

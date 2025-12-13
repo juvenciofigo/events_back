@@ -24,13 +24,11 @@ public class GetSubscriptionService {
                 .orElseThrow(() -> new BusinessException("Subscrição não encontrada", HttpStatus.NOT_FOUND));
 
         if (subscription.getSupplier() != null) {
-            System.out.println("supplier" + subscription.getSupplier().getUser().getId());
             if (!subscription.getSupplier().getUser().getId().equals(userId)) {
                 throw new BusinessException("Sem autorização ", HttpStatus.UNAUTHORIZED);
             }
         }
         if (subscription.getOrganizer() != null) {
-            System.out.println("organizer" + subscription.getOrganizer().getUser().getId());
             if (!subscription.getOrganizer().getUser().getId().equals(userId)) {
                 throw new BusinessException("Sem autorização ", HttpStatus.UNAUTHORIZED);
             }

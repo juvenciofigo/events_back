@@ -34,7 +34,6 @@ public class CreateEventController {
             @RequestPart("data") String dataStr,
             @RequestPart(value = "file", required = false) MultipartFile file,
             Authentication authentication) throws JsonProcessingException {
-        System.out.println(file);
 
         ObjectMapper mapper = new ObjectMapper();
         // Register JavaTimeModule to handle LocalDateTime
@@ -42,7 +41,6 @@ public class CreateEventController {
         EventDTO.Create data = mapper.readValue(dataStr, EventDTO.Create.class);
 
         JWTUserDTO userData = (JWTUserDTO) authentication.getPrincipal();
-        System.out.println(false);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(createEventService.execute(data, file, userData.getUserId()));

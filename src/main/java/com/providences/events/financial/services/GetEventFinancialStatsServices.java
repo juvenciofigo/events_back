@@ -98,7 +98,6 @@ public class GetEventFinancialStatsServices {
                                         return new financial.RevenueBySeat(seatName, revenue, quantity);
                                 })
                                 .collect(Collectors.toList());
-                System.out.println(payments);
 
                 // Revenue by Payment Method
                 response.revenueByPaymentMethod = payments.stream()

@@ -48,29 +48,41 @@ public class MessageDTO {
 
         private String senderRole;
 
+        private Boolean isRead;
+
+        private LocalDateTime createdAt;
+
         public static Response response(MessageEntity message) {
             Response res = new Response();
             res.setId(message.getId());
-            res.setChatId(message.getId());
+            res.setChatId(message.getChat().getId());
             res.setContent(message.getContent());
+            res.setIsRead(message.getIsRead());
+            res.setCreatedAt(message.getCreatedAt());
 
             switch (message.getSender()) {
                 case SUPPLIER:
-                    res.setSenderId(message.getSenderSupplier().getId());
-                    res.setSenderName(message.getSenderSupplier().getCompanyName());
-                    res.setSenderRole("supplier");
+                    if (message.getSenderSupplier() != null) {
+                        res.setSenderId(message.getSenderSupplier().getId());
+                        res.setSenderName(message.getSenderSupplier().getCompanyName());
+                        res.setSenderRole("supplier");
+                    }
                     break;
 
                 case GUEST:
-                    res.setSenderId(message.getSenderGuest().getId());
-                    res.setSenderName(message.getSenderGuest().getName());
-                    res.setSenderRole("guest");
+                    if (message.getSenderGuest() != null) {
+                        res.setSenderId(message.getSenderGuest().getId());
+                        res.setSenderName(message.getSenderGuest().getName());
+                        res.setSenderRole("guest");
+                    }
                     break;
 
                 case ORGANIZER:
-                    res.setSenderId(message.getSenderOrganizer().getId());
-                    res.setSenderName(message.getSenderOrganizer().getCompanyName());
-                    res.setSenderRole("organizer");
+                    if (message.getSenderOrganizer() != null) {
+                        res.setSenderId(message.getSenderOrganizer().getId());
+                        res.setSenderName(message.getSenderOrganizer().getCompanyName());
+                        res.setSenderRole("organizer");
+                    }
                     break;
 
                 default:

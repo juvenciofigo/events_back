@@ -26,6 +26,22 @@ public interface ChatRepository extends JpaRepository<ChatEntity, String> {
     Optional<ChatEntity> findByEventAndType(@Param("eventId") String eventId, @Param("type") ChatType type);
 
     @Query("""
+            SELECT chat
+            FROM ChatEntity chat
+            LEFT JOIN FETCH chat.participants
+            LEFT JOIN FETCH chat.messages
+            WHERE chat.id = :chatId
+            AND EXISTS (
+                SELECT p FROM chat.participants p
+                WHERE p.id = :participantId
+                OR p.organizer.id = :participantId
+                OR p.supplier.id = :participantId
+                OR p.guest.id = :participantId
+            )
+            """)
+    Optional<ChatEntity> findByChatIdAndParticipant(@Param("chatId") String chatId, @Param("participantId") String participantId);
+
+    @Query("""
                 SELECT chat
                 FROM ChatEntity chat
                 JOIN chat.participants p
@@ -44,7 +60,7 @@ public interface ChatRepository extends JpaRepository<ChatEntity, String> {
                 JOIN chat.participants p
                 WHERE chat.event.id = :eventId
                   AND chat.type = :type
-                  AND p.organizer.id = :participantId
+                  AND p.supplier.id = :participantId
             """)
     Optional<ChatEntity> findByEventAndTypeAndParticipantSupplier(
             @Param("eventId") String eventId,

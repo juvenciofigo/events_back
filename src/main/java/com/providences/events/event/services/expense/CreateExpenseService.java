@@ -53,7 +53,6 @@ public class CreateExpenseService {
 
         ExpenseStatus status;
         try {
-            System.out.println(data.getStatus());
             status = ExpenseStatus.valueOf(data.getStatus().toUpperCase());
         } catch (Exception e) {
             throw new BusinessException("Tipo de status invalido!", HttpStatus.BAD_REQUEST);

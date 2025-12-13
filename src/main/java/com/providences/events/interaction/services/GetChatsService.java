@@ -74,7 +74,7 @@ public class GetChatsService {
         SupplierEntity supplier = supplierRepository.findById(profileId)
                 .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado!"));
 
-        if (!supplier.getId().equals(userId)) {
+        if (!supplier.getUser().getId().equals(userId)) {
             throw new BusinessException(
                     "Fornecedor não possui permissão para visualizar os chats",
                     HttpStatus.FORBIDDEN);

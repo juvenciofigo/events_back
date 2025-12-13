@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.providences.events.interaction.dto.MessageDTO;
 import com.providences.events.interaction.entities.ChatEntity;
@@ -12,6 +14,8 @@ import com.providences.events.interaction.entities.ParticipantChatEntity;
 import com.providences.events.interaction.repositories.ChatRepository;
 import com.providences.events.shared.exception.exceptions.BusinessException;
 
+@Service
+@Transactional(readOnly = true)
 public class FetchMessagesChat {
     private ChatRepository chatRepository;
 

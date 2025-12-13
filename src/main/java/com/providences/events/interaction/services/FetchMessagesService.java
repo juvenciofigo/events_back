@@ -55,9 +55,6 @@ public class FetchMessagesService {
                         msg.getIsRead()))
                 .collect(Collectors.toList());
 
-        System.out.println("chats " + chats);
-        System.out.println("messages " + messages);
-
         return messages;
     }
 

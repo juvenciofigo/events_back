@@ -46,12 +46,6 @@ public class FetchSeatsService {
                 .map(SeatDTO.Response::response)
                 .toList();
 
-        List<SeatDTO.Response> list2 = seatRepository.fetchByEvent(eventId).stream()
-                .map(SeatDTO.Response::response)
-                .toList();
-
-                System.out.println(list2);
-        System.out.println(list);
         return new SystemDTO.ItemWithPage<>(
                 list,
                 pageNumber,
